@@ -1,4 +1,6 @@
-export type Gender = "M" | "F";
+import type { Gender } from "./categories";
+
+export type { Gender };
 
 export const firstNames: Record<Gender, string[]> = {
   M: ["Julian", "Lukas", "Mikkel", "Oskar", "Emil", "Anton", "Jonas", "Marek"],
