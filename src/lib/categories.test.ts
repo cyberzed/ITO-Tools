@@ -5,35 +5,35 @@ const labels = (g: "M" | "F") => categoriesFor(g).map((c) => c.label);
 
 describe("categoriesFor", () => {
   it("lists the senior men categories in order", () => {
-    expect(labels("M")).toEqual(["60 kg", "65 kg", "70 kg", "75 kg", "85 kg", "95 kg", "110 kg", "+110 kg"]);
+    expect(labels("M")).toEqual(["M60", "M65", "M70", "M75", "M85", "M95", "M110", "M+110"]);
   });
 
   it("lists the senior women categories in order", () => {
-    expect(labels("F")).toEqual(["49 kg", "53 kg", "57 kg", "61 kg", "69 kg", "77 kg", "86 kg", "+86 kg"]);
+    expect(labels("F")).toEqual(["F49", "F53", "F57", "F61", "F69", "F77", "F86", "F+86"]);
   });
 });
 
 describe("categoryFor", () => {
   it("includes the upper limit in the category", () => {
-    expect(categoryFor("M", 60).label).toBe("60 kg");
-    expect(categoryFor("M", 60.01).label).toBe("65 kg");
-    expect(categoryFor("F", 86).label).toBe("86 kg");
-    expect(categoryFor("F", 86.01).label).toBe("+86 kg");
+    expect(categoryFor("M", 60).label).toBe("M60");
+    expect(categoryFor("M", 60.01).label).toBe("M65");
+    expect(categoryFor("F", 86).label).toBe("F86");
+    expect(categoryFor("F", 86.01).label).toBe("F+86");
   });
 
   it("puts light athletes in the lowest category", () => {
-    expect(categoryFor("M", 50).label).toBe("60 kg");
-    expect(categoryFor("F", 40).label).toBe("49 kg");
+    expect(categoryFor("M", 50).label).toBe("M60");
+    expect(categoryFor("F", 40).label).toBe("F49");
   });
 
   it("puts the heaviest athletes in the open category", () => {
-    expect(categoryFor("M", 150).label).toBe("+110 kg");
-    expect(categoryFor("F", 120).label).toBe("+86 kg");
+    expect(categoryFor("M", 150).label).toBe("M+110");
+    expect(categoryFor("F", 120).label).toBe("F+86");
   });
 
   it("uses a different list for each gender", () => {
-    expect(categoryFor("M", 56).label).toBe("60 kg");
-    expect(categoryFor("F", 56).label).toBe("57 kg");
+    expect(categoryFor("M", 56).label).toBe("M60");
+    expect(categoryFor("F", 56).label).toBe("F57");
   });
 });
 

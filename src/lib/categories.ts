@@ -7,19 +7,19 @@
 export type Gender = "M" | "F";
 
 export interface Category {
-  /** Display name as on the card, for example "60 kg" or "+110 kg". */
+  /** Code as written on the card: gender letter plus the limit, for example "M95", "F77" or "M+110". */
   label: string;
   /** Highest bodyweight in kg that belongs to the category (inclusive). Null for the open "+" category. */
   maxKg: number | null;
 }
 
-const toCategories = (limits: number[]): Category[] => [
-  ...limits.map((kg) => ({ label: `${kg} kg`, maxKg: kg })),
-  { label: `+${limits[limits.length - 1]} kg`, maxKg: null },
+const toCategories = (gender: Gender, limits: number[]): Category[] => [
+  ...limits.map((kg) => ({ label: `${gender}${kg}`, maxKg: kg })),
+  { label: `${gender}+${limits[limits.length - 1]}`, maxKg: null },
 ];
 
-const men = toCategories([60, 65, 70, 75, 85, 95, 110]); // 1.2.1
-const women = toCategories([49, 53, 57, 61, 69, 77, 86]); // 1.2.2
+const men = toCategories("M", [60, 65, 70, 75, 85, 95, 110]); // 1.2.1
+const women = toCategories("F", [49, 53, 57, 61, 69, 77, 86]); // 1.2.2
 
 /** Senior categories in competition order. */
 export function categoriesFor(gender: Gender): Category[] {
