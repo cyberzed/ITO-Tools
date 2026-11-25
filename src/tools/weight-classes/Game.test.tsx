@@ -66,3 +66,19 @@ it("starts a clean round after revealing", () => {
   expect(container.querySelectorAll(".tile.correct")).toHaveLength(0);
   expect(screen.getByRole("button", { name: "Reveal answers" }).hasAttribute("disabled")).toBe(false);
 });
+
+it("changes the grid size and starts a new round", () => {
+  const { container } = render(<Game />);
+  fireEvent.click(screen.getByRole("button", { name: "Reveal answers" }));
+  fireEvent.change(screen.getByLabelText("Grid size"), { target: { value: "5" } });
+  expect(tiles(container)).toHaveLength(25);
+  expect(container.querySelectorAll(".tile.correct")).toHaveLength(0);
+  expect(screen.getByRole("button", { name: "Check answers" }).hasAttribute("disabled")).toBe(false);
+  expect(screen.getByText(/There are 8 in the grid/)).toBeTruthy();
+});
+
+it("offers sizes from 5 x 5 to 10 x 10", () => {
+  render(<Game />);
+  const options = Array.from(screen.getByLabelText("Grid size").querySelectorAll("option")).map((o) => o.textContent);
+  expect(options).toEqual(["5 × 5", "6 × 6", "7 × 7", "8 × 8", "9 × 9", "10 × 10"]);
+});

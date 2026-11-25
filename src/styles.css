@@ -229,7 +229,16 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 .small-button.primary:hover { color: var(--primary-fg); opacity: 0.9; }
 .small-button:disabled { opacity: 0.5; cursor: default; }
 .game-result { margin: 0 0 12px; font-weight: 600; }
-.game-grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+.game-grid { display: grid; gap: 4px; font-size: clamp(0.6rem, 1.9vw, 0.9rem); }
+.grid-size { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; }
+.grid-size select {
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+}
 .tile {
   padding: 8px 0;
   border: 1px solid var(--border);
@@ -237,7 +246,7 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
   background: var(--surface);
   color: var(--fg);
   font: inherit;
-  font-size: clamp(0.6rem, 1.9vw, 0.9rem);
+  font-size: inherit;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
 }

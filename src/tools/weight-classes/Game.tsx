@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { categoriesFor, type Gender } from "../../lib/categories";
-import { generateRound, isValidClass, scoreRound } from "../../lib/classGame";
+import { MAX_GRID, MIN_GRID, generateRound, isValidClass, scoreRound } from "../../lib/classGame";
 
 const genderName: Record<Gender, string> = { M: "men", F: "women" };
 
 export default function Game() {
   const [gender, setGender] = useState<Gender>("M");
-  const [board, setBoard] = useState(() => generateRound("M"));
+  const [size, setSize] = useState(MAX_GRID);
+  const [board, setBoard] = useState(() => generateRound("M", MAX_GRID));
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [mode, setMode] = useState<"playing" | "checked" | "revealed">("playing");
 
-  function newRound(g: Gender) {
+  function newRound(g: Gender, n = size) {
     setGender(g);
-    setBoard(generateRound(g));
+    setSize(n);
+    setBoard(generateRound(g, n));
     setSelected(new Set());
     setMode("playing");
   }
@@ -54,6 +56,16 @@ export default function Game() {
             </button>
           ))}
         </div>
+        <label className="grid-size">
+          Grid size
+          <select value={size} onChange={(e) => newRound(gender, Number(e.target.value))}>
+            {Array.from({ length: MAX_GRID - MIN_GRID + 1 }, (_, i) => MIN_GRID + i).map((n) => (
+              <option key={n} value={n}>
+                {n} × {n}
+              </option>
+            ))}
+          </select>
+        </label>
         <button className="small-button" onClick={() => newRound(gender)}>
           New round
         </button>
@@ -82,7 +94,14 @@ export default function Game() {
         </p>
       )}
 
-      <div className="game-grid">
+      <div
+        className="game-grid"
+        style={{
+          gridTemplateColumns: `repeat(${size}, minmax(0, 1fr))`,
+          maxWidth: `${size * 92}px`,
+          fontSize: size <= 7 ? "clamp(0.8rem, 2.6vw, 1rem)" : undefined,
+        }}
+      >
         {board.map((code) => (
           <button
             key={code}
