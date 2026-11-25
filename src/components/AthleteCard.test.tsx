@@ -22,6 +22,11 @@ describe("AthleteCard", () => {
     expect(cellText(container, "20kg Rule")).toBe("20kg Rule255");
   });
 
+  it("always shows the age group as Senior", () => {
+    const { container } = render(<AthleteCard data={base} />);
+    expect(cellText(container, "Age Group")).toBe("Age GroupSenior");
+  });
+
   it("leaves the 20kg rule empty without an entry total", () => {
     const { container } = render(<AthleteCard data={base} />);
     expect(cellText(container, "20kg Rule")).toBe("20kg Rule");

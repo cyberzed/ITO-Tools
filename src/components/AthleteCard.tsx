@@ -34,7 +34,6 @@ export interface AthleteCardData {
   /** Not printed on the card; used to work out the category. */
   gender?: "M" | "F";
   lot?: number;
-  ageGroup?: string;
   category?: string;
   birthDate?: string;
   entryTotal?: number;
@@ -208,7 +207,7 @@ export default function AthleteCard({ data }: { data: AthleteCardData }) {
             <Ink printed>{d.lot}</Ink>
           </Cell>
           <Cell label="Age Group" center>
-            <Ink printed>{d.ageGroup}</Ink>
+            <Ink printed>Senior</Ink>
           </Cell>
           <Cell label="Category" center>
             <Ink printed>{d.category}</Ink>
