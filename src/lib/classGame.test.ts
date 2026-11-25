@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { categoriesFor } from "./categories";
-import { GRID_SIZE, generateRound, isValidClass, scoreRound } from "./classGame";
+import { GRID_SIZE, MIN_PLUS_WEIGHT, generateRound, isValidClass, scoreRound } from "./classGame";
 
 describe("generateRound", () => {
   it.each(["M", "F"] as const)("builds a board of 100 unique tiles with every valid %s class", (g) => {
@@ -16,6 +16,16 @@ describe("generateRound", () => {
   it.each(["M", "F"] as const)("only uses the %s letter on the board", (g) => {
     for (let i = 0; i < 50; i++) {
       for (const code of generateRound(g)) expect(code.startsWith(g)).toBe(true);
+    }
+  });
+
+  it.each(["M", "F"] as const)("only uses '+' classes from the minimum weight for %s", (g) => {
+    for (let i = 0; i < 50; i++) {
+      const plus = generateRound(g).filter((c) => c.includes("+"));
+      expect(plus.length).toBeGreaterThanOrEqual(10);
+      for (const code of plus) {
+        expect(Number(code.split("+")[1])).toBeGreaterThanOrEqual(MIN_PLUS_WEIGHT[g]);
+      }
     }
   });
 
