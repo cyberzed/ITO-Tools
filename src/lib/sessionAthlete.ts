@@ -1,6 +1,6 @@
 export type Gender = "M" | "F";
 
-const firstNames: Record<Gender, string[]> = {
+export const firstNames: Record<Gender, string[]> = {
   M: ["Julian", "Lukas", "Mikkel", "Oskar", "Emil", "Anton", "Jonas", "Marek"],
   F: ["Sofia", "Emma", "Clara", "Nina", "Freja", "Hanna", "Ida", "Lena"],
 };
