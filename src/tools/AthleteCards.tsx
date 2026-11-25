@@ -19,7 +19,7 @@ function cardFor(athlete: SessionAthlete): AthleteCardData {
       attempts: [{ declaration: athlete.snatchStart, declarationSignature: athlete.signature }, {}, {}],
     },
     cleanAndJerk: {
-      attempts: [{ declaration: 144, declarationSignature: athlete.signature }, {}, {}],
+      attempts: [{ declaration: athlete.cleanAndJerkStart, declarationSignature: athlete.signature }, {}, {}],
     },
   };
 }

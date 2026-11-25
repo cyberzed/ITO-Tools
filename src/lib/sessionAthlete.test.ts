@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { bodyWeightRange } from "./categories";
-import { MAX_LOT, SNATCH_JITTER, SNATCH_RATIO, firstNames, getSessionAthlete, newSessionAthlete, signatureOf } from "./sessionAthlete";
+import { CLEAN_AND_JERK_RATIO, MAX_LOT, SNATCH_RATIO, START_JITTER, firstNames, getSessionAthlete, newSessionAthlete, signatureOf } from "./sessionAthlete";
 
 beforeEach(() => sessionStorage.clear());
 
@@ -61,14 +61,18 @@ describe("getSessionAthlete", () => {
     expect(new Set(weights).size).toBeGreaterThan(1);
   });
 
-  it("starts the snatch at about 1.5 times bodyweight, in whole kg", () => {
+  it.each([
+    ["snatch", "snatchStart", SNATCH_RATIO],
+    ["clean & jerk", "cleanAndJerkStart", CLEAN_AND_JERK_RATIO],
+  ] as const)("starts the %s at about its ratio of bodyweight, in whole kg", (_name, field, ratio) => {
     const ratios = new Set<number>();
     for (const a of many()) {
-      expect(Number.isInteger(a.snatchStart)).toBe(true);
+      const w = a[field];
+      expect(Number.isInteger(w)).toBe(true);
       // Allow half a kg for rounding to a whole number.
-      expect(a.snatchStart).toBeGreaterThanOrEqual(a.bodyWeight * SNATCH_RATIO * (1 - SNATCH_JITTER) - 0.5);
-      expect(a.snatchStart).toBeLessThanOrEqual(a.bodyWeight * SNATCH_RATIO * (1 + SNATCH_JITTER) + 0.5);
-      ratios.add(Math.round((a.snatchStart / a.bodyWeight) * 100));
+      expect(w).toBeGreaterThanOrEqual(a.bodyWeight * ratio * (1 - START_JITTER) - 0.5);
+      expect(w).toBeLessThanOrEqual(a.bodyWeight * ratio * (1 + START_JITTER) + 0.5);
+      ratios.add(Math.round((w / a.bodyWeight) * 100));
     }
     expect(ratios.size).toBeGreaterThan(1); // the jitter varies
   });

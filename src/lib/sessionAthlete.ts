@@ -35,6 +35,8 @@ export interface SessionAthlete {
   bodyWeight: number;
   /** Snatch starting weight in whole kg, about SNATCH_RATIO times bodyweight. */
   snatchStart: number;
+  /** Clean & jerk starting weight in whole kg, about CLEAN_AND_JERK_RATIO times bodyweight. */
+  cleanAndJerkStart: number;
   /** Lot number, 1 to MAX_LOT. */
   lot: number;
   /** Short handwritten-style signature, from the athlete or the coach. Used in every field. */
@@ -42,9 +44,14 @@ export interface SessionAthlete {
 }
 
 export const MAX_LOT = 30;
-/** Snatch starting weight is about this many times bodyweight, give or take SNATCH_JITTER. */
+/** Starting weights are about this many times bodyweight, give or take START_JITTER. */
 export const SNATCH_RATIO = 1.5;
-export const SNATCH_JITTER = 0.05;
+export const CLEAN_AND_JERK_RATIO = 2.0;
+export const START_JITTER = 0.05;
+
+/** Whole-kg starting weight: bodyweight times a ratio, with random jitter. */
+const startingWeight = (bodyWeight: number, ratio: number): number =>
+  Math.round(bodyWeight * ratio * (1 + randInt(-START_JITTER * 1000, START_JITTER * 1000) / 1000));
 
 /** "Julian Frank" -> "Fran." */
 export const signatureOf = (name: string): string => `${name.split(" ").pop()!.slice(0, 4)}.`;
@@ -72,7 +79,6 @@ function generate(): SessionAthlete {
   const name = `${pick(firstNames[gender])} ${pick(lastNames)}`;
   const range = bodyWeightRange(gender);
   const bodyWeight = randInt(range.min * 100, range.max * 100) / 100;
-  const jitter = randInt(-SNATCH_JITTER * 1000, SNATCH_JITTER * 1000) / 1000;
   const coach = `${pick(firstNames[pick<Gender>(["M", "F"])])} ${pick(lastNames)}`;
   return {
     name,
@@ -80,7 +86,8 @@ function generate(): SessionAthlete {
     birthDate: randomBirthDate(),
     coach,
     bodyWeight,
-    snatchStart: Math.round(bodyWeight * SNATCH_RATIO * (1 + jitter)),
+    snatchStart: startingWeight(bodyWeight, SNATCH_RATIO),
+    cleanAndJerkStart: startingWeight(bodyWeight, CLEAN_AND_JERK_RATIO),
     lot: randInt(1, MAX_LOT),
     signature: signatureOf(pick([name, coach])),
   };
@@ -115,6 +122,7 @@ export function getSessionAthlete(key = "athlete"): SessionAthlete {
         parsed.coach &&
         parsed.bodyWeight &&
         parsed.snatchStart &&
+        parsed.cleanAndJerkStart &&
         parsed.lot &&
         parsed.signature &&
         (parsed.gender === "M" || parsed.gender === "F")
