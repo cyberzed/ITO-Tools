@@ -99,7 +99,7 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 }
 .ac-head {
   display: grid;
-  grid-template-columns: 1fr 2.4fr;
+  grid-template-columns: calc((100% - 4px) / 3) 1fr; /* first divider lines up with the 3-column grid below */
   gap: 2px;
 }
 .ac-grid {
