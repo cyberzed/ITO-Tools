@@ -191,3 +191,11 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
   cursor: pointer;
 }
 .small-button:hover { border-color: var(--primary); color: var(--primary); }
+
+.class-tables { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 16px; }
+.class-table h2 { margin: 0 0 8px; font-size: 1.1rem; }
+.class-table table { width: 100%; border-collapse: collapse; background: var(--surface); }
+.class-table th, .class-table td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+.class-table thead th { background: var(--bg); color: var(--muted); font-size: 0.85rem; font-weight: 600; }
+.class-table tbody th { width: 40%; font-weight: 700; color: var(--primary); }
+.class-table td { font-variant-numeric: tabular-nums; }
