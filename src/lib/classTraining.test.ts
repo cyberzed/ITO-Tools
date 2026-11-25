@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { categoriesFor } from "./categories";
-import { MAX_GRID, MIN_GRID, MIN_PLUS_WEIGHT, generateRound, isValidClass, scoreRound } from "./classGame";
+import { MAX_GRID, MIN_GRID, MIN_PLUS_WEIGHT, generateRound, isValidClass, scoreRound } from "./classTraining";
 
 const sizes = Array.from({ length: MAX_GRID - MIN_GRID + 1 }, (_, i) => MIN_GRID + i);
 

@@ -1,6 +1,6 @@
 import { NavLink, Route, Routes } from "react-router-dom";
-import Game from "./weight-classes/Game";
 import Overview from "./weight-classes/Overview";
+import Training from "./weight-classes/Training";
 
 export default function WeightClasses() {
   return (
@@ -10,11 +10,11 @@ export default function WeightClasses() {
         <NavLink to="/weight-classes" end>
           Overview
         </NavLink>
-        <NavLink to="/weight-classes/game">Game</NavLink>
+        <NavLink to="/weight-classes/training">Training</NavLink>
       </nav>
       <Routes>
         <Route index element={<Overview />} />
-        <Route path="game" element={<Game />} />
+        <Route path="training" element={<Training />} />
       </Routes>
     </section>
   );

@@ -20,8 +20,8 @@ it("shows the overview by default", () => {
   expect(screen.getByRole("link", { name: "Overview" }).className).toContain("active");
 });
 
-it("shows the game from the sub menu", () => {
-  const { container } = at("/weight-classes/game");
+it("shows the training from the sub menu", () => {
+  const { container } = at("/weight-classes/training");
   expect(container.querySelectorAll(".tile")).toHaveLength(100);
-  expect(screen.getByRole("link", { name: "Game" }).className).toContain("active");
+  expect(screen.getByRole("link", { name: "Training" }).className).toContain("active");
 });

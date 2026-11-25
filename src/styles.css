@@ -212,8 +212,8 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 .class-table tbody th { width: 40%; font-weight: 700; color: var(--primary); }
 .class-table td { font-variant-numeric: tabular-nums; }
 
-/* Weight class game */
-.game-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0; }
+/* Weight class training */
+.training-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0; }
 .segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
 .segmented button {
   padding: 4px 14px;
@@ -228,8 +228,8 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 .small-button.primary { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
 .small-button.primary:hover { color: var(--primary-fg); opacity: 0.9; }
 .small-button:disabled { opacity: 0.5; cursor: default; }
-.game-result { margin: 0 0 12px; font-weight: 600; }
-.game-grid { display: grid; gap: 4px; font-size: clamp(0.6rem, 1.9vw, 0.9rem); }
+.training-result { margin: 0 0 12px; font-weight: 600; }
+.training-grid { display: grid; gap: 4px; font-size: clamp(0.6rem, 1.9vw, 0.9rem); }
 .grid-size { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; }
 .grid-size select {
   padding: 3px 6px;

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { categoriesFor, type Gender } from "../../lib/categories";
-import { MAX_GRID, MIN_GRID, generateRound, isValidClass, scoreRound } from "../../lib/classGame";
+import { MAX_GRID, MIN_GRID, generateRound, isValidClass, scoreRound } from "../../lib/classTraining";
 
 const genderName: Record<Gender, string> = { M: "men", F: "women" };
 
-export default function Game() {
+export default function Training() {
   const [gender, setGender] = useState<Gender>("M");
   const [size, setSize] = useState(MAX_GRID);
   const [board, setBoard] = useState(() => generateRound("M", MAX_GRID));
@@ -42,13 +42,13 @@ export default function Game() {
   };
 
   return (
-    <div className="game">
+    <div className="training">
       <p className="muted">
         Select every valid senior weight class for {genderName[gender]}. There are {total} in the
         grid.
       </p>
 
-      <div className="game-controls">
+      <div className="training-controls">
         <div className="segmented" role="group" aria-label="Gender">
           {(["M", "F"] as const).map((g) => (
             <button key={g} aria-pressed={gender === g} onClick={() => newRound(g)}>
@@ -81,13 +81,13 @@ export default function Game() {
       </div>
 
       {mode === "revealed" && (
-        <p className="game-result" role="status">
+        <p className="training-result" role="status">
           The correct classes are highlighted. Start a new round to try again.
         </p>
       )}
 
       {score && (
-        <p className="game-result" role="status">
+        <p className="training-result" role="status">
           You found {score.correct.length} of {total}
           {score.wrong.length > 0 && `, with ${score.wrong.length} wrong`}
           {score.missed.length > 0 && `, and missed ${score.missed.length}`}.
@@ -95,7 +95,7 @@ export default function Game() {
       )}
 
       <div
-        className="game-grid"
+        className="training-grid"
         style={{
           gridTemplateColumns: `repeat(${size}, minmax(0, 1fr))`,
           maxWidth: `${size * 92}px`,
