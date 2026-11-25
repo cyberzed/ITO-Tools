@@ -13,9 +13,10 @@ describe("generateRound", () => {
     }
   });
 
-  it("includes decoys from the other gender", () => {
-    const board = generateRound("M");
-    expect(board.filter((c) => c.startsWith("F")).length).toBeGreaterThan(8);
+  it.each(["M", "F"] as const)("only uses the %s letter on the board", (g) => {
+    for (let i = 0; i < 50; i++) {
+      for (const code of generateRound(g)) expect(code.startsWith(g)).toBe(true);
+    }
   });
 
   it("shuffles the tiles between rounds", () => {

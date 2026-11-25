@@ -5,14 +5,13 @@ import { shuffle } from "./random";
 export const GRID_SIZE = 100;
 
 /** Youth classes (TCRR 1.2.3 and 1.2.4). They are not senior classes, so they make good decoys. */
-const youth = [
-  ..."M55 M60 M65 M70 M75 M85 M95 M+95".split(" "),
-  ..."F45 F49 F53 F57 F61 F69 F77 F+77".split(" "),
-];
+const youth: Record<Gender, string[]> = {
+  M: "M55 M60 M65 M70 M75 M85 M95 M+95".split(" "),
+  F: "F45 F49 F53 F57 F61 F69 F77 F+77".split(" "),
+};
 
-/** Every weight a decoy could use, for both letters. */
+/** Weights the random decoys can use. */
 const weights = Array.from({ length: 126 - 40 }, (_, i) => 40 + i);
-const anyCode = (letter: Gender) => weights.map((w) => `${letter}${w}`);
 
 /** Is this a senior class for the gender? */
 export const isValidClass = (gender: Gender, code: string): boolean =>
@@ -20,24 +19,22 @@ export const isValidClass = (gender: Gender, code: string): boolean =>
 
 /**
  * The board for one round: all the senior classes for the gender, mixed with
- * decoys, in random order. Decoys are the other gender's classes, youth classes,
- * "+" classes with a wrong limit and random weights with either letter.
+ * decoys, in random order. Every tile uses the gender's own letter. Decoys are
+ * youth classes, "+" classes with a wrong limit and random weights.
  */
 export function generateRound(gender: Gender): string[] {
   const valid = categoriesFor(gender).map((c) => c.label);
-  const other: Gender = gender === "M" ? "F" : "M";
+  const plain = weights.map((w) => `${gender}${w}`);
+  const open = weights.map((w) => `${gender}+${w}`);
 
   const nearMisses = [
-    ...categoriesFor(other).map((c) => c.label),
-    ...youth,
-    ...[45, 49, 55, 60, 75, 77, 86, 95, 110].flatMap((w) => [`M+${w}`, `F+${w}`]),
+    ...youth[gender],
+    ...[45, 49, 55, 60, 75, 77, 86, 95, 110].map((w) => `${gender}+${w}`),
   ];
+
   const chosen = new Set<string>(valid);
-  for (const code of shuffle(nearMisses)) {
-    if (chosen.size >= valid.length + 30) break;
-    chosen.add(code);
-  }
-  for (const code of shuffle([...anyCode("M"), ...anyCode("F")])) {
+  // Near misses first, then plain weights, then "+" classes if the board is still short.
+  for (const code of [...shuffle(nearMisses), ...shuffle(plain), ...shuffle(open)]) {
     if (chosen.size >= GRID_SIZE) break;
     chosen.add(code);
   }

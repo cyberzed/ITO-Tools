@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
 import { categoriesFor } from "../../lib/categories";
+import { isValidClass } from "../../lib/classGame";
 import Game from "./Game";
 
 afterEach(cleanup);
@@ -23,7 +24,7 @@ it("scores a perfect round when every valid class is selected", () => {
 
 it("marks wrong and missed tiles", () => {
   const { container } = render(<Game />);
-  const decoy = Array.from(tiles(container)).find((t) => !t.textContent!.startsWith("M"))!;
+  const decoy = Array.from(tiles(container)).find((t) => !isValidClass("M", t.textContent!))!;
   fireEvent.click(decoy);
   fireEvent.click(screen.getByRole("button", { name: "Check answers" }));
   expect(container.querySelectorAll(".tile.wrong")).toHaveLength(1);
@@ -32,8 +33,9 @@ it("marks wrong and missed tiles", () => {
 });
 
 it("switches to the women's classes and starts over", () => {
-  render(<Game />);
+  const { container } = render(<Game />);
   fireEvent.click(screen.getByRole("button", { name: "Women" }));
+  for (const t of tiles(container)) expect(t.textContent!.startsWith("F")).toBe(true);
   for (const c of categoriesFor("F")) expect(screen.getByRole("button", { name: c.label })).toBeTruthy();
   expect(screen.getByText(/Selected: 0/)).toBeTruthy();
 });
