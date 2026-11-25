@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { categoriesFor, categoryFor } from "./categories";
+import { bodyWeightRange, categoriesFor, categoryFor } from "./categories";
 
 const labels = (g: "M" | "F") => categoriesFor(g).map((c) => c.label);
 
@@ -34,5 +34,12 @@ describe("categoryFor", () => {
   it("uses a different list for each gender", () => {
     expect(categoryFor("M", 56).label).toBe("60 kg");
     expect(categoryFor("F", 56).label).toBe("57 kg");
+  });
+});
+
+describe("bodyWeightRange", () => {
+  it("runs from 5 kg under the lowest category to 30 kg over the highest limit", () => {
+    expect(bodyWeightRange("M")).toEqual({ min: 55, max: 140 });
+    expect(bodyWeightRange("F")).toEqual({ min: 44, max: 116 });
   });
 });

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import { bodyWeightRange } from "./categories";
 import { MAX_LOT, firstNames, getSessionAthlete, signatureOf } from "./sessionAthlete";
 
 beforeEach(() => sessionStorage.clear());
@@ -40,6 +41,17 @@ describe("getSessionAthlete", () => {
       expect(birthYear).toBeGreaterThanOrEqual(year - 30);
       expect(birthYear).toBeLessThanOrEqual(year - 17);
     }
+  });
+
+  it("draws a bodyweight with two decimals inside the range for the gender", () => {
+    const weights = many().map((a) => a.bodyWeight);
+    for (const a of many()) {
+      const { min, max } = bodyWeightRange(a.gender);
+      expect(a.bodyWeight).toBeGreaterThanOrEqual(min);
+      expect(a.bodyWeight).toBeLessThanOrEqual(max);
+      expect(Math.round(a.bodyWeight * 100) / 100).toBe(a.bodyWeight);
+    }
+    expect(new Set(weights).size).toBeGreaterThan(1);
   });
 
   it("draws a whole-number lot from 1 to the maximum", () => {

@@ -33,3 +33,9 @@ export function categoriesFor(gender: Gender): Category[] {
 export function categoryFor(gender: Gender, bodyWeightKg: number): Category {
   return categoriesFor(gender).find((c) => c.maxKg === null || bodyWeightKg <= c.maxKg)!;
 }
+
+/** Generated athletes weigh from 5 kg under the lowest category to 30 kg over the highest limit. */
+export function bodyWeightRange(gender: Gender): { min: number; max: number } {
+  const limits = categoriesFor(gender).flatMap((c) => (c.maxKg === null ? [] : [c.maxKg]));
+  return { min: limits[0] - 5, max: limits[limits.length - 1] + 30 };
+}

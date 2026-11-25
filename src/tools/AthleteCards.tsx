@@ -1,4 +1,5 @@
 import AthleteCard, { type AthleteCardData } from "../components/AthleteCard";
+import { categoryFor } from "../lib/categories";
 import { getSessionAthlete } from "../lib/sessionAthlete";
 
 const athlete = getSessionAthlete();
@@ -9,6 +10,8 @@ const card: AthleteCardData = {
   gender: athlete.gender,
   startNumber: 1,
   lot: athlete.lot,
+  bodyWeight: athlete.bodyWeight,
+  category: categoryFor(athlete.gender, athlete.bodyWeight).label,
   birthDate: athlete.birthDate,
   entryTotal: 275,
   signature: athlete.signature,

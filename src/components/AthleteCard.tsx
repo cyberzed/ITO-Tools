@@ -186,7 +186,7 @@ export default function AthleteCard({ data }: { data: AthleteCardData }) {
             <Ink printed>{d.entryTotal}</Ink>
           </Cell>
           <Cell label="Body Weight" center>
-            <Ink printed>{d.bodyWeight}</Ink>
+            <Ink printed>{d.bodyWeight?.toFixed(2)}</Ink>
           </Cell>
           <Cell label="Signature:" className="ac-sig">
             <span className="ac-signature">{d.signature}</span>

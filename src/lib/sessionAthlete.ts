@@ -1,4 +1,4 @@
-import type { Gender } from "./categories";
+import { bodyWeightRange, type Gender } from "./categories";
 
 export type { Gender };
 
@@ -31,6 +31,8 @@ export interface SessionAthlete {
   /** dd.mm.yyyy */
   birthDate: string;
   coach: string;
+  /** Bodyweight in kg with two decimals, within bodyWeightRange(gender). */
+  bodyWeight: number;
   /** Lot number, 1 to MAX_LOT. */
   lot: number;
   /** Short handwritten-style signature, from the athlete or the coach. Used in every field. */
@@ -63,12 +65,14 @@ function randomBirthDate(): string {
 function generate(): SessionAthlete {
   const gender: Gender = pick<Gender>(["M", "F"]);
   const name = `${pick(firstNames[gender])} ${pick(lastNames)}`;
+  const range = bodyWeightRange(gender);
   const coach = `${pick(firstNames[pick<Gender>(["M", "F"])])} ${pick(lastNames)}`;
   return {
     name,
     gender,
     birthDate: randomBirthDate(),
     coach,
+    bodyWeight: randInt(range.min * 100, range.max * 100) / 100,
     lot: randInt(1, MAX_LOT),
     signature: signatureOf(pick([name, coach])),
   };
@@ -90,6 +94,7 @@ export function getSessionAthlete(key = "athlete"): SessionAthlete {
         parsed.birthDate &&
         parsed.coach &&
         parsed.lot &&
+        parsed.bodyWeight &&
         parsed.signature &&
         (parsed.gender === "M" || parsed.gender === "F")
       ) {
