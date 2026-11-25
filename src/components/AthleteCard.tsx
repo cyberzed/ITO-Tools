@@ -38,7 +38,6 @@ export interface AthleteCardData {
   entryTotal?: number;
   bodyWeight?: number;
   signature?: string;
-  rule20kg?: string;
   requiredCJ?: number;
   total?: number;
   snatch: Lift;
@@ -213,7 +212,7 @@ export default function AthleteCard({ data }: { data: AthleteCardData }) {
             <Ink printed>{d.category}</Ink>
           </Cell>
           <Cell label="20kg Rule" center>
-            <Ink printed>{d.rule20kg}</Ink>
+            <Ink printed>{d.entryTotal !== undefined ? d.entryTotal - 20 : undefined}</Ink>
           </Cell>
           <Cell label="Required C&J" center>
             <Ink printed>{d.requiredCJ}</Ink>
