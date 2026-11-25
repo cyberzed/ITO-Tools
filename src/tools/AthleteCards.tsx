@@ -9,7 +9,7 @@ const card: AthleteCardData = {
   lot: 1,
   birthDate: athlete.birthDate,
   entryTotal: 275,
-  snatch: { attempts: [{}, {}, {}] },
+  snatch: { attempts: [{ declaration: 112 }, {}, {}] },
   cleanAndJerk: { attempts: [{ declaration: 144 }, {}, {}] },
 };
 
