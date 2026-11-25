@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { firstNames, getSessionAthlete, signatureOf } from "./sessionAthlete";
+import { MAX_LOT, firstNames, getSessionAthlete, signatureOf } from "./sessionAthlete";
 
 beforeEach(() => sessionStorage.clear());
 
@@ -40,6 +40,16 @@ describe("getSessionAthlete", () => {
       expect(birthYear).toBeGreaterThanOrEqual(year - 30);
       expect(birthYear).toBeLessThanOrEqual(year - 17);
     }
+  });
+
+  it("draws a whole-number lot from 1 to the maximum", () => {
+    const lots = many().map((a) => a.lot);
+    for (const lot of lots) {
+      expect(Number.isInteger(lot)).toBe(true);
+      expect(lot).toBeGreaterThanOrEqual(1);
+      expect(lot).toBeLessThanOrEqual(MAX_LOT);
+    }
+    expect(new Set(lots).size).toBeGreaterThan(1);
   });
 
   it("signs each signature as either the athlete or the coach", () => {

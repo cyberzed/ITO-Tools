@@ -7,7 +7,8 @@ const athlete = getSessionAthlete();
 const card: AthleteCardData = {
   name: athlete.name,
   gender: athlete.gender,
-  lot: 1,
+  startNumber: 1,
+  lot: athlete.lot,
   birthDate: athlete.birthDate,
   entryTotal: 275,
   signature: athlete.signatures.weighIn,
