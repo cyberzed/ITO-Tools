@@ -176,7 +176,7 @@ export default function AthleteCard({ data }: { data: AthleteCardData }) {
           <Cell label="Lot" center>
             <Ink printed>{d.lot}</Ink>
           </Cell>
-          <Cell label="Category">
+          <Cell label="Category" center>
             <Ink printed>{d.category}</Ink>
           </Cell>
           <Cell label="Birth Date" center>
