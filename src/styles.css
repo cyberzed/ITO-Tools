@@ -1,0 +1,167 @@
+:root {
+  /* Light theme, IWF-style: white and light grey surfaces, navy blue, red accent */
+  --bg: #f3f5f9;
+  --surface: #ffffff;
+  --fg: #0b1f3a;
+  --muted: #5b6b82;
+  --border: #d9e0ea;
+  --primary: #0a3d91;
+  --primary-fg: #ffffff;
+  --accent: #d6001c;
+  color-scheme: light;
+}
+/* Dark theme: the same hues as light, with lightness inverted */
+:root[data-theme="dark"] {
+  --bg: #0a1424;
+  --surface: #12223a;
+  --fg: #eaf0f8;
+  --muted: #9aaac0;
+  --border: #243a5a;
+  --primary: #5b95f0;
+  --primary-fg: #0a1424;
+  --accent: #ff4d63;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.5 system-ui, sans-serif;
+}
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  padding: 12px 16px;
+  border-bottom: 3px solid var(--accent);
+  background: var(--surface);
+}
+.brand { font-weight: 700; color: var(--primary); text-decoration: none; }
+.theme-toggle {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+}
+.theme-toggle:hover { background: var(--border); }
+nav { display: flex; flex-wrap: wrap; gap: 4px; }
+nav a {
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: var(--fg);
+  text-decoration: none;
+}
+nav a:hover { background: var(--border); }
+nav a.active { background: var(--primary); color: var(--primary-fg); }
+main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+.muted { color: var(--muted); }
+.cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); margin-top: 24px; }
+.card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+}
+.card:hover { border-color: var(--primary); }
+.card h2 { margin: 0 0 4px; font-size: 1.1rem; }
+.card p { margin: 0; color: var(--muted); }
+
+/* Athlete card: always paper-white, in both themes */
+.ac {
+  --ink: #1d2ee0;
+  --pen-red: #c0392b;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24px;
+  margin-top: 24px;
+  color: #000;
+}
+.ac-page {
+  flex: 1 1 340px;
+  min-width: 0;
+  background: #000;
+  border: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ac-head {
+  display: grid;
+  grid-template-columns: 1fr 2.4fr;
+  gap: 2px;
+}
+.ac-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.ac-cell {
+  position: relative;
+  min-height: 3.2em;
+  padding: 2px 4px;
+  background: #fff;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  overflow: hidden;
+}
+.ac-center { text-align: center; }
+.ac-label { display: block; font-size: 0.8em; font-weight: 600; text-align: left; }
+.ac-center .ac-label { text-align: left; }
+.ac-start { min-height: 5.5em; }
+.ac-start-number { display: block; color: #e0301e; font-size: 3.2em; font-weight: 600; line-height: 1; text-align: center; }
+.ac-name { display: flex; align-items: center; padding-left: 12%; font-size: clamp(1.2rem, 3.4vw, 1.9rem); }
+.ac-title {
+  padding: 4px;
+  background: #ddd;
+  color: #000;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.ac-title-dark { background: #000; color: #fff; }
+.ac-number { min-height: 0; font-size: 1.5rem; font-weight: 700; }
+.ac-grey { background: #e0e0e0; min-height: 4.5em; }
+.ac-cross {
+  background:
+    linear-gradient(to top right, transparent calc(50% - 1px), #000 50%, transparent calc(50% + 1px)),
+    linear-gradient(to bottom right, transparent calc(50% - 1px), #000 50%, transparent calc(50% + 1px)),
+    #e0e0e0;
+}
+.ac-print-red { color: #c0291f; font-size: 1.3em; }
+.ac-sig { min-height: 3.6em; border-top: 1px dotted #888; }
+.ac-sig .ac-label { font-weight: 400; color: #333; }
+.ac-signature { display: block; padding-left: 12%; color: var(--ink); font: italic 1.4em/1.2 "Helvetica Neue", Arial, sans-serif; }
+.ac-ink { position: relative; display: inline-block; min-width: 2.2em; color: var(--ink); font-size: 1.4em; line-height: 1.5; }
+.ac-circle {
+  position: absolute;
+  inset: -0.1em -0.35em;
+  border: 3px solid var(--pen-red);
+  border-radius: 50%;
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+.ac-struck { position: absolute; inset: 0; pointer-events: none; }
+.ac-struck i {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  width: 3px;
+  height: 120%;
+  background: var(--pen-red);
+  transform: rotate(14deg);
+}
+.ac-struck i:first-child { margin-left: -6px; }
+.ac-struck i:last-child { margin-left: 6px; }
+
+.ac-printed { color: #000; }
