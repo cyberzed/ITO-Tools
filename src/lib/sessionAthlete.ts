@@ -7,8 +7,18 @@ const lastNames = [
   "Lindgren", "Haas", "Petrov", "Bauer", "Jensen", "Rossi", "Holm", "Vogel",
 ];
 
-const pick = <T,>(list: T[]): T => list[Math.floor(Math.random() * list.length)];
-const randInt = (min: number, max: number) => min + Math.floor(Math.random() * (max - min + 1));
+/** Uniform random integer in [0, n) from the Web Crypto API (rejection sampling avoids modulo bias). */
+function randBelow(n: number): number {
+  const limit = Math.floor(0x100000000 / n) * n;
+  const buf = new Uint32Array(1);
+  do {
+    crypto.getRandomValues(buf);
+  } while (buf[0] >= limit);
+  return buf[0] % n;
+}
+
+const pick = <T,>(list: T[]): T => list[randBelow(list.length)];
+const randInt = (min: number, max: number) => min + randBelow(max - min + 1);
 
 export interface SessionAthlete {
   name: string;
