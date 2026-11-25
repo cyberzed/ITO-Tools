@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { bodyWeightRange } from "./categories";
-import { MAX_LOT, firstNames, getSessionAthlete, signatureOf } from "./sessionAthlete";
+import { MAX_LOT, firstNames, getSessionAthlete, newSessionAthlete, signatureOf } from "./sessionAthlete";
 
 beforeEach(() => sessionStorage.clear());
 
@@ -11,6 +11,13 @@ describe("getSessionAthlete", () => {
   it("returns the same athlete for the whole session", () => {
     const first = getSessionAthlete();
     expect(getSessionAthlete()).toEqual(first);
+  });
+
+  it("replaces the session athlete when a new one is requested", () => {
+    const first = getSessionAthlete();
+    const next = newSessionAthlete();
+    expect(next).not.toEqual(first);
+    expect(getSessionAthlete()).toEqual(next);
   });
 
   it("builds a first name that matches the gender", () => {

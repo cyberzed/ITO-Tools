@@ -80,9 +80,21 @@ function generate(): SessionAthlete {
 
 let fallback: SessionAthlete | undefined;
 
+/** Create a new random athlete and make it the session's athlete. */
+export function newSessionAthlete(key = "athlete"): SessionAthlete {
+  const athlete = generate();
+  fallback = athlete;
+  try {
+    sessionStorage.setItem(key, JSON.stringify(athlete));
+  } catch {
+    /* storage unavailable: the athlete lasts while the page stays loaded */
+  }
+  return athlete;
+}
+
 /**
- * A random athlete that stays the same for the browser session
- * (it survives navigation and reloads, but not closing the tab).
+ * The session's athlete, created on first use. It stays the same for the browser
+ * session (it survives navigation and reloads, but not closing the tab).
  */
 export function getSessionAthlete(key = "athlete"): SessionAthlete {
   try {
@@ -93,17 +105,15 @@ export function getSessionAthlete(key = "athlete"): SessionAthlete {
         parsed.name &&
         parsed.birthDate &&
         parsed.coach &&
-        parsed.lot &&
         parsed.bodyWeight &&
+        parsed.lot &&
         parsed.signature &&
         (parsed.gender === "M" || parsed.gender === "F")
       ) {
         return parsed as SessionAthlete;
       }
     }
-    const athlete = generate();
-    sessionStorage.setItem(key, JSON.stringify(athlete));
-    return athlete;
+    return newSessionAthlete(key);
   } catch {
     // Storage unavailable: keep one athlete for as long as the page stays loaded.
     return (fallback ??= generate());
