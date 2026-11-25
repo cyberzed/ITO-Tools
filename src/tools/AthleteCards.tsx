@@ -10,8 +10,17 @@ const card: AthleteCardData = {
   lot: 1,
   birthDate: athlete.birthDate,
   entryTotal: 275,
-  snatch: { attempts: [{ declaration: 112 }, {}, {}] },
-  cleanAndJerk: { attempts: [{ declaration: 144 }, {}, {}] },
+  signature: athlete.signatures.weighIn,
+  snatch: {
+    attempts: [{ declaration: 112, declarationSignature: athlete.signatures.snatchStart }, {}, {}],
+  },
+  cleanAndJerk: {
+    attempts: [
+      { declaration: 144, declarationSignature: athlete.signatures.cleanAndJerkStart },
+      {},
+      {},
+    ],
+  },
 };
 
 export default function AthleteCards() {

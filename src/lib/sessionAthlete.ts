@@ -28,7 +28,17 @@ export interface SessionAthlete {
   gender: Gender;
   /** dd.mm.yyyy */
   birthDate: string;
+  coach: string;
+  /** Short handwritten-style signatures, each signed by the athlete or the coach. */
+  signatures: {
+    weighIn: string;
+    snatchStart: string;
+    cleanAndJerkStart: string;
+  };
 }
+
+/** "Julian Frank" -> "Fran." */
+export const signatureOf = (name: string): string => `${name.split(" ").pop()!.slice(0, 4)}.`;
 
 const isLeap = (y: number) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
 
@@ -50,10 +60,15 @@ function randomBirthDate(): string {
 
 function generate(): SessionAthlete {
   const gender: Gender = pick<Gender>(["M", "F"]);
+  const name = `${pick(firstNames[gender])} ${pick(lastNames)}`;
+  const coach = `${pick(firstNames[pick<Gender>(["M", "F"])])} ${pick(lastNames)}`;
+  const signer = () => signatureOf(pick([name, coach]));
   return {
-    name: `${pick(firstNames[gender])} ${pick(lastNames)}`,
+    name,
     gender,
     birthDate: randomBirthDate(),
+    coach,
+    signatures: { weighIn: signer(), snatchStart: signer(), cleanAndJerkStart: signer() },
   };
 }
 
@@ -68,7 +83,15 @@ export function getSessionAthlete(key = "athlete"): SessionAthlete {
     const saved = sessionStorage.getItem(key);
     if (saved) {
       const parsed = JSON.parse(saved) as Partial<SessionAthlete>;
-      if (parsed.name && parsed.birthDate && (parsed.gender === "M" || parsed.gender === "F")) return parsed as SessionAthlete;
+      if (
+        parsed.name &&
+        parsed.birthDate &&
+        parsed.coach &&
+        parsed.signatures &&
+        (parsed.gender === "M" || parsed.gender === "F")
+      ) {
+        return parsed as SessionAthlete;
+      }
     }
     const athlete = generate();
     sessionStorage.setItem(key, JSON.stringify(athlete));

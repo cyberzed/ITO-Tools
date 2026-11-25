@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { firstNames, getSessionAthlete } from "./sessionAthlete";
+import { firstNames, getSessionAthlete, signatureOf } from "./sessionAthlete";
 
 beforeEach(() => sessionStorage.clear());
 
@@ -42,10 +42,22 @@ describe("getSessionAthlete", () => {
     }
   });
 
-  it("replaces a saved athlete that has no gender", () => {
-    sessionStorage.setItem("athlete", JSON.stringify({ name: "Old Entry", birthDate: "01.01.2000" }));
+  it("signs each signature as either the athlete or the coach", () => {
+    for (const a of many()) {
+      const allowed = [signatureOf(a.name), signatureOf(a.coach)];
+      for (const sig of Object.values(a.signatures)) expect(allowed).toContain(sig);
+    }
+  });
+
+  it("shortens a name to the first four letters of the last name", () => {
+    expect(signatureOf("Julian Frank")).toBe("Fran.");
+    expect(signatureOf("Ida Holm")).toBe("Holm.");
+  });
+
+  it("replaces a saved athlete that lacks the newer fields", () => {
+    sessionStorage.setItem("athlete", JSON.stringify({ name: "Old Entry", birthDate: "01.01.2000", gender: "M" }));
     const a = getSessionAthlete();
-    expect(a.gender === "M" || a.gender === "F").toBe(true);
+    expect(a.coach).toBeTruthy();
     expect(JSON.parse(sessionStorage.getItem("athlete")!)).toEqual(a);
   });
 });

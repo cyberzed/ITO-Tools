@@ -27,6 +27,18 @@ describe("AthleteCard", () => {
     expect(cellText(container, "20kg Rule")).toBe("20kg Rule");
   });
 
+  it("shows the signature on the top field and the starting weight", () => {
+    const data: AthleteCardData = {
+      ...base,
+      signature: "Fran.",
+      snatch: { attempts: [{ declaration: 100, declarationSignature: "Holm." }, {}, {}] },
+    };
+    const { container } = render(<AthleteCard data={data} />);
+    const sigs = Array.from(container.querySelectorAll(".ac-signature")).map((e) => e.textContent);
+    expect(sigs).toContain("Fran.");
+    expect(sigs).toContain("Holm.");
+  });
+
   it("strikes no boxes while no final weight is chosen", () => {
     const { container } = render(<AthleteCard data={base} />);
     expect(container.querySelectorAll(".ac-struck")).toHaveLength(0);
