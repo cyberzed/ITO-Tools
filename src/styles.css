@@ -8,6 +8,12 @@
   --primary: #0a3d91;
   --primary-fg: #ffffff;
   --accent: #d6001c;
+  --ok: #1a7f37;
+  --ok-bg: #dcf5e3;
+  --bad: #c62828;
+  --bad-bg: #fde0e0;
+  --warn: #b26a00;
+  --warn-bg: #fff0cc;
   color-scheme: light;
 }
 /* Dark theme: the same hues as light, with lightness inverted */
@@ -20,6 +26,12 @@
   --primary: #5b95f0;
   --primary-fg: #0a1424;
   --accent: #ff4d63;
+  --ok: #4cc26d;
+  --ok-bg: #12331d;
+  --bad: #ff6b6b;
+  --bad-bg: #3a1618;
+  --warn: #f0b04a;
+  --warn-bg: #3a2b0e;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -199,3 +211,39 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 .class-table thead th { background: var(--bg); color: var(--muted); font-size: 0.85rem; font-weight: 600; }
 .class-table tbody th { width: 40%; font-weight: 700; color: var(--primary); }
 .class-table td { font-variant-numeric: tabular-nums; }
+
+/* Weight class game */
+.game-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0; }
+.segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.segmented button {
+  padding: 4px 14px;
+  border: 0;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.segmented button[aria-pressed="true"] { background: var(--primary); color: var(--primary-fg); }
+.small-button.primary { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
+.small-button.primary:hover { color: var(--primary-fg); opacity: 0.9; }
+.small-button:disabled { opacity: 0.5; cursor: default; }
+.game-result { margin: 0 0 12px; font-weight: 600; }
+.game-grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+.tile {
+  padding: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: clamp(0.6rem, 1.9vw, 0.9rem);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.tile:hover:not(:disabled) { border-color: var(--primary); }
+.tile.on { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
+.tile:disabled { cursor: default; color: var(--fg); }
+.tile.correct { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); font-weight: 700; }
+.tile.wrong { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); text-decoration: line-through; }
+.tile.missed { background: var(--warn-bg); border-color: var(--warn); border-style: dashed; color: var(--warn); font-weight: 700; }

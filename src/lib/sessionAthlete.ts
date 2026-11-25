@@ -1,4 +1,5 @@
 import { bodyWeightRange, type Gender } from "./categories";
+import { pick, randInt } from "./random";
 import { TWENTY_KG_RULE } from "./rules";
 
 export type { Gender };
@@ -11,19 +12,6 @@ const lastNames = [
   "Frank", "Nielsen", "Larsen", "Berg", "Kowalski", "Novak", "Weber", "Moreau",
   "Lindgren", "Haas", "Petrov", "Bauer", "Jensen", "Rossi", "Holm", "Vogel",
 ];
-
-/** Uniform random integer in [0, n) from the Web Crypto API (rejection sampling avoids modulo bias). */
-function randBelow(n: number): number {
-  const limit = Math.floor(0x100000000 / n) * n;
-  const buf = new Uint32Array(1);
-  do {
-    crypto.getRandomValues(buf);
-  } while (buf[0] >= limit);
-  return buf[0] % n;
-}
-
-const pick = <T,>(list: T[]): T => list[randBelow(list.length)];
-const randInt = (min: number, max: number) => min + randBelow(max - min + 1);
 
 export interface SessionAthlete {
   name: string;
