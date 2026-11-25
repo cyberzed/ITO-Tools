@@ -10,7 +10,7 @@ const card: AthleteCardData = {
   birthDate: athlete.birthDate,
   entryTotal: 275,
   snatch: { attempts: [{}, {}, {}] },
-  cleanAndJerk: { attempts: [{ declaration: 144, declarationPrinted: true }, {}, {}] },
+  cleanAndJerk: { attempts: [{ declaration: 144 }, {}, {}] },
 };
 
 export default function AthleteCards() {
