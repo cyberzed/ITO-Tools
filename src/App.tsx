@@ -7,7 +7,7 @@ export default function App() {
     <div className="shell">
       <header className="topbar">
         <NavLink to="/" className="brand">
-          ITO Tools
+          ITO training tools
         </NavLink>
         <nav aria-label="Tools">
           {tools.map((t) => (
@@ -34,7 +34,7 @@ export default function App() {
 function Home() {
   return (
     <section>
-      <h1>ITO Tools</h1>
+      <h1>ITO training tools</h1>
       <p className="muted">Tools for weightlifting ITO training. Pick one to start.</p>
       <div className="cards">
         {tools.map((t) => (
