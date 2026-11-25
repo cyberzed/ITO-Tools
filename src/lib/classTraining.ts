@@ -17,7 +17,7 @@ const weights = Array.from({ length: 126 - 40 }, (_, i) => 40 + i);
 /** A "+" class only makes sense for heavy athletes, so decoys use it from this weight up. */
 export const MIN_PLUS_WEIGHT: Record<Gender, number> = { M: 100, F: 80 };
 
-/** Share of the decoys that are always "+" classes, so they stay part of the game (10 on a 10 x 10 board). */
+/** Share of the decoys that are always "+" classes, so they stay part of the exercise (10 on a 10 x 10 board). */
 const GUARANTEED_PLUS_SHARE = 0.11;
 
 /** Is this a senior class for the gender? */
