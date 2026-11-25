@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { categoriesFor, type Gender } from "../../lib/categories";
-import { MAX_GRID, MIN_GRID, generateRound, isValidClass, scoreRound } from "../../lib/classTraining";
+import { DEFAULT_GRID, MAX_GRID, MIN_GRID, generateRound, isValidClass, scoreRound } from "../../lib/classTraining";
 
 const genderName: Record<Gender, string> = { M: "men", F: "women" };
 
 export default function Training() {
   const [gender, setGender] = useState<Gender>("M");
-  const [size, setSize] = useState(MAX_GRID);
-  const [board, setBoard] = useState(() => generateRound("M", MAX_GRID));
+  const [size, setSize] = useState(DEFAULT_GRID);
+  const [board, setBoard] = useState(() => generateRound("M", DEFAULT_GRID));
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [mode, setMode] = useState<"playing" | "checked" | "revealed">("playing");
 

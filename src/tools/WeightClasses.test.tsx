@@ -22,6 +22,6 @@ it("shows the overview by default", () => {
 
 it("shows the training from the sub menu", () => {
   const { container } = at("/weight-classes/training");
-  expect(container.querySelectorAll(".tile")).toHaveLength(100);
+  expect(container.querySelectorAll(".tile")).toHaveLength(49);
   expect(screen.getByRole("link", { name: "Training" }).className).toContain("active");
 });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { categoriesFor } from "./categories";
-import { MAX_GRID, MIN_GRID, MIN_PLUS_WEIGHT, generateRound, isValidClass, scoreRound } from "./classTraining";
+import { DEFAULT_GRID, MAX_GRID, MIN_GRID, MIN_PLUS_WEIGHT, generateRound, isValidClass, scoreRound } from "./classTraining";
 
 const sizes = Array.from({ length: MAX_GRID - MIN_GRID + 1 }, (_, i) => MIN_GRID + i);
 
@@ -23,8 +23,9 @@ describe("generateRound", () => {
     },
   );
 
-  it("defaults to the full 10 x 10 board", () => {
-    expect(generateRound("M")).toHaveLength(100);
+  it("defaults to a 7 x 7 board", () => {
+    expect(DEFAULT_GRID).toBe(7);
+    expect(generateRound("M")).toHaveLength(49);
   });
 
   it.each(sizes.flatMap((n) => [["M", n], ["F", n]] as const))(

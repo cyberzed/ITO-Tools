@@ -4,6 +4,8 @@ import { shuffle } from "./random";
 /** The board is a square. Beginners can use a small one, routined players the full 10 x 10. */
 export const MIN_GRID = 5;
 export const MAX_GRID = 10;
+/** The size a new visitor starts on. */
+export const DEFAULT_GRID = 7;
 
 /** Youth classes without the open "+" ones (TCRR 1.2.3 and 1.2.4). They are not senior classes, so they make good decoys. */
 const youth: Record<Gender, string[]> = {
@@ -29,7 +31,7 @@ export const isValidClass = (gender: Gender, code: string): boolean =>
  * gender, mixed with decoys, in random order. Every tile uses the gender's own
  * letter. Decoys are youth classes, random weights and "+" classes with a wrong limit.
  */
-export function generateRound(gender: Gender, size: number = MAX_GRID): string[] {
+export function generateRound(gender: Gender, size: number = DEFAULT_GRID): string[] {
   const tiles = size * size;
   const valid = categoriesFor(gender).map((c) => c.label);
   const decoy = (code: string) => !valid.includes(code);

@@ -8,9 +8,10 @@ afterEach(cleanup);
 
 const tiles = (container: HTMLElement) => container.querySelectorAll<HTMLButtonElement>(".tile");
 
-it("shows a 10 by 10 board", () => {
+it("starts on a 7 by 7 board", () => {
   const { container } = render(<Training />);
-  expect(tiles(container)).toHaveLength(100);
+  expect(tiles(container)).toHaveLength(49);
+  expect((screen.getByLabelText("Grid size") as HTMLSelectElement).value).toBe("7");
 });
 
 it("scores a perfect round when every valid class is selected", () => {
