@@ -6,6 +6,7 @@ const athlete = getSessionAthlete();
 /** Printed card data only: no handwriting, no progression, no marks. */
 const card: AthleteCardData = {
   name: athlete.name,
+  gender: athlete.gender,
   lot: 1,
   birthDate: athlete.birthDate,
   entryTotal: 275,

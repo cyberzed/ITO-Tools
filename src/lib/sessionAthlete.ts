@@ -1,7 +1,9 @@
-const firstNames = [
-  "Julian", "Lukas", "Mikkel", "Oskar", "Emil", "Anton", "Jonas", "Marek",
-  "Sofia", "Emma", "Clara", "Nina", "Freja", "Hanna", "Ida", "Lena",
-];
+export type Gender = "M" | "F";
+
+const firstNames: Record<Gender, string[]> = {
+  M: ["Julian", "Lukas", "Mikkel", "Oskar", "Emil", "Anton", "Jonas", "Marek"],
+  F: ["Sofia", "Emma", "Clara", "Nina", "Freja", "Hanna", "Ida", "Lena"],
+};
 const lastNames = [
   "Frank", "Nielsen", "Larsen", "Berg", "Kowalski", "Novak", "Weber", "Moreau",
   "Lindgren", "Haas", "Petrov", "Bauer", "Jensen", "Rossi", "Holm", "Vogel",
@@ -22,6 +24,8 @@ const randInt = (min: number, max: number) => min + randBelow(max - min + 1);
 
 export interface SessionAthlete {
   name: string;
+  /** Needed later to pick the right weight category. */
+  gender: Gender;
   /** dd.mm.yyyy */
   birthDate: string;
 }
@@ -45,7 +49,12 @@ function randomBirthDate(): string {
 }
 
 function generate(): SessionAthlete {
-  return { name: `${pick(firstNames)} ${pick(lastNames)}`, birthDate: randomBirthDate() };
+  const gender: Gender = pick<Gender>(["M", "F"]);
+  return {
+    name: `${pick(firstNames[gender])} ${pick(lastNames)}`,
+    gender,
+    birthDate: randomBirthDate(),
+  };
 }
 
 let fallback: SessionAthlete | undefined;
@@ -59,7 +68,7 @@ export function getSessionAthlete(key = "athlete"): SessionAthlete {
     const saved = sessionStorage.getItem(key);
     if (saved) {
       const parsed = JSON.parse(saved) as Partial<SessionAthlete>;
-      if (parsed.name && parsed.birthDate) return parsed as SessionAthlete;
+      if (parsed.name && parsed.birthDate && (parsed.gender === "M" || parsed.gender === "F")) return parsed as SessionAthlete;
     }
     const athlete = generate();
     sessionStorage.setItem(key, JSON.stringify(athlete));

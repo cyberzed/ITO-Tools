@@ -31,6 +31,8 @@ export interface Lift {
 export interface AthleteCardData {
   startNumber?: number;
   name: string;
+  /** Not printed on the card; used to work out the category. */
+  gender?: "M" | "F";
   lot?: number;
   ageGroup?: string;
   category?: string;
