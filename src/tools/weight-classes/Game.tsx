@@ -8,17 +8,17 @@ export default function Game() {
   const [gender, setGender] = useState<Gender>("M");
   const [board, setBoard] = useState(() => generateRound("M"));
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [checked, setChecked] = useState(false);
+  const [mode, setMode] = useState<"playing" | "checked" | "revealed">("playing");
 
   function newRound(g: Gender) {
     setGender(g);
     setBoard(generateRound(g));
     setSelected(new Set());
-    setChecked(false);
+    setMode("playing");
   }
 
   function toggle(code: string) {
-    if (checked) return;
+    if (mode !== "playing") return;
     const next = new Set(selected);
     if (next.has(code)) next.delete(code);
     else next.add(code);
@@ -26,14 +26,17 @@ export default function Game() {
   }
 
   const total = categoriesFor(gender).length;
-  const score = checked ? scoreRound(gender, board, selected) : null;
+  const over = mode !== "playing";
+  const score = mode === "checked" ? scoreRound(gender, board, selected) : null;
 
   const stateOf = (code: string): string => {
     const on = selected.has(code);
-    if (!checked) return on ? "on" : "";
+    if (!over) return on ? "on" : "";
     const valid = isValidClass(gender, code);
     if (on) return valid ? "correct" : "wrong";
-    return valid ? "missed" : "";
+    // Revealed answers show as plain correct ones, checked answers show what was missed.
+    if (valid) return mode === "revealed" ? "correct" : "missed";
+    return "";
   };
 
   return (
@@ -54,13 +57,22 @@ export default function Game() {
         <button className="small-button" onClick={() => newRound(gender)}>
           New round
         </button>
-        <button className="small-button primary" onClick={() => setChecked(true)} disabled={checked}>
+        <button className="small-button primary" onClick={() => setMode("checked")} disabled={over}>
           Check answers
+        </button>
+        <button className="small-button" onClick={() => setMode("revealed")} disabled={over}>
+          Reveal answers
         </button>
         <span className="muted" aria-live="polite">
           Selected: {selected.size}
         </span>
       </div>
+
+      {mode === "revealed" && (
+        <p className="game-result" role="status">
+          The correct classes are highlighted. Start a new round to try again.
+        </p>
+      )}
 
       {score && (
         <p className="game-result" role="status">
@@ -76,7 +88,7 @@ export default function Game() {
             key={code}
             className={`tile ${stateOf(code)}`}
             aria-pressed={selected.has(code)}
-            disabled={checked}
+            disabled={over}
             onClick={() => toggle(code)}
           >
             {code}
