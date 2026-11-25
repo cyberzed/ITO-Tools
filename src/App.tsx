@@ -22,7 +22,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           {tools.map((t) => (
-            <Route key={t.id} path={`/${t.id}`} element={<t.component />} />
+            <Route key={t.id} path={`/${t.id}/*`} element={<t.component />} />
           ))}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

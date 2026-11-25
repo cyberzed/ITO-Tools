@@ -1,19 +1,29 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, beforeEach, expect, it } from "vitest";
 import AthleteCards from "./AthleteCards";
 
 beforeEach(() => sessionStorage.clear());
 afterEach(cleanup);
 
-it("generates a new athlete when Reset is clicked", () => {
-  const { container } = render(<AthleteCards />);
-  const before = sessionStorage.getItem("athlete");
-  expect(before).toBeTruthy();
+const at = (path: string) =>
+  render(
+    <MemoryRouter initialEntries={[path]}>
+      <Routes>
+        <Route path="/athlete-cards/*" element={<AthleteCards />} />
+      </Routes>
+    </MemoryRouter>,
+  );
 
-  fireEvent.click(screen.getByRole("button", { name: /reset/i }));
+it("shows the initial card by default", () => {
+  const { container } = at("/athlete-cards");
+  expect(container.querySelector(".ac")).not.toBeNull();
+  expect(screen.getByRole("link", { name: "Initial card" }).className).toContain("active");
+});
 
-  const after = sessionStorage.getItem("athlete");
-  expect(after).not.toBe(before);
-  const name = JSON.parse(after!).name as string;
-  expect(container.querySelector(".ac-name")?.textContent).toBe(name);
+it("shows the progression page from the top menu", () => {
+  const { container } = at("/athlete-cards/progression");
+  expect(screen.getByRole("heading", { name: "Progression", level: 2 })).toBeTruthy();
+  expect(container.querySelector(".ac")).toBeNull();
+  expect(screen.getByRole("link", { name: "Progression" }).className).toContain("active");
 });
