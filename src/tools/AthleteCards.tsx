@@ -16,7 +16,7 @@ function cardFor(athlete: SessionAthlete): AthleteCardData {
     entryTotal: 275,
     signature: athlete.signature,
     snatch: {
-      attempts: [{ declaration: 112, declarationSignature: athlete.signature }, {}, {}],
+      attempts: [{ declaration: athlete.snatchStart, declarationSignature: athlete.signature }, {}, {}],
     },
     cleanAndJerk: {
       attempts: [{ declaration: 144, declarationSignature: athlete.signature }, {}, {}],

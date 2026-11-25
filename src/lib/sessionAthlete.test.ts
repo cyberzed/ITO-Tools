@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { bodyWeightRange } from "./categories";
-import { MAX_LOT, firstNames, getSessionAthlete, newSessionAthlete, signatureOf } from "./sessionAthlete";
+import { MAX_LOT, SNATCH_JITTER, SNATCH_RATIO, firstNames, getSessionAthlete, newSessionAthlete, signatureOf } from "./sessionAthlete";
 
 beforeEach(() => sessionStorage.clear());
 
@@ -59,6 +59,18 @@ describe("getSessionAthlete", () => {
       expect(Math.round(a.bodyWeight * 100) / 100).toBe(a.bodyWeight);
     }
     expect(new Set(weights).size).toBeGreaterThan(1);
+  });
+
+  it("starts the snatch at about 1.5 times bodyweight, in whole kg", () => {
+    const ratios = new Set<number>();
+    for (const a of many()) {
+      expect(Number.isInteger(a.snatchStart)).toBe(true);
+      // Allow half a kg for rounding to a whole number.
+      expect(a.snatchStart).toBeGreaterThanOrEqual(a.bodyWeight * SNATCH_RATIO * (1 - SNATCH_JITTER) - 0.5);
+      expect(a.snatchStart).toBeLessThanOrEqual(a.bodyWeight * SNATCH_RATIO * (1 + SNATCH_JITTER) + 0.5);
+      ratios.add(Math.round((a.snatchStart / a.bodyWeight) * 100));
+    }
+    expect(ratios.size).toBeGreaterThan(1); // the jitter varies
   });
 
   it("draws a whole-number lot from 1 to the maximum", () => {
