@@ -13,7 +13,7 @@ function cardFor(athlete: SessionAthlete): AthleteCardData {
     bodyWeight: athlete.bodyWeight,
     category: categoryFor(athlete.gender, athlete.bodyWeight).label,
     birthDate: athlete.birthDate,
-    entryTotal: 275,
+    entryTotal: athlete.entryTotal,
     signature: athlete.signature,
     snatch: {
       attempts: [{ declaration: athlete.snatchStart, declarationSignature: athlete.signature }, {}, {}],

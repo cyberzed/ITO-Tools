@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { twentyKgRuleLimit } from "../lib/rules";
 
 /** One handwritten change on the card. */
 export interface Change {
@@ -213,7 +214,7 @@ export default function AthleteCard({ data }: { data: AthleteCardData }) {
             <Ink printed>{d.category}</Ink>
           </Cell>
           <Cell label="20kg Rule" center>
-            <Ink printed>{d.entryTotal !== undefined ? d.entryTotal - 20 : undefined}</Ink>
+            <Ink printed>{d.entryTotal !== undefined ? twentyKgRuleLimit(d.entryTotal) : undefined}</Ink>
           </Cell>
           <Cell label="Required C&J" center>
             <Ink printed>{d.requiredCJ}</Ink>

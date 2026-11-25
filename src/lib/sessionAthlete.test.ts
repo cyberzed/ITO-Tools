@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { bodyWeightRange } from "./categories";
+import { meetsTwentyKgRule } from "./rules";
 import { CLEAN_AND_JERK_RATIO, MAX_LOT, SNATCH_RATIO, START_JITTER, firstNames, getSessionAthlete, newSessionAthlete, signatureOf } from "./sessionAthlete";
 
 beforeEach(() => sessionStorage.clear());
@@ -75,6 +76,13 @@ describe("getSessionAthlete", () => {
       ratios.add(Math.round((w / a.bodyWeight) * 100));
     }
     expect(ratios.size).toBeGreaterThan(1); // the jitter varies
+  });
+
+  it("never breaks the 20 kg Rule on the starting weights", () => {
+    for (const a of many(1000)) {
+      expect(Number.isInteger(a.entryTotal)).toBe(true);
+      expect(meetsTwentyKgRule(a.entryTotal, a.snatchStart, a.cleanAndJerkStart)).toBe(true);
+    }
   });
 
   it("draws a whole-number lot from 1 to the maximum", () => {

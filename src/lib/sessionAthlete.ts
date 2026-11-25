@@ -1,4 +1,5 @@
 import { bodyWeightRange, type Gender } from "./categories";
+import { TWENTY_KG_RULE } from "./rules";
 
 export type { Gender };
 
@@ -37,6 +38,8 @@ export interface SessionAthlete {
   snatchStart: number;
   /** Clean & jerk starting weight in whole kg, about CLEAN_AND_JERK_RATIO times bodyweight. */
   cleanAndJerkStart: number;
+  /** Entry total in whole kg. Never more than 20 kg above the two starting weights added up. */
+  entryTotal: number;
   /** Lot number, 1 to MAX_LOT. */
   lot: number;
   /** Short handwritten-style signature, from the athlete or the coach. Used in every field. */
@@ -48,6 +51,8 @@ export const MAX_LOT = 30;
 export const SNATCH_RATIO = 1.5;
 export const CLEAN_AND_JERK_RATIO = 2.0;
 export const START_JITTER = 0.05;
+/** The entry total is the starting weights added up plus this much, so the 20 kg Rule always holds. */
+export const ENTRY_TOTAL_EXTRA = { min: 5, max: TWENTY_KG_RULE };
 
 /** Whole-kg starting weight: bodyweight times a ratio, with random jitter. */
 const startingWeight = (bodyWeight: number, ratio: number): number =>
@@ -79,6 +84,8 @@ function generate(): SessionAthlete {
   const name = `${pick(firstNames[gender])} ${pick(lastNames)}`;
   const range = bodyWeightRange(gender);
   const bodyWeight = randInt(range.min * 100, range.max * 100) / 100;
+  const snatchStart = startingWeight(bodyWeight, SNATCH_RATIO);
+  const cleanAndJerkStart = startingWeight(bodyWeight, CLEAN_AND_JERK_RATIO);
   const coach = `${pick(firstNames[pick<Gender>(["M", "F"])])} ${pick(lastNames)}`;
   return {
     name,
@@ -86,8 +93,9 @@ function generate(): SessionAthlete {
     birthDate: randomBirthDate(),
     coach,
     bodyWeight,
-    snatchStart: startingWeight(bodyWeight, SNATCH_RATIO),
-    cleanAndJerkStart: startingWeight(bodyWeight, CLEAN_AND_JERK_RATIO),
+    snatchStart,
+    cleanAndJerkStart,
+    entryTotal: snatchStart + cleanAndJerkStart + randInt(ENTRY_TOTAL_EXTRA.min, ENTRY_TOTAL_EXTRA.max),
     lot: randInt(1, MAX_LOT),
     signature: signatureOf(pick([name, coach])),
   };
@@ -123,6 +131,7 @@ export function getSessionAthlete(key = "athlete"): SessionAthlete {
         parsed.bodyWeight &&
         parsed.snatchStart &&
         parsed.cleanAndJerkStart &&
+        parsed.entryTotal &&
         parsed.lot &&
         parsed.signature &&
         (parsed.gender === "M" || parsed.gender === "F")
