@@ -52,10 +52,9 @@ describe("getSessionAthlete", () => {
     expect(new Set(lots).size).toBeGreaterThan(1);
   });
 
-  it("signs each signature as either the athlete or the coach", () => {
+  it("signs as either the athlete or the coach", () => {
     for (const a of many()) {
-      const allowed = [signatureOf(a.name), signatureOf(a.coach)];
-      for (const sig of Object.values(a.signatures)) expect(allowed).toContain(sig);
+      expect([signatureOf(a.name), signatureOf(a.coach)]).toContain(a.signature);
     }
   });
 

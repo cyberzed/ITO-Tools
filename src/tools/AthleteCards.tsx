@@ -11,13 +11,13 @@ const card: AthleteCardData = {
   lot: athlete.lot,
   birthDate: athlete.birthDate,
   entryTotal: 275,
-  signature: athlete.signatures.weighIn,
+  signature: athlete.signature,
   snatch: {
-    attempts: [{ declaration: 112, declarationSignature: athlete.signatures.snatchStart }, {}, {}],
+    attempts: [{ declaration: 112, declarationSignature: athlete.signature }, {}, {}],
   },
   cleanAndJerk: {
     attempts: [
-      { declaration: 144, declarationSignature: athlete.signatures.cleanAndJerkStart },
+      { declaration: 144, declarationSignature: athlete.signature },
       {},
       {},
     ],

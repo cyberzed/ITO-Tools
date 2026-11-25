@@ -31,12 +31,8 @@ export interface SessionAthlete {
   coach: string;
   /** Lot number, 1 to MAX_LOT. */
   lot: number;
-  /** Short handwritten-style signatures, each signed by the athlete or the coach. */
-  signatures: {
-    weighIn: string;
-    snatchStart: string;
-    cleanAndJerkStart: string;
-  };
+  /** Short handwritten-style signature, from the athlete or the coach. Used in every field. */
+  signature: string;
 }
 
 export const MAX_LOT = 30;
@@ -66,14 +62,13 @@ function generate(): SessionAthlete {
   const gender: Gender = pick<Gender>(["M", "F"]);
   const name = `${pick(firstNames[gender])} ${pick(lastNames)}`;
   const coach = `${pick(firstNames[pick<Gender>(["M", "F"])])} ${pick(lastNames)}`;
-  const signer = () => signatureOf(pick([name, coach]));
   return {
     name,
     gender,
     birthDate: randomBirthDate(),
     coach,
     lot: randInt(1, MAX_LOT),
-    signatures: { weighIn: signer(), snatchStart: signer(), cleanAndJerkStart: signer() },
+    signature: signatureOf(pick([name, coach])),
   };
 }
 
@@ -93,7 +88,7 @@ export function getSessionAthlete(key = "athlete"): SessionAthlete {
         parsed.birthDate &&
         parsed.coach &&
         parsed.lot &&
-        parsed.signatures &&
+        parsed.signature &&
         (parsed.gender === "M" || parsed.gender === "F")
       ) {
         return parsed as SessionAthlete;
