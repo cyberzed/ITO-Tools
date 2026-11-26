@@ -85,3 +85,27 @@ describe("AthleteCard", () => {
     expect(container.querySelectorAll(".ac-circle")).toHaveLength(1);
   });
 });
+
+describe("results on the final weight", () => {
+  const withResult = (result?: "good" | "no"): AthleteCardData => ({
+    ...base,
+    snatch: { attempts: [{ declaration: 100, change1: { weight: 104 }, final: 1, result }, {}, {}] },
+  });
+
+  it("circles the final weight after a good lift", () => {
+    const { container } = render(<AthleteCard data={withResult("good")} />);
+    expect(container.querySelectorAll(".ac-circle")).toHaveLength(1);
+    expect(container.querySelectorAll(".ac-strike")).toHaveLength(0);
+  });
+
+  it("strikes the final weight instead of circling it after a no lift", () => {
+    const { container } = render(<AthleteCard data={withResult("no")} />);
+    expect(container.querySelectorAll(".ac-circle")).toHaveLength(0);
+    expect(container.querySelectorAll(".ac-strike")).toHaveLength(1);
+  });
+
+  it("still circles the final weight when no result is given", () => {
+    const { container } = render(<AthleteCard data={withResult()} />);
+    expect(container.querySelectorAll(".ac-circle")).toHaveLength(1);
+  });
+});

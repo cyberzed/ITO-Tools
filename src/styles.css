@@ -163,6 +163,16 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
   transform: rotate(-4deg);
   pointer-events: none;
 }
+.ac-strike {
+  position: absolute;
+  top: 50%;
+  left: -0.25em;
+  right: -0.25em;
+  height: 3px;
+  background: var(--pen-red);
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
 .ac-struck { position: absolute; inset: 0; pointer-events: none; }
 .ac-struck i {
   position: absolute;

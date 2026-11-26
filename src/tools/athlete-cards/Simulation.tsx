@@ -35,8 +35,9 @@ function snatchAttempts(state: SimState, signature: string): [Attempt, Attempt, 
       declarationSignature: signature,
       change1: a.changes[0] !== undefined ? { weight: a.changes[0], signature } : undefined,
       change2: a.changes[1] !== undefined ? { weight: a.changes[1], signature } : undefined,
-      // The circle and the strikes appear once the attempt is taken and the weight is final.
+      // A good lift circles the final weight and a no lift strikes it. Unused change boxes are struck too.
       final: a.result ? (a.changes.length as 0 | 1 | 2) : undefined,
+      result: a.result,
     };
   });
   return out as [Attempt, Attempt, Attempt];

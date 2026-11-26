@@ -76,6 +76,13 @@ it("circles the final weight and strikes the unused change boxes after the resul
   expect(container.querySelectorAll(".ac-struck")).toHaveLength(2);
 });
 
+it("strikes the final weight instead of circling it after a no lift", () => {
+  const { container } = render(<Simulation />);
+  lift("No lift");
+  expect(container.querySelectorAll(".ac-circle")).toHaveLength(0);
+  expect(container.querySelectorAll(".ac-strike")).toHaveLength(1);
+});
+
 it("offers 1 kg more after a good lift and the same weight after a no lift", () => {
   const a = getSessionAthlete();
   const { unmount } = render(<Simulation />);

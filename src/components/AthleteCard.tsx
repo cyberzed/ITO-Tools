@@ -23,6 +23,8 @@ export interface Attempt {
    * Unused change boxes after it are struck through.
    */
   final?: 0 | 1 | 2;
+  /** A no lift strikes the final weight through. Anything else circles it. */
+  result?: "good" | "no";
 }
 
 export interface Lift {
@@ -80,10 +82,13 @@ function Struck() {
 function Ink({
   children,
   circled,
+  struck,
   printed,
 }: {
   children?: ReactNode;
   circled?: boolean;
+  /** Crossed out with a pen line, for a no lift. */
+  struck?: boolean;
   /** Black typed text instead of blue handwriting. */
   printed?: boolean;
 }) {
@@ -91,6 +96,7 @@ function Ink({
     <span className={`ac-ink ${printed ? "ac-printed" : ""}`}>
       {children}
       {circled && <span className="ac-circle" />}
+      {struck && <span className="ac-strike" />}
     </span>
   );
 }
@@ -102,6 +108,8 @@ function SignatureCell({ value, struck }: { value?: string; struck?: boolean }) 
     </Cell>
   );
 }
+
+const isFinal = (a: Attempt, entry: 0 | 1 | 2) => a.final === entry;
 
 function LiftSection({ title, lift, dark }: { title: string; lift: Lift; dark: boolean }) {
   const [a1, a2, a3] = lift.attempts;
@@ -129,7 +137,7 @@ function LiftSection({ title, lift, dark }: { title: string; lift: Lift; dark: b
 
         {attempts.map((a, i) => (
           <Cell key={`decl${i}`} label={i === 0 ? "Starting Weight" : "Declaration"} center>
-            <Ink circled={a.final === 0} printed={a.declarationPrinted}>{a.declaration}</Ink>
+            <Ink circled={isFinal(a, 0) && a.result !== "no"} struck={isFinal(a, 0) && a.result === "no"} printed={a.declarationPrinted}>{a.declaration}</Ink>
           </Cell>
         ))}
         {attempts.map((a, i) => (
@@ -144,7 +152,9 @@ function LiftSection({ title, lift, dark }: { title: string; lift: Lift; dark: b
               const struck = a.final !== undefined && a.final < changeNo && !c?.weight;
               return (
                 <Cell key={`${key}${i}`} label={`Change ${changeNo}`} center struck={struck}>
-                  <Ink circled={a.final === changeNo}>{c?.weight}</Ink>
+                  <Ink circled={isFinal(a, changeNo) && a.result !== "no"} struck={isFinal(a, changeNo) && a.result === "no"}>
+                    {c?.weight}
+                  </Ink>
                 </Cell>
               );
             }),
