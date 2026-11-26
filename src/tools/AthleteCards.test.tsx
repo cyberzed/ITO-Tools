@@ -21,9 +21,9 @@ it("shows the initial card by default", () => {
   expect(screen.getByRole("link", { name: "Initial card" }).className).toContain("active");
 });
 
-it("shows the progression page from the top menu", () => {
-  const { container } = at("/athlete-cards/progression");
-  expect(screen.getByRole("heading", { name: "Progression", level: 2 })).toBeTruthy();
+it("shows the simulation page from the top menu", () => {
+  const { container } = at("/athlete-cards/simulation");
+  expect(screen.getByRole("heading", { name: "Simulation", level: 2 })).toBeTruthy();
   expect(container.querySelector(".ac")).toBeNull();
-  expect(screen.getByRole("link", { name: "Progression" }).className).toContain("active");
+  expect(screen.getByRole("link", { name: "Simulation" }).className).toContain("active");
 });

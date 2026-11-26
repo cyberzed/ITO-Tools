@@ -18,7 +18,7 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
   - *Initial card*: a blank athlete card with a random athlete. The name, gender, birth date,
     lot, bodyweight, category, starting weights, entry total and signature are generated and
     kept for the browser session. **Reset** creates a new athlete.
-  - *Progression*: placeholder for the next step.
+  - *Simulation*: placeholder. It will simulate declarations, changes and progression.
 
 The generated starting weights never break the 20 kg Rule (TCRR 6.6.5).
 
