@@ -53,3 +53,9 @@ it("is for national as well as international technical officials", () => {
   expect(screen.getByText(/NTO \(National Technical Official\)/)).toBeTruthy();
   expect(screen.getByText(/ITO \(International Technical\s+Official\)/)).toBeTruthy();
 });
+
+it("credits Mike Hoeffler as an inspiration and links to his site", () => {
+  render(<About />);
+  expect(screen.getByText(/highly inspired by/)).toBeTruthy();
+  expect(screen.getByRole("link", { name: "Mike Hoeffler" }).getAttribute("href")).toBe("https://hoeffler.org");
+});

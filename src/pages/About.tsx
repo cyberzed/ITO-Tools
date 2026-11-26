@@ -1,6 +1,7 @@
 import { REPO_URL } from "../repo";
 
 const PROFILE_URL = "https://github.com/cyberzed";
+const INSPIRATION_URL = "https://hoeffler.org";
 
 export default function About() {
   return (
@@ -34,6 +35,9 @@ export default function About() {
       <p>
         I am Stefan Daugaard Poulsen, an IWF Category 2 ITO, and I made this site as a personal
         project. You can find me on <a href={PROFILE_URL}>GitHub</a>.
+      </p>
+      <p>
+        I am highly inspired by <a href={INSPIRATION_URL}>Mike Hoeffler</a>.
       </p>
 
       <h2>Feedback</h2>
