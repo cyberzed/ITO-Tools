@@ -24,7 +24,9 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
     lift. Once a weight is loaded and called it can only go up. A good lift circles the final
     weight on the card and a no lift strikes it. *Required C&J* is filled in once the first
     snatch attempt is recorded, and the first clean & jerk attempt cannot be called under it
-    (the 20 kg Rule). The *Total* is filled in at the end.
+    (the 20 kg Rule). The *Total* is filled in at the end. Before a weight is called the athlete
+    can **abstain** from the rest of the current lift or **withdraw**, which completes the
+    competition for them. Given-up attempts are crossed out on the card with a signed note.
 
 The generated starting weights never break the 20 kg Rule (TCRR 6.6.5).
 

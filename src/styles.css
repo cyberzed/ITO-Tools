@@ -153,6 +153,7 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 .ac-print-red { color: #c0291f; font-size: 1.3em; }
 .ac-sig { min-height: 3.6em; border-top: 1px dotted #888; }
 .ac-sig .ac-label { font-weight: 400; color: #333; }
+.ac-note { display: block; color: var(--ink); font: italic 0.95em/1.2 "Helvetica Neue", Arial, sans-serif; }
 .ac-signature { display: block; padding-left: 12%; color: var(--ink); font: italic 1.4em/1.2 "Helvetica Neue", Arial, sans-serif; }
 .ac-ink { position: relative; display: inline-block; min-width: 2.2em; color: var(--ink); font-size: 1.4em; line-height: 1.5; }
 .ac-circle {
@@ -286,5 +287,6 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 .sim-results { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 0; padding: 0; list-style: none; font-size: 0.875rem; }
 .sim-results li { padding: 2px 10px; border: 1px solid var(--border); border-radius: 999px; }
 .sim-results li.good { border-color: var(--ok); color: var(--ok); }
+.sim-results li.out { border-style: dashed; color: var(--muted); }
 .sim-results li.no { border-color: var(--bad); color: var(--bad); }
 .sim-warning { margin: 8px 0; padding: 8px 12px; border-left: 4px solid var(--warn); background: var(--warn-bg); color: var(--fg); }

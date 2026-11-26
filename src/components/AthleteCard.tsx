@@ -25,7 +25,12 @@ export interface Attempt {
   final?: 0 | 1 | 2;
   /** A no lift strikes the final weight through. Anything else circles it. */
   result?: "good" | "no";
+  /** The attempt was given up: the boxes are crossed out and a signed note is written. */
+  withdrawn?: "abstain" | "withdraw";
+  withdrawnSignature?: string;
 }
+
+const noteText = { abstain: "Abstained", withdraw: "Withdrawn" } as const;
 
 export interface Lift {
   attempts: [Attempt, Attempt, Attempt];
@@ -137,11 +142,20 @@ function LiftSection({ title, lift, dark }: { title: string; lift: Lift; dark: b
 
         {attempts.map((a, i) => (
           <Cell key={`decl${i}`} label={i === 0 ? "Starting Weight" : "Declaration"} center>
-            <Ink circled={isFinal(a, 0) && a.result !== "no"} struck={isFinal(a, 0) && a.result === "no"} printed={a.declarationPrinted}>{a.declaration}</Ink>
+            <Ink
+              circled={isFinal(a, 0) && a.result !== "no"}
+              // A declared weight that was never taken is crossed out. The note below it stays readable.
+              struck={(isFinal(a, 0) && a.result === "no") || (!!a.withdrawn && a.declaration !== undefined)}
+              printed={a.declarationPrinted}
+            >
+              {a.declaration}
+            </Ink>
+            {a.withdrawn && <span className="ac-note">{noteText[a.withdrawn]}</span>}
           </Cell>
         ))}
         {attempts.map((a, i) => (
-          <SignatureCell key={`decls${i}`} value={a.declarationSignature} />
+          // The signed note about giving up the attempt goes in the declaration signature box.
+          <SignatureCell key={`decls${i}`} value={a.withdrawnSignature ?? a.declarationSignature} struck={false} />
         ))}
 
         {([1, 2] as const).map((changeNo) => {
@@ -149,7 +163,7 @@ function LiftSection({ title, lift, dark }: { title: string; lift: Lift; dark: b
           return [
             attempts.map((a, i) => {
               const c = a[key];
-              const struck = a.final !== undefined && a.final < changeNo && !c?.weight;
+              const struck = !!a.withdrawn || (a.final !== undefined && a.final < changeNo && !c?.weight);
               return (
                 <Cell key={`${key}${i}`} label={`Change ${changeNo}`} center struck={struck}>
                   <Ink circled={isFinal(a, changeNo) && a.result !== "no"} struck={isFinal(a, changeNo) && a.result === "no"}>
@@ -160,7 +174,7 @@ function LiftSection({ title, lift, dark }: { title: string; lift: Lift; dark: b
             }),
             attempts.map((a, i) => {
               const c = a[key];
-              const struck = a.final !== undefined && a.final < changeNo && !c?.weight;
+              const struck = !!a.withdrawn || (a.final !== undefined && a.final < changeNo && !c?.weight);
               return <SignatureCell key={`${key}s${i}`} value={c?.signature} struck={struck} />;
             }),
           ];

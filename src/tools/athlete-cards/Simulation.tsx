@@ -2,10 +2,12 @@ import { useState } from "react";
 import AthleteCard, { type AthleteCardData, type Attempt } from "../../components/AthleteCard";
 import {
   MAX_CHANGES,
+  attemptsTaken,
   automaticProgression,
   bestLift,
   call,
   change,
+  close,
   declare,
   finalWeight,
   lowestChange,
@@ -14,6 +16,8 @@ import {
   requiredCleanAndJerk,
   start,
   total,
+  withdrawnLift,
+  type Closed,
   type Result,
   type SimState,
   type Step,
@@ -29,9 +33,15 @@ const resultText: Record<Result, string> = { good: "Good lift", no: "No lift" };
 function cardAttempts(state: SimState, signature: string): [Attempt, Attempt, Attempt] {
   const out: Attempt[] = [0, 1, 2].map((i) => {
     const a = state.attempts[i];
+    // Attempts the athlete gave up are crossed out and carry a signed note.
+    const given =
+      state.closed && i >= attemptsTaken(state)
+        ? ({ withdrawn: state.closed, withdrawnSignature: signature } as const)
+        : {};
     // Not declared yet, but the automatic progression is already printed once the attempt before has a result.
-    if (!a) return { autoProgression: automaticProgression(state, i) };
+    if (!a) return { autoProgression: automaticProgression(state, i), ...given };
     return {
+      ...given,
       autoProgression: automaticProgression(state, i),
       declaration: a.declaration,
       declarationSignature: signature,
@@ -43,6 +53,25 @@ function cardAttempts(state: SimState, signature: string): [Attempt, Attempt, At
     };
   });
   return out as [Attempt, Attempt, Attempt];
+}
+
+const closedText: Record<Closed, string> = { abstain: "Abstained", withdraw: "Withdrawn" };
+
+/** One badge for each attempt that was taken, is waiting, or was given up. */
+function badges(lift: Lift, state: SimState): { text: string; className: string }[] {
+  const out: { text: string; className: string }[] = [];
+  const taken = attemptsTaken(state);
+  for (let i = 0; i < 3; i++) {
+    const a = state.attempts[i];
+    if (a?.result) {
+      out.push({ text: `${liftName[lift]} ${i + 1}: ${finalWeight(a)} kg, ${resultText[a.result]}`, className: a.result });
+    } else if (state.closed && i >= taken) {
+      out.push({ text: `${liftName[lift]} ${i + 1}: ${closedText[state.closed]}`, className: "out" });
+    } else if (a) {
+      out.push({ text: `${liftName[lift]} ${i + 1}: ${finalWeight(a)} kg`, className: "" });
+    }
+  }
+  return out;
 }
 
 export default function Simulation() {
@@ -65,6 +94,18 @@ export default function Simulation() {
   const current = phase.type === "lift" ? state.attempts[phase.attempt] : undefined;
   const breaksRule = lift === "cj" && phase.type === "lift" && phase.attempt === 0 && !!current && finalWeight(current) < firstMin;
   const finished = cj && phase.type === "done" ? total(snatch, cj) : undefined;
+  const withdrew = snatch.closed === "withdraw" || cj?.closed === "withdraw";
+  const canGiveUp = (phase.type === "lift" && !!current && !current.called) || phase.type === "declare";
+  const giveUpButtons = canGiveUp && (
+    <div className="sim-row">
+      <button className="small-button" onClick={() => giveUp("abstain")}>
+        Abstain from the rest of the {lift === "snatch" ? "snatch" : "clean & jerk"}
+      </button>
+      <button className="small-button" onClick={() => giveUp("withdraw")}>
+        Withdraw from the competition
+      </button>
+    </div>
+  );
 
   const card: AthleteCardData = {
     ...cardFor(athlete),
@@ -92,6 +133,25 @@ export default function Simulation() {
 
   const weight = Number(value);
   const hasWeight = value.trim() !== "" && Number.isFinite(weight);
+
+  /** The athlete signs off the rest of the lift, or withdraws, which ends the whole competition. */
+  function giveUp(kind: Closed) {
+    const step = close(state, kind);
+    if (!step.ok) {
+      setError(step.error);
+      return;
+    }
+    setError("");
+    setValue("");
+    setState(step.state);
+    if (kind === "withdraw" && lift === "snatch") setCj(withdrawnLift());
+  }
+
+  function withdrawBeforeCleanAndJerk() {
+    setCj(withdrawnLift());
+    setError("");
+    setValue("");
+  }
 
   function startCleanAndJerk() {
     setCj(start(athlete.cleanAndJerkStart));
@@ -184,6 +244,7 @@ export default function Simulation() {
                 {lowestChange(state, phase.attempt, athlete.gender, firstMin)} kg.
               </span>
             </form>
+            {giveUpButtons}
           </>
         )}
 
@@ -218,16 +279,23 @@ export default function Simulation() {
                 Declare
               </button>
             </form>
+            {giveUpButtons}
           </>
         )}
 
         {phase.type === "done" && lift === "snatch" && (
           <>
             <h2>Snatch finished</h2>
-            <p>{bestLift(snatch) === undefined ? "No good snatch." : `Best snatch: ${bestLift(snatch)} kg.`}</p>
+            <p>
+              {snatch.closed === "abstain" && "Abstained from the rest of the snatch. "}
+              {bestLift(snatch) === undefined ? "No good snatch." : `Best snatch: ${bestLift(snatch)} kg.`}
+            </p>
             <div className="sim-row">
               <button className="small-button primary" onClick={startCleanAndJerk}>
                 Start clean &amp; jerk
+              </button>
+              <button className="small-button" onClick={withdrawBeforeCleanAndJerk}>
+                Withdraw from the competition
               </button>
             </div>
           </>
@@ -235,8 +303,13 @@ export default function Simulation() {
 
         {phase.type === "done" && cj && (
           <>
-            <h2>Clean &amp; Jerk finished</h2>
+            <h2>{withdrew ? "Athlete withdrawn" : "Clean & Jerk finished"}</h2>
             <p>
+              {withdrew
+                ? "The athlete withdrew, so the competition is complete for them. "
+                : cj.closed === "abstain"
+                  ? "Abstained from the rest of the clean & jerk. "
+                  : ""}
               Best snatch: {bestLift(snatch) ?? "none"}
               {bestLift(snatch) !== undefined && " kg"}. Best clean &amp; jerk: {bestLift(cj) ?? "none"}
               {bestLift(cj) !== undefined && " kg"}.{" "}
@@ -255,9 +328,9 @@ export default function Simulation() {
         <div className="sim-results-rows">
           {rows.map((r) => (
             <ol key={r.lift} className="sim-results" aria-label={`${liftName[r.lift]} results`}>
-              {r.state.attempts.map((a, i) => (
-                <li key={i} className={a.result ?? ""}>
-                  {liftName[r.lift]} {i + 1}: {finalWeight(a)} kg{a.result ? `, ${resultText[a.result]}` : ""}
+              {badges(r.lift, r.state).map((b) => (
+                <li key={b.text} className={b.className}>
+                  {b.text}
                 </li>
               ))}
             </ol>

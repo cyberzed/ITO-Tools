@@ -254,3 +254,93 @@ it("shows the snatch and the clean & jerk results in two separate rows", () => {
   ]);
   expect(Array.from(cjRow.children).map((e) => e.textContent)).toEqual([expect.stringMatching(/^Clean & Jerk 1:.*Good lift$/)]);
 });
+
+const notes = (container: HTMLElement) => Array.from(container.querySelectorAll(".ac-note")).map((e) => e.textContent);
+const rowOf = (name: string) => Array.from(screen.getByRole("list", { name }).children).map((e) => e.textContent);
+
+it("abstains from the rest of the snatch and carries on to the clean & jerk", () => {
+  const a = getSessionAthlete();
+  const { container } = render(<Simulation />);
+  lift("Good lift");
+  click("Abstain from the rest of the snatch");
+  expect(screen.getByRole("heading", { name: "Snatch finished" })).toBeTruthy();
+  expect(screen.getByText(/Abstained from the rest of the snatch/)).toBeTruthy();
+  expect(rowOf("Snatch results")).toEqual([`Snatch 1: ${a.snatchStart} kg, Good lift`, "Snatch 2: Abstained", "Snatch 3: Abstained"]);
+  expect(notes(container)).toEqual(["Abstained", "Abstained"]);
+  // The clean & jerk is still open.
+  click(/start clean/i);
+  expect(screen.getByRole("heading", { name: `Clean & Jerk attempt 1: ${a.cleanAndJerkStart} kg` })).toBeTruthy();
+});
+
+it("abstains from the rest of the clean & jerk and still gets a total", () => {
+  const a = getSessionAthlete();
+  const { container } = render(<Simulation />);
+  playSnatch();
+  click(/start clean/i);
+  lift("Good lift");
+  click("Abstain from the rest of the clean & jerk");
+  expect(screen.getByRole("heading", { name: "Clean & Jerk finished" })).toBeTruthy();
+  expect(screen.getByText(/Abstained from the rest of the clean & jerk/)).toBeTruthy();
+  expect(screen.getByText(new RegExp(`Total: ${a.snatchStart + 1 + a.cleanAndJerkStart} kg`))).toBeTruthy();
+  expect(rowOf("Clean & Jerk results")).toEqual([
+    `Clean & Jerk 1: ${a.cleanAndJerkStart} kg, Good lift`,
+    "Clean & Jerk 2: Abstained",
+    "Clean & Jerk 3: Abstained",
+  ]);
+  expect(notes(container)).toEqual(["Abstained", "Abstained"]);
+});
+
+it("withdrawing during the snatch completes the competition for the athlete", () => {
+  const { container } = render(<Simulation />);
+  lift("Good lift");
+  click("Withdraw from the competition");
+  expect(screen.getByRole("heading", { name: "Athlete withdrawn" })).toBeTruthy();
+  expect(screen.queryByRole("button", { name: /start clean/i })).toBeNull();
+  expect(rowOf("Snatch results")[1]).toBe("Snatch 2: Withdrawn");
+  expect(rowOf("Clean & Jerk results")).toEqual(["Clean & Jerk 1: Withdrawn", "Clean & Jerk 2: Withdrawn", "Clean & Jerk 3: Withdrawn"]);
+  // Two snatch columns and all three clean & jerk columns carry the note.
+  expect(notes(container)).toEqual(["Withdrawn", "Withdrawn", "Withdrawn", "Withdrawn", "Withdrawn"]);
+  expect(screen.getByText(/No total/)).toBeTruthy();
+});
+
+it("withdrawing from the finished snatch skips the whole clean & jerk", () => {
+  render(<Simulation />);
+  playSnatch();
+  click("Withdraw from the competition");
+  expect(screen.getByRole("heading", { name: "Athlete withdrawn" })).toBeTruthy();
+  expect(rowOf("Clean & Jerk results")).toHaveLength(3);
+});
+
+it("withdrawing in the clean & jerk keeps the earlier results and the total", () => {
+  const a = getSessionAthlete();
+  render(<Simulation />);
+  playSnatch();
+  click(/start clean/i);
+  lift("Good lift");
+  click("Declare");
+  lift("Good lift");
+  click("Withdraw from the competition");
+  expect(screen.getByRole("heading", { name: "Athlete withdrawn" })).toBeTruthy();
+  expect(screen.getByText(new RegExp(`Total: ${a.snatchStart + 1 + a.cleanAndJerkStart + 1} kg`))).toBeTruthy();
+});
+
+it("only offers to give up before the weight is called", () => {
+  render(<Simulation />);
+  expect(screen.getByRole("button", { name: "Withdraw from the competition" })).toBeTruthy();
+  click("Call attempt");
+  expect(screen.queryByRole("button", { name: "Withdraw from the competition" })).toBeNull();
+  expect(screen.queryByRole("button", { name: /abstain/i })).toBeNull();
+});
+
+it("can abstain before the first attempt is called, which crosses out the starting weight", () => {
+  const { container } = render(<Simulation />);
+  click("Abstain from the rest of the snatch");
+  expect(rowOf("Snatch results")).toEqual(["Snatch 1: Abstained", "Snatch 2: Abstained", "Snatch 3: Abstained"]);
+  expect(notes(container)).toEqual(["Abstained", "Abstained", "Abstained"]);
+});
+
+it("offers to give up when declaring too", () => {
+  render(<Simulation />);
+  lift("Good lift");
+  expect(screen.getByRole("button", { name: "Abstain from the rest of the snatch" })).toBeTruthy();
+});

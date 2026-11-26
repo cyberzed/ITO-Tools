@@ -109,3 +109,49 @@ describe("results on the final weight", () => {
     expect(container.querySelectorAll(".ac-circle")).toHaveLength(1);
   });
 });
+
+describe("attempts the athlete gave up", () => {
+  const given = (withdrawn: "abstain" | "withdraw"): AthleteCardData => ({
+    ...base,
+    snatch: {
+      attempts: [
+        { declaration: 100, final: 0, result: "good" },
+        { autoProgression: 101, withdrawn, withdrawnSignature: "Fran." },
+        { withdrawn, withdrawnSignature: "Fran." },
+      ],
+    },
+  });
+
+  it("crosses out the boxes and writes a signed note in each given-up column", () => {
+    const { container } = render(<AthleteCard data={given("abstain")} />);
+    // Per given-up column: both change boxes and both change signature boxes.
+    // Attempt 1 was taken at its starting weight, so its two change boxes and signature boxes are struck too.
+    expect(container.querySelectorAll(".ac-struck")).toHaveLength(2 * 4 + 4);
+    expect(Array.from(container.querySelectorAll(".ac-note")).map((e) => e.textContent)).toEqual(["Abstained", "Abstained"]);
+    const sigs = Array.from(container.querySelectorAll(".ac-signature")).map((e) => e.textContent);
+    expect(sigs.filter((x) => x === "Fran.")).toHaveLength(2);
+  });
+
+  it("crosses out a declared weight that was never taken, and leaves the note alone", () => {
+    const data: AthleteCardData = {
+      ...base,
+      snatch: {
+        attempts: [{ declaration: 100, withdrawn: "abstain", withdrawnSignature: "Fran." }, {}, {}],
+      },
+    };
+    const { container } = render(<AthleteCard data={data} />);
+    expect(container.querySelectorAll(".ac-strike")).toHaveLength(1);
+    expect(container.querySelectorAll(".ac-circle")).toHaveLength(0);
+    expect(container.querySelectorAll(".ac-note")).toHaveLength(1);
+  });
+
+  it("writes Withdrawn for a withdrawal", () => {
+    const { container } = render(<AthleteCard data={given("withdraw")} />);
+    expect(Array.from(container.querySelectorAll(".ac-note")).map((e) => e.textContent)).toEqual(["Withdrawn", "Withdrawn"]);
+  });
+
+  it("shows no note on attempts that were taken", () => {
+    const { container } = render(<AthleteCard data={base} />);
+    expect(container.querySelectorAll(".ac-note")).toHaveLength(0);
+  });
+});

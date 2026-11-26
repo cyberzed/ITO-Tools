@@ -20,8 +20,13 @@ export interface SimAttempt {
   result?: Result;
 }
 
+/** How a lift ended early: the rest of this lift is given up, or the athlete is out of the competition. */
+export type Closed = "abstain" | "withdraw";
+
 export interface SimState {
   attempts: SimAttempt[];
+  /** Set when the athlete gave up the rest of the lift. No more attempts are taken. */
+  closed?: Closed;
 }
 
 /** A declaration enables two changes (6.6.12). */
@@ -46,6 +51,7 @@ export const start = (startingWeight: number): SimState => ({
 export const finalWeight = (a: SimAttempt): number => a.changes[a.changes.length - 1] ?? a.declaration;
 
 export function phaseOf(state: SimState): Phase {
+  if (state.closed) return { type: "done" };
   const last = state.attempts[state.attempts.length - 1];
   if (!last.result) return { type: "lift", attempt: state.attempts.length - 1 };
   if (state.attempts.length === 3) return { type: "done" };
@@ -136,6 +142,25 @@ export function call(state: SimState, firstMin = 0): Step {
   const attempts = state.attempts.map((a, i) => (i === phase.attempt ? { ...a, called: true } : a));
   return { ok: true, state: { attempts } };
 }
+
+/** How many attempts were taken, which is also the first column that is given up when the lift is closed. */
+export const attemptsTaken = (state: SimState): number => state.attempts.filter((a) => a.result).length;
+
+/**
+ * The athlete signs the card to give up the rest of the lift (6.6.14). It works instead of a
+ * declaration, or before the declared weight is called. Once a weight is called it has to be taken.
+ */
+export function close(state: SimState, kind: Closed): Step {
+  const phase = phaseOf(state);
+  if (phase.type === "done") return { ok: false, error: "There is nothing left to give up." };
+  if (phase.type === "lift" && state.attempts[phase.attempt].called) {
+    return { ok: false, error: "The weight is loaded and called, so the attempt has to be taken." };
+  }
+  return { ok: true, state: { ...state, closed: kind } };
+}
+
+/** The state of a lift the athlete never started, because they withdrew from the competition. */
+export const withdrawnLift = (): SimState => ({ attempts: [], closed: "withdraw" });
 
 /** Record the result of the attempt that is about to be taken. It must be called first. */
 export function record(state: SimState, result: Result): Step {

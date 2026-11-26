@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   MIN_BAR_KG,
   automaticProgression,
+  attemptsTaken,
   bestLift,
   call,
   change,
+  close,
   lowestChange,
   declare,
   finalWeight,
@@ -14,6 +16,7 @@ import {
   requiredCleanAndJerk,
   start,
   total,
+  withdrawnLift,
   type Result,
   type SimState,
   type Step,
@@ -263,5 +266,50 @@ describe("total", () => {
     const bad = lifted([[100, "no"]]);
     expect(total(good, bad)).toBeUndefined();
     expect(total(bad, good)).toBeUndefined();
+  });
+});
+
+describe("giving up", () => {
+  it("abstaining instead of declaring ends the lift", () => {
+    const s = ok(close(ok(record(start(100), "good")), "abstain"));
+    expect(phaseOf(s)).toEqual({ type: "done" });
+    expect(s.closed).toBe("abstain");
+    expect(attemptsTaken(s)).toBe(1);
+    expect(bestLift(s)).toBe(100);
+  });
+
+  it("can give up a declared weight before it is called", () => {
+    const s = ok(close(start(100), "abstain"));
+    expect(phaseOf(s)).toEqual({ type: "done" });
+    expect(attemptsTaken(s)).toBe(0);
+  });
+
+  it("cannot give up once the weight is loaded and called", () => {
+    const r = close(ok(call(start(100))), "abstain");
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error).toContain("loaded and called");
+  });
+
+  it("has nothing to give up when the lift is over", () => {
+    const s = ok(close(start(100), "withdraw"));
+    expect(close(s, "abstain").ok).toBe(false);
+  });
+
+  it("takes no more steps after the lift is closed", () => {
+    const s = ok(close(ok(record(start(100), "good")), "abstain"));
+    expect(declare(s, 105, "M").ok).toBe(false);
+    expect(call(s).ok).toBe(false);
+    expect(change(s, 105, "M").ok).toBe(false);
+  });
+
+  it("keeps the kind of closing, abstain or withdraw", () => {
+    expect(ok(close(start(100), "withdraw")).closed).toBe("withdraw");
+  });
+
+  it("a lift the athlete never started is already over and has no good lift", () => {
+    const s = withdrawnLift();
+    expect(phaseOf(s)).toEqual({ type: "done" });
+    expect(bestLift(s)).toBeUndefined();
+    expect(attemptsTaken(s)).toBe(0);
   });
 });
