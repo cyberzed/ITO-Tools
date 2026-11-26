@@ -1,6 +1,9 @@
 /**
- * The three snatch attempts, one step at a time.
- * Rules: IWF TCRR 2026 (reference/IWF-TCRR-2026.pdf), 6.6.2-6.6.4, 6.6.10 and 6.6.12.
+ * The three attempts of one lift (snatch or clean & jerk), one step at a time.
+ * Rules: IWF TCRR 2026 (reference/IWF-TCRR-2026.pdf), 6.6.2-6.6.5, 6.6.10 and 6.6.12.
+ *
+ * `firstMin` is a lowest weight for the first attempt on top of the empty bar. The clean & jerk
+ * uses it for the 20 kg Rule.
  */
 import type { Gender } from "./categories";
 import { twentyKgRuleLimit } from "./rules";
@@ -63,46 +66,52 @@ export function automaticProgression(state: SimState, attempt: number): number |
  * The lowest weight allowed for the attempt. Assumption: a declaration or change cannot go
  * below the automatic progression. The first attempt can go down to the empty bar.
  */
-export function minWeight(state: SimState, attempt: number, gender: Gender): number {
-  return automaticProgression(state, attempt) ?? MIN_BAR_KG[gender];
+export function minWeight(state: SimState, attempt: number, gender: Gender, firstMin = 0): number {
+  return automaticProgression(state, attempt) ?? Math.max(MIN_BAR_KG[gender], firstMin);
 }
 
 /**
  * The lowest weight a change can have now. Before the attempt is called it is the minimum
  * weight. Once the weight is loaded and called it cannot go under what is on the bar (6.6.10).
  */
-export function lowestChange(state: SimState, attempt: number, gender: Gender): number {
+export function lowestChange(state: SimState, attempt: number, gender: Gender, firstMin = 0): number {
   const a = state.attempts[attempt];
-  return a?.called ? finalWeight(a) + 1 : minWeight(state, attempt, gender);
+  return a?.called ? finalWeight(a) + 1 : minWeight(state, attempt, gender, firstMin);
 }
 
-function checkWeight(state: SimState, attempt: number, weight: number, gender: Gender): string | undefined {
+function checkWeight(
+  state: SimState,
+  attempt: number,
+  weight: number,
+  gender: Gender,
+  firstMin: number,
+): string | undefined {
   if (!Number.isInteger(weight)) return "The weight must be a whole number of kg (6.6.2).";
-  const min = minWeight(state, attempt, gender);
+  const min = minWeight(state, attempt, gender, firstMin);
   if (weight < min) {
-    return attempt === 0
-      ? `The weight cannot be lighter than the empty bar (${min} kg).`
-      : `The weight cannot be lower than the automatic progression (${min} kg).`;
+    if (attempt > 0) return `The weight cannot be lower than the automatic progression (${min} kg).`;
+    if (firstMin > MIN_BAR_KG[gender]) return `The 20 kg Rule requires at least ${min} kg on the first attempt.`;
+    return `The weight cannot be lighter than the empty bar (${min} kg).`;
   }
   return undefined;
 }
 
 /** Declare the next attempt (attempts 2 and 3). */
-export function declare(state: SimState, weight: number, gender: Gender): Step {
+export function declare(state: SimState, weight: number, gender: Gender, firstMin = 0): Step {
   const phase = phaseOf(state);
   if (phase.type !== "declare") return { ok: false, error: "There is nothing to declare now." };
-  const error = checkWeight(state, phase.attempt, weight, gender);
+  const error = checkWeight(state, phase.attempt, weight, gender, firstMin);
   if (error) return { ok: false, error };
   return { ok: true, state: { attempts: [...state.attempts, { declaration: weight, changes: [] }] } };
 }
 
 /** Change the weight of the attempt that is about to be taken. */
-export function change(state: SimState, weight: number, gender: Gender): Step {
+export function change(state: SimState, weight: number, gender: Gender, firstMin = 0): Step {
   const phase = phaseOf(state);
   if (phase.type !== "lift") return { ok: false, error: "There is no attempt to change now." };
   const current = state.attempts[phase.attempt];
   if (current.changes.length >= MAX_CHANGES) return { ok: false, error: "Both changes are used." };
-  const error = checkWeight(state, phase.attempt, weight, gender);
+  const error = checkWeight(state, phase.attempt, weight, gender, firstMin);
   if (error) return { ok: false, error };
   if (weight === finalWeight(current)) return { ok: false, error: "That is already the weight on the bar." };
   if (current.called && weight < finalWeight(current)) {
@@ -116,10 +125,14 @@ export function change(state: SimState, weight: number, gender: Gender): Step {
 }
 
 /** The Speaker calls the weight, it is loaded and the clock starts. Changes can only go up from here. */
-export function call(state: SimState): Step {
+export function call(state: SimState, firstMin = 0): Step {
   const phase = phaseOf(state);
   if (phase.type !== "lift") return { ok: false, error: "There is no attempt to call now." };
-  if (state.attempts[phase.attempt].called) return { ok: false, error: "The attempt is already called." };
+  const current = state.attempts[phase.attempt];
+  if (current.called) return { ok: false, error: "The attempt is already called." };
+  if (phase.attempt === 0 && finalWeight(current) < firstMin) {
+    return { ok: false, error: `The 20 kg Rule requires at least ${firstMin} kg on the first attempt.` };
+  }
   const attempts = state.attempts.map((a, i) => (i === phase.attempt ? { ...a, called: true } : a));
   return { ok: true, state: { attempts } };
 }
@@ -147,4 +160,11 @@ export function requiredCleanAndJerk(state: SimState, entryTotal: number): numbe
   const first = state.attempts[0];
   if (!first.result) return undefined;
   return Math.max(0, twentyKgRuleLimit(entryTotal) - finalWeight(first));
+}
+
+/** Best snatch plus best clean & jerk. Needs a good lift in both, otherwise there is no total. */
+export function total(snatch: SimState, cleanAndJerk: SimState): number | undefined {
+  const s = bestLift(snatch);
+  const c = bestLift(cleanAndJerk);
+  return s !== undefined && c !== undefined ? s + c : undefined;
 }

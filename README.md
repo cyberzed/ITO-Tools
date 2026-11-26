@@ -18,11 +18,13 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
   - *Initial card*: a blank athlete card with a random athlete. The name, gender, birth date,
     lot, bodyweight, category, starting weights, entry total and signature are generated and
     kept for the browser session. **Reset** creates a new athlete.
-  - *Simulation*: take the athlete through the three snatch attempts step by step. Declare
-    the next weight, make up to two changes, call the attempt and record good lift or no lift.
-    The automatic progression is +1 kg after a good lift and the same weight after a no lift.
-    Once a weight is loaded and called it can only go up. The card fills in as you go, and
-    *Required C&J* is filled in once the first snatch attempt is taken. Snatch only for now.
+  - *Simulation*: take the athlete through the snatch and then the clean & jerk, step by step.
+    Declare the next weight, make up to two changes, call the attempt and record good lift or
+    no lift. The automatic progression is +1 kg after a good lift and the same weight after a no
+    lift. Once a weight is loaded and called it can only go up. A good lift circles the final
+    weight on the card and a no lift strikes it. *Required C&J* is filled in once the first
+    snatch attempt is recorded, and the first clean & jerk attempt cannot be called under it
+    (the 20 kg Rule). The *Total* is filled in at the end.
 
 The generated starting weights never break the 20 kg Rule (TCRR 6.6.5).
 

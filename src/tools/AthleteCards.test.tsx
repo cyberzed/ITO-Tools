@@ -23,7 +23,7 @@ it("shows the initial card by default", () => {
 
 it("shows the simulation page from the top menu", () => {
   const { container } = at("/athlete-cards/simulation");
-  expect(screen.getByRole("heading", { name: /^Attempt 1:/ })).toBeTruthy();
+  expect(screen.getByRole("heading", { name: /^Snatch attempt 1:/ })).toBeTruthy();
   // The simulation has its own Restart button, and the Reset button belongs to the initial card.
   expect(screen.getByRole("button", { name: "Restart" })).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Reset" })).toBeNull();

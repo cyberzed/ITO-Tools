@@ -8,10 +8,12 @@ import {
   lowestChange,
   declare,
   finalWeight,
+  minWeight,
   phaseOf,
   record as recordCalled,
   requiredCleanAndJerk,
   start,
+  total,
   type Result,
   type SimState,
   type Step,
@@ -209,5 +211,57 @@ describe("required clean & jerk", () => {
 
   it("never goes below zero", () => {
     expect(requiredCleanAndJerk(ok(record(start(300), "good")), 224)).toBe(0);
+  });
+});
+
+describe("first attempt minimum (20 kg Rule on the clean & jerk)", () => {
+  it("raises the lowest first weight above the empty bar", () => {
+    expect(minWeight(start(100), 0, "M", 120)).toBe(120);
+    expect(minWeight(start(100), 0, "M", 10)).toBe(MIN_BAR_KG.M);
+    expect(lowestChange(start(100), 0, "M", 120)).toBe(120);
+  });
+
+  it("refuses a change under the minimum with the 20 kg Rule message", () => {
+    const r = change(start(130), 119, "M", 120);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.error).toBe("The 20 kg Rule requires at least 120 kg on the first attempt.");
+    expect(change(start(130), 120, "M", 120).ok).toBe(true);
+  });
+
+  it("will not call a first attempt under the minimum, but calls it once it is raised", () => {
+    const low = call(start(100), 120);
+    expect(low.ok).toBe(false);
+    if (!low.ok) expect(low.error).toContain("20 kg Rule");
+    expect(call(ok(change(start(100), 120, "M", 120)), 120).ok).toBe(true);
+    expect(call(start(125), 120).ok).toBe(true);
+  });
+
+  it("only limits the first attempt, not the later ones", () => {
+    const s = ok(record(start(121), "good"));
+    expect(minWeight(s, 1, "M", 120)).toBe(122);
+  });
+});
+
+describe("total", () => {
+  const lifted = (weights: [number, Result][]): SimState => {
+    let s = start(weights[0][0]);
+    weights.forEach(([w, r], i) => {
+      if (i > 0) s = ok(declare(s, w, "M"));
+      s = ok(record(s, r));
+    });
+    return s;
+  };
+
+  it("adds the best snatch and the best clean & jerk", () => {
+    const snatch = lifted([[100, "good"], [101, "good"], [102, "no"]]);
+    const cj = lifted([[130, "good"], [131, "no"], [131, "good"]]);
+    expect(total(snatch, cj)).toBe(101 + 131);
+  });
+
+  it("has no total without a good lift in both", () => {
+    const good = lifted([[100, "good"]]);
+    const bad = lifted([[100, "no"]]);
+    expect(total(good, bad)).toBeUndefined();
+    expect(total(bad, good)).toBeUndefined();
   });
 });

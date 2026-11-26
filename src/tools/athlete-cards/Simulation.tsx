@@ -9,11 +9,11 @@ import {
   declare,
   finalWeight,
   lowestChange,
-  minWeight,
   phaseOf,
   record,
   requiredCleanAndJerk,
   start,
+  total,
   type Result,
   type SimState,
   type Step,
@@ -21,10 +21,12 @@ import {
 import { getSessionAthlete } from "../../lib/sessionAthlete";
 import { cardFor } from "./card";
 
+type Lift = "snatch" | "cj";
+const liftName: Record<Lift, string> = { snatch: "Snatch", cj: "Clean & Jerk" };
 const resultText: Record<Result, string> = { good: "Good lift", no: "No lift" };
 
-/** The three snatch attempts as the card shows them. */
-function snatchAttempts(state: SimState, signature: string): [Attempt, Attempt, Attempt] {
+/** The three attempts of a lift as the card shows them. */
+function cardAttempts(state: SimState, signature: string): [Attempt, Attempt, Attempt] {
   const out: Attempt[] = [0, 1, 2].map((i) => {
     const a = state.attempts[i];
     // Not declared yet, but the automatic progression is already printed once the attempt before has a result.
@@ -45,18 +47,32 @@ function snatchAttempts(state: SimState, signature: string): [Attempt, Attempt, 
 
 export default function Simulation() {
   const [athlete] = useState(() => getSessionAthlete());
-  const [state, setState] = useState(() => start(athlete.snatchStart));
+  const [snatch, setSnatch] = useState(() => start(athlete.snatchStart));
+  const [cj, setCj] = useState<SimState | undefined>();
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
 
+  const lift: Lift = cj ? "cj" : "snatch";
+  const state = cj ?? snatch;
+  const setState = cj ? setCj : setSnatch;
+  const name = liftName[lift];
+
+  // The 20 kg Rule counts the first snatch attempt actually taken. It limits the first clean & jerk attempt.
+  const required = requiredCleanAndJerk(snatch, athlete.entryTotal);
+  const firstMin = lift === "cj" ? (required ?? 0) : 0;
+
   const phase = phaseOf(state);
-  const best = bestLift(state);
+  const current = phase.type === "lift" ? state.attempts[phase.attempt] : undefined;
+  const breaksRule = lift === "cj" && phase.type === "lift" && phase.attempt === 0 && !!current && finalWeight(current) < firstMin;
+  const finished = cj && phase.type === "done" ? total(snatch, cj) : undefined;
 
   const card: AthleteCardData = {
     ...cardFor(athlete),
-    requiredCJ: requiredCleanAndJerk(state, athlete.entryTotal),
+    requiredCJ: required,
+    total: cj && phase.type === "done" ? finished : undefined,
   };
-  card.snatch = { attempts: snatchAttempts(state, athlete.signature) };
+  card.snatch = { attempts: cardAttempts(snatch, athlete.signature) };
+  if (cj) card.cleanAndJerk = { attempts: cardAttempts(cj, athlete.signature) };
 
   /** Apply a step. On success go to the next state and fill in a sensible default weight. */
   function apply(step: Step, nextValue: (s: SimState) => string) {
@@ -77,32 +93,51 @@ export default function Simulation() {
   const weight = Number(value);
   const hasWeight = value.trim() !== "" && Number.isFinite(weight);
 
-  function restart() {
-    setState(start(athlete.snatchStart));
+  function startCleanAndJerk() {
+    setCj(start(athlete.cleanAndJerkStart));
     setValue("");
     setError("");
   }
 
-  const current = phase.type === "lift" ? state.attempts[phase.attempt] : undefined;
+  function restart() {
+    setSnatch(start(athlete.snatchStart));
+    setCj(undefined);
+    setValue("");
+    setError("");
+  }
+
+  const rows: { lift: Lift; state: SimState }[] = cj
+    ? [
+        { lift: "snatch", state: snatch },
+        { lift: "cj", state: cj },
+      ]
+    : [{ lift: "snatch", state: snatch }];
 
   return (
     <div className="simulation">
       <p className="muted">
-        Take the athlete through the three snatch attempts. Declare the next weight, change it if
-        needed and record each result. The card fills in as you go.
+        Take the athlete through the snatch and then the clean &amp; jerk. Declare the next weight,
+        change it if needed, call the attempt and record each result. The card fills in as you go.
       </p>
 
       <div className="sim-panel">
         {phase.type === "lift" && current && (
           <>
             <h2>
-              Attempt {phase.attempt + 1}: {finalWeight(current)} kg
+              {name} attempt {phase.attempt + 1}: {finalWeight(current)} kg
             </h2>
             <p className="muted">
               {current.called
                 ? "The weight is loaded and called. It can only go up now."
                 : "Declared. Change the weight, or call the attempt."}
             </p>
+            {breaksRule && (
+              <p className="sim-warning" role="status">
+                20 kg Rule: the first starting weights must add up to at least the entry total minus
+                20 kg. The first clean &amp; jerk attempt must be at least {firstMin} kg. Change it
+                before it is called.
+              </p>
+            )}
             <div className="sim-row">
               {current.called ? (
                 <>
@@ -114,7 +149,11 @@ export default function Simulation() {
                   </button>
                 </>
               ) : (
-                <button className="small-button primary" onClick={() => apply(call(state), () => "")}>
+                <button
+                  className="small-button primary"
+                  disabled={breaksRule}
+                  onClick={() => apply(call(state, firstMin), () => "")}
+                >
                   Call attempt
                 </button>
               )}
@@ -124,7 +163,7 @@ export default function Simulation() {
               noValidate
               onSubmit={(e) => {
                 e.preventDefault();
-                if (hasWeight) apply(change(state, weight, athlete.gender), () => "");
+                if (hasWeight) apply(change(state, weight, athlete.gender, firstMin), () => "");
               }}
             >
               <label>
@@ -142,7 +181,7 @@ export default function Simulation() {
               </button>
               <span className="muted">
                 Changes left: {MAX_CHANGES - current.changes.length}. Lowest weight:{" "}
-                {lowestChange(state, phase.attempt, athlete.gender)} kg.
+                {lowestChange(state, phase.attempt, athlete.gender, firstMin)} kg.
               </span>
             </form>
           </>
@@ -150,7 +189,9 @@ export default function Simulation() {
 
         {phase.type === "declare" && (
           <>
-            <h2>Declare attempt {phase.attempt + 1}</h2>
+            <h2>
+              Declare {name.toLowerCase()} attempt {phase.attempt + 1}
+            </h2>
             <p className="muted">
               The automatic progression is {automaticProgression(state, phase.attempt)} kg: 1 kg more
               after a good lift, the same weight after a no lift.
@@ -160,7 +201,7 @@ export default function Simulation() {
               noValidate
               onSubmit={(e) => {
                 e.preventDefault();
-                if (hasWeight) apply(declare(state, weight, athlete.gender), () => "");
+                if (hasWeight) apply(declare(state, weight, athlete.gender, firstMin), () => "");
               }}
             >
               <label>
@@ -180,10 +221,27 @@ export default function Simulation() {
           </>
         )}
 
-        {phase.type === "done" && (
+        {phase.type === "done" && lift === "snatch" && (
           <>
             <h2>Snatch finished</h2>
-            <p>{best === undefined ? "No good snatch." : `Best snatch: ${best} kg.`}</p>
+            <p>{bestLift(snatch) === undefined ? "No good snatch." : `Best snatch: ${bestLift(snatch)} kg.`}</p>
+            <div className="sim-row">
+              <button className="small-button primary" onClick={startCleanAndJerk}>
+                Start clean &amp; jerk
+              </button>
+            </div>
+          </>
+        )}
+
+        {phase.type === "done" && cj && (
+          <>
+            <h2>Clean &amp; Jerk finished</h2>
+            <p>
+              Best snatch: {bestLift(snatch) ?? "none"}
+              {bestLift(snatch) !== undefined && " kg"}. Best clean &amp; jerk: {bestLift(cj) ?? "none"}
+              {bestLift(cj) !== undefined && " kg"}.{" "}
+              {finished === undefined ? "No total." : `Total: ${finished} kg.`}
+            </p>
           </>
         )}
 
@@ -194,11 +252,13 @@ export default function Simulation() {
         )}
 
         <ol className="sim-results" aria-label="Results">
-          {state.attempts.map((a, i) => (
-            <li key={i} className={a.result ?? ""}>
-              Attempt {i + 1}: {finalWeight(a)} kg{a.result ? `, ${resultText[a.result]}` : ""}
-            </li>
-          ))}
+          {rows.flatMap((r) =>
+            r.state.attempts.map((a, i) => (
+              <li key={`${r.lift}${i}`} className={a.result ?? ""}>
+                {liftName[r.lift]} {i + 1}: {finalWeight(a)} kg{a.result ? `, ${resultText[a.result]}` : ""}
+              </li>
+            )),
+          )}
         </ol>
 
         <button className="small-button" onClick={restart}>
