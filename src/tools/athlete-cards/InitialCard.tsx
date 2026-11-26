@@ -1,28 +1,7 @@
 import { useState } from "react";
-import AthleteCard, { type AthleteCardData } from "../../components/AthleteCard";
-import { categoryFor } from "../../lib/categories";
-import { getSessionAthlete, newSessionAthlete, type SessionAthlete } from "../../lib/sessionAthlete";
-
-/** Printed card data only: no handwriting, no progression, no marks. */
-function cardFor(athlete: SessionAthlete): AthleteCardData {
-  return {
-    startNumber: 1,
-    name: athlete.name,
-    gender: athlete.gender,
-    lot: athlete.lot,
-    bodyWeight: athlete.bodyWeight,
-    category: categoryFor(athlete.gender, athlete.bodyWeight).label,
-    birthDate: athlete.birthDate,
-    entryTotal: athlete.entryTotal,
-    signature: athlete.signature,
-    snatch: {
-      attempts: [{ declaration: athlete.snatchStart, declarationSignature: athlete.signature }, {}, {}],
-    },
-    cleanAndJerk: {
-      attempts: [{ declaration: athlete.cleanAndJerkStart, declarationSignature: athlete.signature }, {}, {}],
-    },
-  };
-}
+import AthleteCard from "../../components/AthleteCard";
+import { getSessionAthlete, newSessionAthlete } from "../../lib/sessionAthlete";
+import { cardFor } from "./card";
 
 export default function InitialCard() {
   const [athlete, setAthlete] = useState(() => getSessionAthlete());
