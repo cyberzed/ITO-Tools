@@ -11,6 +11,15 @@ export const weightClassPages: ToolPage[] = [
   { path: "training", title: "Training", description: "Pick the valid classes for a gender from a grid of tiles." },
 ];
 
+export const weighInPages: ToolPage[] = [
+  { path: "", title: "Overview", description: "The weigh-in rules in short, with the 250 g for the costume." },
+  {
+    path: "practice",
+    title: "Practice",
+    description: "Read the scale and decide whether the athlete makes weight.",
+  },
+];
+
 export const athleteCardPages: ToolPage[] = [
   { path: "", title: "Initial card", description: "The athlete card at weigh-in, for a random athlete." },
   {

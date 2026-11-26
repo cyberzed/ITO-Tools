@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import AthleteCards from "./AthleteCards";
-import { athleteCardPages, weightClassPages, type ToolPage } from "./pages";
+import { athleteCardPages, weighInPages, weightClassPages, type ToolPage } from "./pages";
+import WeighIn from "./WeighIn";
 import WeightClasses from "./WeightClasses";
 
 export interface Tool {
@@ -21,6 +22,13 @@ export const tools: Tool[] = [
     description: "The senior men's and women's bodyweight classes.",
     pages: weightClassPages,
     component: WeightClasses,
+  },
+  {
+    id: "weigh-in",
+    title: "Weigh-in",
+    description: "Check that an athlete makes weight for their category.",
+    pages: weighInPages,
+    component: WeighIn,
   },
   {
     id: "athlete-cards",
