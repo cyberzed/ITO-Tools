@@ -180,8 +180,17 @@ export default function Simulation() {
   return (
     <div className="simulation">
       <p className="muted">
-        Take the athlete through the snatch and then the clean &amp; jerk. Declare the next weight,
-        change it if needed, call the attempt and record each result. The card fills in as you go.
+        Take the athlete through the snatch and then the clean &amp; jerk. For each attempt:
+      </p>
+      <ol className="sim-steps muted" aria-label="Steps for each attempt">
+        <li>Declare the weight. The first attempt starts at the weight given at weigh-in.</li>
+        <li>Change it if needed. There are two changes for each attempt.</li>
+        <li>Call the attempt. The weight is loaded and can only go up from here.</li>
+        <li>Record the result. The next attempt gets the automatic progression.</li>
+      </ol>
+      <p className="muted">
+        Before a weight is called, the athlete can abstain from the rest of the lift or withdraw.
+        The card fills in as you go.
       </p>
 
       <div className="sim-panel">

@@ -238,8 +238,8 @@ it("does not hold a clean & jerk that already respects the 20 kg Rule", () => {
 });
 
 it("shows the snatch and the clean & jerk results in two separate rows", () => {
-  render(<Simulation />);
-  expect(screen.getAllByRole("list")).toHaveLength(1);
+  const { container } = render(<Simulation />);
+  expect(container.querySelectorAll(".sim-results")).toHaveLength(1);
   expect(screen.getByRole("list", { name: "Snatch results" })).toBeTruthy();
   playSnatch();
   click(/start clean/i);
@@ -386,4 +386,15 @@ it("gives every declaration box the same tall minimum height on both pages", () 
   const decl = [...pageCells(container, 0, "Starting Weight"), ...pageCells(container, 0, "Declaration"), ...pageCells(container, 1, "Starting Weight"), ...pageCells(container, 1, "Declaration")];
   expect(decl).toHaveLength(6);
   for (const c of decl) expect(c.classList.contains("ac-decl")).toBe(true);
+});
+
+it("explains the steps for each attempt as a list", () => {
+  render(<Simulation />);
+  const steps = screen.getByRole("list", { name: "Steps for each attempt" });
+  expect(Array.from(steps.children).map((e) => e.textContent?.split(".")[0])).toEqual([
+    "Declare the weight",
+    "Change it if needed",
+    "Call the attempt",
+    "Record the result",
+  ]);
 });
