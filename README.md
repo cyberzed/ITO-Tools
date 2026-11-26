@@ -1,6 +1,7 @@
 # ITO training tools
 
-Small browser tools for training weightlifting ITOs (International Technical Officials).
+Small browser tools for training weightlifting technical officials, whether national (NTO)
+or international (ITO).
 Live at **https://itotraining.app**.
 
 It is a static site with no backend. Everything runs in the browser.

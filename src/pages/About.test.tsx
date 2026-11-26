@@ -47,3 +47,9 @@ it("says who made the site and that they are an IWF Category 2 ITO", () => {
   render(<About />);
   expect(screen.getByText(/Stefan Daugaard Poulsen, an IWF Category 2 ITO/)).toBeTruthy();
 });
+
+it("is for national as well as international technical officials", () => {
+  render(<About />);
+  expect(screen.getByText(/NTO \(National Technical Official\)/)).toBeTruthy();
+  expect(screen.getByText(/ITO \(International Technical\s+Official\)/)).toBeTruthy();
+});

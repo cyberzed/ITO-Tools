@@ -9,9 +9,10 @@ export default function About() {
 
       <h2>What this is</h2>
       <p>
-        ITO training tools are small browser tools for people who are learning to be, or want to
-        stay sharp as, weightlifting ITOs (International Technical Officials). The goal is to
-        practise the parts of the job that are easier to learn by doing than by reading.
+        ITO training tools are small browser tools for training weightlifting technical officials,
+        whether you are an NTO (National Technical Official) or an ITO (International Technical
+        Official). The goal is to practise the parts of the job that are easier to learn by doing
+        than by reading.
       </p>
       <p>
         The tools are meant for training. They are no substitute for the official rulebook and
