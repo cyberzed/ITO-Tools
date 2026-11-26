@@ -1,4 +1,6 @@
-import { NavLink, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import SubNav from "../components/SubNav";
+import { weightClassPages } from "./pages";
 import Overview from "./weight-classes/Overview";
 import Training from "./weight-classes/Training";
 
@@ -6,12 +8,7 @@ export default function WeightClasses() {
   return (
     <section>
       <h1>Weight classes</h1>
-      <nav className="subnav" aria-label="Weight class pages">
-        <NavLink to="/weight-classes" end>
-          Overview
-        </NavLink>
-        <NavLink to="/weight-classes/training">Training</NavLink>
-      </nav>
+      <SubNav toolId="weight-classes" title="Weight classes" pages={weightClassPages} />
       <Routes>
         <Route index element={<Overview />} />
         <Route path="training" element={<Training />} />

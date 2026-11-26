@@ -66,12 +66,14 @@ npm run preview  # serve the built site
 ```
 src/
   App.tsx                      App shell: top bar, theme toggle, routes
-  tools/registry.ts            List of tools: the menu and routes come from here
+  tools/registry.ts            List of tools: the menu, routes and front page come from here
+  tools/pages.ts               The pages of each tool: its menu and the front page use them
   tools/WeightClasses.tsx      Weight classes: sub menu
   tools/weight-classes/        Its pages (Overview, Training)
   tools/AthleteCards.tsx       Athlete cards: sub menu
   tools/athlete-cards/         Its pages (InitialCard, Simulation) and the card builder
   components/AthleteCard.tsx   The athlete card
+  components/SubNav.tsx        The menu under a tool's heading
   lib/categories.ts            Senior bodyweight classes and category lookup
   lib/rules.ts                 The 20 kg Rule
   lib/sessionAthlete.ts        Random athlete, kept in session storage
@@ -84,10 +86,11 @@ reference/                     Rulebook PDF
 ### Add a tool
 
 1. Create the component in `src/tools/`.
-2. Add one entry to the list in `src/tools/registry.ts`.
+2. List its pages in `src/tools/pages.ts` (a title, a short description and a path for each).
+3. Add one entry to the list in `src/tools/registry.ts`.
 
-The menu entry, the home page card and the route (`/#/<id>`) follow from that entry. A tool
-can have its own sub pages by using nested routes, as *Weight classes* does.
+The menu entry, the front page card with its pages and the route (`/#/<id>`) follow from that
+entry. The tool's own menu comes from the same page list through the `SubNav` component.
 
 ## Notes
 

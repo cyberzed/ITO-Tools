@@ -2,6 +2,7 @@ import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import ThemeToggle from "./components/ThemeToggle";
 import About from "./pages/About";
 import { REPO_URL } from "./repo";
+import { pageLink } from "./tools/pages";
 import { tools } from "./tools/registry";
 
 export default function App() {
@@ -47,17 +48,34 @@ export default function App() {
 
 function Home() {
   return (
-    <section>
+    <section className="home">
       <h1>ITO training tools</h1>
-      <p className="muted">Tools for weightlifting ITO training. Pick one to start.</p>
+      <p className="lead">
+        Small browser tools for training weightlifting technical officials, whether you are an NTO or
+        an ITO. Pick a tool to practise the parts of the job that are easier to learn by doing than
+        by reading.
+      </p>
       <div className="cards">
         {tools.map((t) => (
-          <NavLink key={t.id} to={`/${t.id}`} className="card">
-            <h2>{t.title}</h2>
+          <article key={t.id} className="card">
+            <h2>
+              <NavLink to={`/${t.id}`}>{t.title}</NavLink>
+            </h2>
             <p>{t.description}</p>
-          </NavLink>
+            <ul>
+              {t.pages.map((page) => (
+                <li key={page.path}>
+                  <NavLink to={pageLink(t.id, page)}>{page.title}</NavLink>
+                  <span>{page.description}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
         ))}
       </div>
+      <p className="muted home-note">
+        Nothing to sign up for: everything runs in your browser. <NavLink to="/about">Read more about the project.</NavLink>
+      </p>
     </section>
   );
 }

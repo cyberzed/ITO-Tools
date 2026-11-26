@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import AthleteCards from "./AthleteCards";
+import { athleteCardPages, weightClassPages, type ToolPage } from "./pages";
 import WeightClasses from "./WeightClasses";
 
 export interface Tool {
@@ -7,21 +8,25 @@ export interface Tool {
   id: string;
   title: string;
   description: string;
+  /** The pages of the tool, in menu order. The first one has an empty path and is the default. */
+  pages: ToolPage[];
   component: ComponentType;
 }
 
-/** Add a new tool here and it shows up in the nav and router automatically. */
+/** Add a new tool here and it shows up in the menu, the router and the front page automatically. */
 export const tools: Tool[] = [
   {
     id: "weight-classes",
     title: "Weight classes",
     description: "The senior men's and women's bodyweight classes.",
+    pages: weightClassPages,
     component: WeightClasses,
   },
   {
     id: "athlete-cards",
     title: "Athlete cards",
     description: "Learn how to fill in and read athlete cards.",
+    pages: athleteCardPages,
     component: AthleteCards,
   },
 ];
