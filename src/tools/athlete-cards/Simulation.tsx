@@ -324,18 +324,24 @@ export default function Simulation() {
           </p>
         )}
 
-        {/* One row for each lift, so the snatch and the clean & jerk never share a row. */}
-        <div className="sim-results-rows">
-          {rows.map((r) => (
-            <ol key={r.lift} className="sim-results" aria-label={`${liftName[r.lift]} results`}>
-              {badges(r.lift, r.state).map((b) => (
-                <li key={b.text} className={b.className}>
-                  {b.text}
-                </li>
-              ))}
-            </ol>
-          ))}
-        </div>
+        {/* A divider and a title keep the attempts apart from the buttons above them. */}
+        <section className="sim-attempts" aria-labelledby="sim-attempts-title">
+          <h3 id="sim-attempts-title" className="sim-subtitle">
+            Attempts
+          </h3>
+          {/* One row for each lift, so the snatch and the clean & jerk never share a row. */}
+          <div className="sim-results-rows">
+            {rows.map((r) => (
+              <ol key={r.lift} className="sim-results" aria-label={`${liftName[r.lift]} results`}>
+                {badges(r.lift, r.state).map((b) => (
+                  <li key={b.text} className={b.className}>
+                    {b.text}
+                  </li>
+                ))}
+              </ol>
+            ))}
+          </div>
+        </section>
 
         <button className="small-button" onClick={restart}>
           Restart

@@ -344,3 +344,12 @@ it("offers to give up when declaring too", () => {
   lift("Good lift");
   expect(screen.getByRole("button", { name: "Abstain from the rest of the snatch" })).toBeTruthy();
 });
+
+it("titles the attempts so they stay apart from the buttons", () => {
+  render(<Simulation />);
+  const title = screen.getByRole("heading", { name: "Attempts" });
+  const section = title.closest("section")!;
+  expect(section.querySelector(".sim-results")).not.toBeNull();
+  // The give up buttons are outside the attempts section.
+  expect(section.contains(screen.getByRole("button", { name: "Withdraw from the competition" }))).toBe(false);
+});
