@@ -19,6 +19,16 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
   - The grid is 5 x 5 to 10 x 10 (7 x 7 by default).
   - **Check answers** scores the round. **Reveal answers** highlights the correct classes.
 
+### Weigh-in
+
+- **Overview**: the weigh-in rules in short, with references to the Regulation to TCRR 6.4.
+- **Practice**: an athlete of a random gender and category steps on the scale. Work out the
+  bodyweight after the 250 g costume deduction, and decide whether the athlete makes weight,
+  is too heavy or is too light. The answer comes with the working.
+  - The readings sit within 1.5 kg of a limit. Some are over the limit on the scale but make
+    weight after the deduction, and some are exactly on a limit.
+  - The score counts rounds with both answers right, for the visit only.
+
 ### Athlete cards
 
 - **Initial card**: the athlete card at weigh-in, for a random athlete.
@@ -88,6 +98,8 @@ src/
   tools/pages.ts               The pages of each tool: its menu and the front page use them
   tools/WeightClasses.tsx      Weight classes: sub menu
   tools/weight-classes/        Its pages (Overview, Training)
+  tools/WeighIn.tsx            Weigh-in: sub menu
+  tools/weigh-in/              Its pages (Overview, Practice)
   tools/AthleteCards.tsx       Athlete cards: sub menu
   tools/athlete-cards/         Its pages (InitialCard, Simulation) and the card builder
   components/AthleteCard.tsx   The athlete card
@@ -98,6 +110,7 @@ src/
   lib/sessionAthlete.ts        Random athlete, kept in session storage
   lib/classTraining.ts         Board generation and scoring for the class training
   lib/snatchSimulation.ts      Attempt logic for one lift (also used for the clean & jerk)
+  lib/weighIn.ts               Category limits, the costume deduction and weigh-in cases
   lib/random.ts                Random helpers using Web Crypto
 reference/                     Rulebook PDF
 ```
@@ -121,6 +134,9 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
 - The rulebook does not say that a declaration or change cannot go under the automatic
   progression. The simulation assumes it. The first attempt of a lift can go down to the
   empty bar (26 kg for men, 21 kg for women, TCRR 6.6.4).
+- The weigh-in practice treats a bodyweight at or below the limit of the category below as too
+  light, because a category includes its upper limit. The rulebook's wording for the too light
+  case (Regulation to 6.4, point 10) is less clear than for the too heavy case.
 
 ## Versions
 
@@ -129,11 +145,14 @@ version added. Visitors see it on the What's new page.
 
 Every change a visitor would notice gets a line in `CHANGELOG.md`, in the same commit:
 
-- If the top version is dated today, add the line to it.
-- Otherwise start a new version dated today, above the others, and set the same version in
-  `package.json` (`npm version <x.y.z> --no-git-tag-version` updates the lock file too).
-  Raise the minor number for a new tool, page or feature, and the patch number for fixes and
+- A branch or pull request with visible changes starts one new version, dated the day it is
+  made, above the others. Further commits on the same branch add lines to that version.
+- Set the same version in `package.json` (`npm version <x.y.z> --no-git-tag-version` updates
+  the lock file too).
+- Raise the minor number for a new tool, page or feature, and the patch number for fixes and
   wording.
+- Never add lines to a version that is already tagged: it is live, and visitors would not see
+  the New marker.
 
 Each version gets a git tag such as `v0.2.0`. The deploy workflow adds it to the commit that
 first takes that version live, so nobody tags by hand.

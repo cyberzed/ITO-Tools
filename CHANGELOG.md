@@ -10,6 +10,12 @@ Versions follow `MAJOR.MINOR.PATCH`:
 Each version has a date and one or more of these sections: Added, Changed, Fixed, Removed.
 Write each line for the people who use the site, not for developers.
 
+## 0.3.0 - 2026-11-26
+
+### Added
+- Weigh-in: an overview of the weigh-in rules, with the 250 g deducted for the costume.
+- Weigh-in: a practice where you read the scale, work out the bodyweight and decide whether the athlete makes weight, is too heavy or is too light.
+
 ## 0.2.0 - 2026-11-26
 
 ### Added

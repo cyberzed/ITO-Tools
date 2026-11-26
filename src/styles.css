@@ -349,3 +349,57 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 .release h3 { margin: 0.75rem 0 0.25rem; font-size: 1rem; }
 .release ul { margin: 0; padding-left: 1.4rem; }
 .release li { margin: 0.2rem 0; }
+
+.rules { max-width: 42rem; }
+.rules h2 { margin: 1.5rem 0 0.25rem; font-size: 1.1rem; }
+.rules ul { padding-left: 1.4rem; }
+.rules li { margin: 0.3rem 0; }
+.weigh-in { max-width: 36rem; }
+.scale-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.scale-panel dl { display: flex; gap: 24px; margin: 0; }
+.scale-panel dt { color: var(--muted); font-size: 0.85rem; }
+.scale-panel dd { margin: 0; font-size: 1.2rem; font-weight: 700; }
+.scale-display { display: flex; flex-direction: column; align-items: flex-end; }
+.scale-display strong {
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.weigh-in-form { display: grid; gap: 16px; }
+.bodyweight-input { display: grid; gap: 4px; font-weight: 600; }
+.bodyweight-input input {
+  width: 7rem;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+.bodyweight-input input[aria-invalid="true"] { border-color: var(--bad); }
+.weigh-in-form fieldset { display: grid; gap: 6px; margin: 0; padding: 0; border: 0; }
+.weigh-in-form legend { margin-bottom: 4px; padding: 0; font-weight: 600; }
+.weigh-in-form fieldset label.answer { color: var(--ok); font-weight: 700; }
+.weigh-in-result { margin-top: 16px; padding: 12px 16px; border-radius: 8px; }
+.weigh-in-result.ok { background: var(--ok-bg); }
+.weigh-in-result.bad { background: var(--bad-bg); }
+.weigh-in-result ul { margin: 0; padding-left: 1.2rem; }
+@media (max-width: 480px) {
+  .scale-display { align-items: flex-start; }
+}
