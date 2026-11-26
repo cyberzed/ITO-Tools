@@ -157,8 +157,8 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
   progression. The simulation assumes it. The first attempt of a lift can go down to the
   empty bar (26 kg for men, 21 kg for women, TCRR 6.6.4).
 - The lifting order practice only ever raises a weight when a coach makes a change, so the
-  barbell never has to come down. Lowering a weight before the clock starts is allowed by the
-  rules (TCRR 6.6.10) but is not practised yet.
+  barbell never has to come down. Lowering a weight before the clock starts (TCRR 6.6.10) is
+  rare in practice and is mostly about timing, so it belongs in a future timing exercise.
 - The weigh-in practice treats a bodyweight at or below the limit of the category below as too
   light, because a category includes its upper limit. The rulebook's wording for the too light
   case (Regulation to 6.4, point 10) is less clear than for the too heavy case.
