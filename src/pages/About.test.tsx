@@ -1,6 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
 import { REPO_URL } from "../repo";
+import { tools } from "../tools/registry";
 import About from "./About";
 
 afterEach(cleanup);
@@ -28,4 +29,11 @@ it("links to the author's GitHub profile and the issue tracker", () => {
   const links = screen.getAllByRole("link").map((a) => a.getAttribute("href"));
   expect(links).toContain("https://github.com/cyberzed");
   expect(links).toContain(`${REPO_URL}/issues`);
+});
+
+it("does not list the tools, so it cannot drift as tools are added", () => {
+  const { container } = render(<About />);
+  const text = container.textContent!.toLowerCase();
+  for (const t of tools) expect(text).not.toContain(t.title.toLowerCase());
+  expect(container.querySelectorAll("li")).toHaveLength(0);
 });

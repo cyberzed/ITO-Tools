@@ -11,15 +11,8 @@ export default function About() {
       <p>
         ITO training tools are small browser tools for people who are learning to be, or want to
         stay sharp as, weightlifting ITOs (International Technical Officials). The goal is to
-        practise the parts of the job that are easier to learn by doing than by reading:
+        practise the parts of the job that are easier to learn by doing than by reading.
       </p>
-      <ul>
-        <li>Knowing the senior bodyweight classes and where an athlete belongs.</li>
-        <li>
-          Reading and filling in the athlete card: declarations, changes, the automatic
-          progression, the 20 kg Rule and the total.
-        </li>
-      </ul>
       <p>
         The tools are meant for training. They are no substitute for the official rulebook and
         they are not a reference for a real competition. Check the current IWF Technical and
@@ -37,9 +30,8 @@ export default function About() {
       <h2>The rules used</h2>
       <p>
         The tools follow the IWF Technical and Competition Rules &amp; Regulations 2026 and cover
-        senior athletes only. Where the rulebook does not settle a detail, the simulation makes
-        a simple choice and says so in the project notes on GitHub. Time limits, the final call
-        and calling order with several athletes are not part of the tools yet.
+        senior athletes only. Where the rulebook does not settle a detail, the tools make a
+        simple choice, and the project notes on GitHub say which.
       </p>
 
       <h2>About me</h2>
