@@ -59,7 +59,8 @@ export default function About() {
       <h2>Privacy</h2>
       <p>
         The site has no accounts and no tracking, and it sends nothing about you anywhere. Your
-        browser stores your light or dark choice, and the random athlete for the current visit.
+        browser stores your light or dark choice, the last version of the site you saw, and the
+        random athlete for the current visit.
       </p>
     </section>
   );

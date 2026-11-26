@@ -56,7 +56,11 @@ athletes sharing the bar (calling order).
 - **About**: the intention of the site, the rules used, the no affiliation notice, who made it,
   where to give feedback and a privacy note. It does not list the tools, so it cannot drift as
   tools are added. A test checks that.
-- **Source on GitHub**: a small label in the bottom right corner of every page.
+- **What's new**: every version of the site and what it added, built from
+  [`CHANGELOG.md`](CHANGELOG.md). The top bar shows a **New** marker to returning visitors
+  until they open it.
+- **Source on GitHub**: a small label in the bottom right corner of every page, next to the
+  version number.
 
 ## Development
 
@@ -77,6 +81,9 @@ src/
   App.tsx                      App shell: top bar, front page, routes, source label
   repo.ts                      The repository address
   pages/About.tsx              The About page
+  pages/WhatsNew.tsx           The What's new page
+  version.ts                   The version and the New marker, from CHANGELOG.md
+  lib/changelog.ts             Reads CHANGELOG.md
   tools/registry.ts            List of tools: the menu, routes and front page come from here
   tools/pages.ts               The pages of each tool: its menu and the front page use them
   tools/WeightClasses.tsx      Weight classes: sub menu
@@ -114,6 +121,22 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
 - The rulebook does not say that a declaration or change cannot go under the automatic
   progression. The simulation assumes it. The first attempt of a lift can go down to the
   empty bar (26 kg for men, 21 kg for women, TCRR 6.6.4).
+
+## Versions
+
+The site has a version such as `0.2.0`, and [`CHANGELOG.md`](CHANGELOG.md) says what each
+version added. Visitors see it on the What's new page.
+
+Every change a visitor would notice gets a line in `CHANGELOG.md`, in the same commit:
+
+- If the top version is dated today, add the line to it.
+- Otherwise start a new version dated today, above the others, and set the same version in
+  `package.json` (`npm version <x.y.z> --no-git-tag-version` updates the lock file too).
+  Raise the minor number for a new tool, page or feature, and the patch number for fixes and
+  wording.
+
+Refactors, tests and changes to the build need no line. The tests fail if the newest version
+in `CHANGELOG.md` and `package.json` differ, or if the file does not follow the format.
 
 ## Deployment
 
