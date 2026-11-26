@@ -353,3 +353,37 @@ it("titles the attempts so they stay apart from the buttons", () => {
   // The give up buttons are outside the attempts section.
   expect(section.contains(screen.getByRole("button", { name: "Withdraw from the competition" }))).toBe(false);
 });
+
+const pageCells = (container: HTMLElement, page: number, label: string) =>
+  Array.from(container.querySelectorAll(".ac-page")[page].querySelectorAll(".ac-cell")).filter(
+    (c) => c.querySelector(".ac-label")?.textContent === label,
+  );
+
+it("keeps the weigh-in starting weight on the clean & jerk page when the athlete withdraws first", () => {
+  const a = getSessionAthlete();
+  const { container } = render(<Simulation />);
+  click("Abstain from the rest of the snatch");
+  click("Withdraw from the competition");
+  const [first] = pageCells(container, 1, "Starting Weight");
+  expect(first.textContent).toContain(String(a.cleanAndJerkStart));
+  expect(first.textContent).toContain("Withdrawn");
+  // The weight is crossed out because the attempt was never taken, and it keeps its signature.
+  expect(first.querySelectorAll(".ac-strike")).toHaveLength(1);
+  const sigs = Array.from(container.querySelectorAll(".ac-page")[1].querySelectorAll(".ac-signature")).map((e) => e.textContent);
+  expect(sigs).toContain(a.signature);
+});
+
+it("keeps the clean & jerk starting weight when the athlete withdraws after the snatch", () => {
+  const a = getSessionAthlete();
+  const { container } = render(<Simulation />);
+  playSnatch();
+  click("Withdraw from the competition");
+  expect(pageCells(container, 1, "Starting Weight")[0].textContent).toContain(String(a.cleanAndJerkStart));
+});
+
+it("gives every declaration box the same tall minimum height on both pages", () => {
+  const { container } = render(<Simulation />);
+  const decl = [...pageCells(container, 0, "Starting Weight"), ...pageCells(container, 0, "Declaration"), ...pageCells(container, 1, "Starting Weight"), ...pageCells(container, 1, "Declaration")];
+  expect(decl).toHaveLength(6);
+  for (const c of decl) expect(c.classList.contains("ac-decl")).toBe(true);
+});

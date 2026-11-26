@@ -30,7 +30,7 @@ const liftName: Record<Lift, string> = { snatch: "Snatch", cj: "Clean & Jerk" };
 const resultText: Record<Result, string> = { good: "Good lift", no: "No lift" };
 
 /** The three attempts of a lift as the card shows them. */
-function cardAttempts(state: SimState, signature: string): [Attempt, Attempt, Attempt] {
+function cardAttempts(state: SimState, signature: string, startingWeight: number): [Attempt, Attempt, Attempt] {
   const out: Attempt[] = [0, 1, 2].map((i) => {
     const a = state.attempts[i];
     // Attempts the athlete gave up are crossed out and carry a signed note.
@@ -39,7 +39,11 @@ function cardAttempts(state: SimState, signature: string): [Attempt, Attempt, At
         ? ({ withdrawn: state.closed, withdrawnSignature: signature } as const)
         : {};
     // Not declared yet, but the automatic progression is already printed once the attempt before has a result.
-    if (!a) return { autoProgression: automaticProgression(state, i), ...given };
+    if (!a) {
+      // The starting weight was declared and signed at weigh-in, so it is on the card even if the lift never starts.
+      const weighIn = i === 0 ? { declaration: startingWeight, declarationSignature: signature } : {};
+      return { autoProgression: automaticProgression(state, i), ...weighIn, ...given };
+    }
     return {
       ...given,
       autoProgression: automaticProgression(state, i),
@@ -112,8 +116,8 @@ export default function Simulation() {
     requiredCJ: required,
     total: cj && phase.type === "done" ? finished : undefined,
   };
-  card.snatch = { attempts: cardAttempts(snatch, athlete.signature) };
-  if (cj) card.cleanAndJerk = { attempts: cardAttempts(cj, athlete.signature) };
+  card.snatch = { attempts: cardAttempts(snatch, athlete.signature, athlete.snatchStart) };
+  if (cj) card.cleanAndJerk = { attempts: cardAttempts(cj, athlete.signature, athlete.cleanAndJerkStart) };
 
   /** Apply a step. On success go to the next state and fill in a sensible default weight. */
   function apply(step: Step, nextValue: (s: SimState) => string) {

@@ -121,7 +121,8 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 }
 .ac-cell {
   position: relative;
-  min-height: 3.2em;
+  /* Tall enough for a label plus a handwritten value, so an empty box is as high as a filled one. */
+  min-height: 3.8em;
   padding: 2px 4px;
   background: #fff;
   font-size: clamp(0.8rem, 2vw, 1rem);
@@ -143,7 +144,9 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 }
 .ac-title-dark { background: #000; color: #fff; }
 .ac-number { min-height: 0; font-size: 1.5rem; font-weight: 700; }
-.ac-grey { background: #e0e0e0; min-height: 4.5em; }
+.ac-grey { background: #e0e0e0; min-height: 4.6em; }
+/* Room for a label, the weight and the note on a given-up attempt. */
+.ac-decl { min-height: 4.9em; }
 .ac-cross {
   background:
     linear-gradient(to top right, transparent calc(50% - 1px), #000 50%, transparent calc(50% + 1px)),

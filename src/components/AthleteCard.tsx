@@ -141,7 +141,7 @@ function LiftSection({ title, lift, dark }: { title: string; lift: Lift; dark: b
         )}
 
         {attempts.map((a, i) => (
-          <Cell key={`decl${i}`} label={i === 0 ? "Starting Weight" : "Declaration"} center>
+          <Cell key={`decl${i}`} label={i === 0 ? "Starting Weight" : "Declaration"} className="ac-decl" center>
             <Ink
               circled={isFinal(a, 0) && a.result !== "no"}
               // A declared weight that was never taken is crossed out. The note below it stays readable.
