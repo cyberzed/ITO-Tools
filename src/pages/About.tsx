@@ -37,7 +37,9 @@ export default function About() {
         project. You can find me on <a href={PROFILE_URL}>GitHub</a>.
       </p>
       <p>
-        I am highly inspired by <a href={INSPIRATION_URL}>Mike Höffler</a>.
+        I am highly inspired by <a href={INSPIRATION_URL} target="_blank" rel="noopener noreferrer">
+          Mike Höffler
+        </a>.
       </p>
 
       <h2>Feedback</h2>

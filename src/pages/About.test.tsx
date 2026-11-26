@@ -57,5 +57,9 @@ it("is for national as well as international technical officials", () => {
 it("credits Mike Höffler as an inspiration and links to his site", () => {
   render(<About />);
   expect(screen.getByText(/highly inspired by/)).toBeTruthy();
-  expect(screen.getByRole("link", { name: "Mike Höffler" }).getAttribute("href")).toBe("https://hoeffler.org");
+  const link = screen.getByRole("link", { name: "Mike Höffler" });
+  expect(link.getAttribute("href")).toBe("https://hoeffler.org");
+  // It opens in a new tab, and the new page gets no handle back to this one.
+  expect(link.getAttribute("target")).toBe("_blank");
+  expect(link.getAttribute("rel")).toContain("noopener");
 });
