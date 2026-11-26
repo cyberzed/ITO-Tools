@@ -15,8 +15,7 @@ it("describes the intention of the site", () => {
 it("says plainly that it has no affiliation to any federation", () => {
   render(<About />);
   expect(screen.getByRole("heading", { name: "Not affiliated" })).toBeTruthy();
-  expect(screen.getByText(/without any affiliation to the IWF/)).toBeTruthy();
-  expect(screen.getByText(/none of them have reviewed or endorsed it/)).toBeTruthy();
+  expect(screen.getByText(/made without affiliation to any federation/)).toBeTruthy();
 });
 
 it("says the tools are for training and not for real competitions", () => {

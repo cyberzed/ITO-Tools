@@ -20,12 +20,7 @@ export default function About() {
       </p>
 
       <h2>Not affiliated</h2>
-      <p>
-        This is an independent, personal project. It is made without any affiliation to the IWF,
-        to any national or continental federation, or to any other weightlifting organisation,
-        and none of them have reviewed or endorsed it. Names such as the IWF are used only to say
-        which rules the tools follow.
-      </p>
+      <p>This is an independent, personal project, made without affiliation to any federation.</p>
 
       <h2>The rules used</h2>
       <p>
