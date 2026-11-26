@@ -1,6 +1,8 @@
 # ITO training tools
 
 Small browser tools for training weightlifting ITOs (International Technical Officials).
+Live at **https://itotraining.app**.
+
 It is a static site with no backend. Everything runs in the browser.
 
 The project covers **senior** athletes only. Rules come from the IWF Technical and
@@ -9,30 +11,46 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
 
 ## Tools
 
-- **Weight classes**
-  - *Overview*: the senior men's and women's bodyweight classes with their ranges.
-  - *Training*: pick the valid classes for a gender from a grid of tiles with decoys.
-    The grid is 5 x 5 to 10 x 10 (7 x 7 by default). **Check answers** scores the round and
-    **Reveal answers** highlights the correct classes.
-- **Athlete cards**
-  - *Initial card*: a blank athlete card with a random athlete. The name, gender, birth date,
-    lot, bodyweight, category, starting weights, entry total and signature are generated and
-    kept for the browser session. **Reset** creates a new athlete.
-  - *Simulation*: take the athlete through the snatch and then the clean & jerk, step by step.
-    Declare the next weight, make up to two changes, call the attempt and record good lift or
-    no lift. The automatic progression is +1 kg after a good lift and the same weight after a no
-    lift. Once a weight is loaded and called it can only go up. A good lift circles the final
-    weight on the card and a no lift strikes it. *Required C&J* is filled in once the first
-    snatch attempt is recorded, and the first clean & jerk attempt cannot be called under it
-    (the 20 kg Rule). The *Total* (best snatch plus best clean & jerk) is filled in once the athlete has no more clean & jerk attempts, and only if both lifts have a good lift. Before a weight is called the athlete
-    can **abstain** from the rest of the current lift or **withdraw**, which completes the
-    competition for them. Given-up attempts are crossed out on the card with a signed note.
+### Weight classes
 
-The generated starting weights never break the 20 kg Rule (TCRR 6.6.5).
+- **Overview**: the senior men's and women's bodyweight classes with their ranges.
+- **Training**: pick the valid classes for a gender from a grid of tiles with decoys.
+  - The grid is 5 x 5 to 10 x 10 (7 x 7 by default).
+  - **Check answers** scores the round. **Reveal answers** highlights the correct classes.
+
+### Athlete cards
+
+- **Initial card**: the athlete card at weigh-in, for a random athlete.
+  - The name, gender, birth date, lot, bodyweight, category, starting weights, entry total
+    and signature are generated and kept for the browser session.
+  - **Reset** creates a new athlete.
+  - The generated starting weights never break the 20 kg Rule (TCRR 6.6.5).
+- **Simulation**: take the athlete through the snatch and then the clean & jerk, step by step.
+  For each attempt:
+  1. Declare the weight. The first attempt starts at the weight given at weigh-in.
+  2. Change it if needed. There are two changes for each attempt.
+  3. Call the attempt. Once a weight is loaded and called it can only go up.
+  4. Record good lift or no lift. The next attempt gets the automatic progression: +1 kg after
+     a good lift, the same weight after a no lift.
+
+  On the card, a good lift circles the final weight and a no lift strikes it. Unused change
+  boxes are crossed out.
+
+  - **Required C&J** is filled in once the first snatch attempt is recorded. The first clean &
+    jerk attempt cannot be called under it (the 20 kg Rule).
+  - **Total** (best snatch plus best clean & jerk) is filled in once the athlete has no more
+    clean & jerk attempts, and only if both lifts have a good lift.
+  - Before a weight is called, the athlete can **abstain** from the rest of the current lift
+    or **withdraw**, which completes the competition for them. Given-up attempts are crossed
+    out on the card with a signed note. The clean & jerk starting weight from weigh-in stays
+    on the card.
+
+Not modelled yet: time limits and the final call, the break between the lifts, and several
+athletes sharing the bar (calling order).
 
 ## Development
 
-Requires Node.js 22 or newer.
+CI uses Node.js 22.
 
 ```sh
 npm install
@@ -46,16 +64,20 @@ npm run preview  # serve the built site
 
 ```
 src/
-  App.tsx                  App shell: top bar, theme toggle, routes
-  tools/registry.ts        List of tools: the menu and routes come from here
-  tools/                   One folder or file for each tool
-  components/AthleteCard   The athlete card
-  lib/categories.ts        Senior bodyweight classes and category lookup
-  lib/rules.ts             The 20 kg Rule
-  lib/sessionAthlete.ts    Random athlete, kept in session storage
-  lib/classTraining.ts     Board generation and scoring for the training
-  lib/random.ts            Random helpers using Web Crypto
-reference/                 Rulebook PDF
+  App.tsx                      App shell: top bar, theme toggle, routes
+  tools/registry.ts            List of tools: the menu and routes come from here
+  tools/WeightClasses.tsx      Weight classes: sub menu
+  tools/weight-classes/        Its pages (Overview, Training)
+  tools/AthleteCards.tsx       Athlete cards: sub menu
+  tools/athlete-cards/         Its pages (InitialCard, Simulation) and the card builder
+  components/AthleteCard.tsx   The athlete card
+  lib/categories.ts            Senior bodyweight classes and category lookup
+  lib/rules.ts                 The 20 kg Rule
+  lib/sessionAthlete.ts        Random athlete, kept in session storage
+  lib/classTraining.ts         Board generation and scoring for the class training
+  lib/snatchSimulation.ts      Attempt logic for one lift (also used for the clean & jerk)
+  lib/random.ts                Random helpers using Web Crypto
+reference/                     Rulebook PDF
 ```
 
 ### Add a tool
@@ -73,6 +95,9 @@ can have its own sub pages by using nested routes, as *Weight classes* does.
 - The theme follows the operating system by default. The toggle in the top bar saves a
   different choice in the browser.
 - Random values use `crypto.getRandomValues`, not `Math.random()`, because CodeQL flags it.
+- The rulebook does not say that a declaration or change cannot go under the automatic
+  progression. The simulation assumes it. The first attempt of a lift can go down to the
+  empty bar (26 kg for men, 21 kg for women, TCRR 6.6.4).
 
 ## Deployment
 
@@ -80,6 +105,10 @@ Every push to `main` builds the site and publishes `dist/` to GitHub Pages throu
 `.github/workflows/deploy.yml`. Pull requests run the tests and a build
 (`.github/workflows/ci.yml`). CodeQL scans the code (`.github/workflows/codeql.yml`) and
 Dependabot keeps the dependencies up to date.
+
+The site is served on `itotraining.app`. The domain and its DNS are at Cloudflare. The
+records for GitHub Pages are set to DNS only, and HTTPS is enforced in the repo's Pages
+settings.
 
 ## Licence
 
