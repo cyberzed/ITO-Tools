@@ -193,25 +193,20 @@ it("has no total when the clean & jerk has no good lift", () => {
   expect(cell(container, "Total")).toBe("Total");
 });
 
-it("fills in the total as soon as there is a good lift in both the snatch and the clean & jerk", () => {
-  const a = getSessionAthlete();
+it("keeps the total off the card while the athlete still has clean & jerk attempts to take", () => {
   const { container } = render(<Simulation />);
   playSnatch();
   click(/start clean/i);
-  // No clean & jerk lift yet: no total.
   expect(cell(container, "Total")).toBe("Total");
-  // A no lift in the clean & jerk is not enough.
-  lift("No lift");
+  // A good lift in both lifts is not enough while more attempts can follow.
+  lift("Good lift");
   expect(cell(container, "Total")).toBe("Total");
   click("Declare");
-  // The first good clean & jerk completes the total, before the lift is finished.
   lift("Good lift");
-  const bestSnatch = a.snatchStart + 1;
-  expect(cell(container, "Total")).toBe(`Total${bestSnatch + a.cleanAndJerkStart}`);
-  expect(screen.getByRole("heading", { name: /Declare clean & jerk attempt 3/ })).toBeTruthy();
+  expect(cell(container, "Total")).toBe("Total");
 });
 
-it("updates the total when a later clean & jerk lift is heavier", () => {
+it("fills in the total after the third clean & jerk attempt, using the best lifts", () => {
   const a = getSessionAthlete();
   const { container } = render(<Simulation />);
   playSnatch();
@@ -219,7 +214,31 @@ it("updates the total when a later clean & jerk lift is heavier", () => {
   lift("Good lift");
   click("Declare");
   lift("Good lift");
-  expect(cell(container, "Total")).toBe(`Total${a.snatchStart + 1 + a.cleanAndJerkStart + 1}`);
+  click("Declare");
+  lift("No lift");
+  const bestSnatch = a.snatchStart + 1;
+  expect(cell(container, "Total")).toBe(`Total${bestSnatch + a.cleanAndJerkStart + 1}`);
+});
+
+it("fills in the total when the athlete abstains from the rest of the clean & jerk", () => {
+  const a = getSessionAthlete();
+  const { container } = render(<Simulation />);
+  playSnatch();
+  click(/start clean/i);
+  lift("Good lift");
+  expect(cell(container, "Total")).toBe("Total");
+  click("Abstain from the rest of the clean & jerk");
+  expect(cell(container, "Total")).toBe(`Total${a.snatchStart + 1 + a.cleanAndJerkStart}`);
+});
+
+it("fills in the total when the athlete withdraws in the clean & jerk", () => {
+  const a = getSessionAthlete();
+  const { container } = render(<Simulation />);
+  playSnatch();
+  click(/start clean/i);
+  lift("Good lift");
+  click("Withdraw from the competition");
+  expect(cell(container, "Total")).toBe(`Total${a.snatchStart + 1 + a.cleanAndJerkStart}`);
 });
 
 it("has no total while the snatch has no good lift, even with a good clean & jerk", () => {

@@ -97,9 +97,9 @@ export default function Simulation() {
   const phase = phaseOf(state);
   const current = phase.type === "lift" ? state.attempts[phase.attempt] : undefined;
   const breaksRule = lift === "cj" && phase.type === "lift" && phase.attempt === 0 && !!current && finalWeight(current) < firstMin;
-  // The total is the best snatch plus the best clean & jerk. It fills in as soon as both lifts have a good lift.
-  const running = cj ? total(snatch, cj) : undefined;
-  const finished = cj && phase.type === "done" ? running : undefined;
+  // The total is the best snatch plus the best clean & jerk. It is only filled in once the athlete
+  // has no more clean & jerk attempts to take (all three taken, or abstained or withdrawn).
+  const finished = cj && phase.type === "done" ? total(snatch, cj) : undefined;
   const withdrew = snatch.closed === "withdraw" || cj?.closed === "withdraw";
   const canGiveUp = (phase.type === "lift" && !!current && !current.called) || phase.type === "declare";
   const giveUpButtons = canGiveUp && (
@@ -116,7 +116,7 @@ export default function Simulation() {
   const card: AthleteCardData = {
     ...cardFor(athlete),
     requiredCJ: required,
-    total: running,
+    total: finished,
   };
   card.snatch = { attempts: cardAttempts(snatch, athlete.signature, athlete.snatchStart) };
   if (cj) card.cleanAndJerk = { attempts: cardAttempts(cj, athlete.signature, athlete.cleanAndJerkStart) };
