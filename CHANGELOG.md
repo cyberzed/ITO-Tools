@@ -10,6 +10,12 @@ Versions follow `MAJOR.MINOR.PATCH`:
 Each version has a date and one or more of these sections: Added, Changed, Fixed, Removed.
 Write each line for the people who use the site, not for developers.
 
+## 0.4.0 - 2026-11-26
+
+### Added
+- Lifting order: an overview of the four factors that decide who is called next, with the rulebook's own example group.
+- Lifting order: a practice where you call a group of 6 to 10 athletes in the right order through the snatch or the clean & jerk. A wrong call tells you which factor decides.
+
 ## 0.3.0 - 2026-11-26
 
 ### Added

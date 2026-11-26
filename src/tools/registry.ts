@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import AthleteCards from "./AthleteCards";
-import { athleteCardPages, weighInPages, weightClassPages, type ToolPage } from "./pages";
+import LiftingOrder from "./LiftingOrder";
+import { athleteCardPages, liftingOrderPages, weighInPages, weightClassPages, type ToolPage } from "./pages";
 import WeighIn from "./WeighIn";
 import WeightClasses from "./WeightClasses";
 
@@ -36,5 +37,12 @@ export const tools: Tool[] = [
     description: "Learn how to fill in and read athlete cards.",
     pages: athleteCardPages,
     component: AthleteCards,
+  },
+  {
+    id: "lifting-order",
+    title: "Lifting order",
+    description: "Call the athletes of a group in the right order.",
+    pages: liftingOrderPages,
+    component: LiftingOrder,
   },
 ];
