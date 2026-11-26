@@ -8,6 +8,7 @@
   --primary: #0a3d91;
   --primary-fg: #ffffff;
   --accent: #d6001c;
+  --accent-fg: #ffffff;
   --ok: #1a7f37;
   --ok-bg: #dcf5e3;
   --bad: #c62828;
@@ -26,6 +27,7 @@
   --primary: #5b95f0;
   --primary-fg: #0a1424;
   --accent: #ff4d63;
+  --accent-fg: #0a1424;
   --ok: #4cc26d;
   --ok-bg: #12331d;
   --bad: #ff6b6b;
@@ -76,7 +78,7 @@ body {
 .topbar nav a.active { background: var(--primary); color: var(--primary-fg); }
 main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 /* A small label that floats in the bottom right corner of the window. */
-.site-footer { position: fixed; right: 12px; bottom: 12px; z-index: 10; }
+.site-footer { position: fixed; right: 12px; bottom: 12px; z-index: 10; display: flex; gap: 6px; }
 .site-footer a {
   display: inline-flex;
   align-items: center;
@@ -328,3 +330,22 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 .about p, .about li { color: var(--fg); }
 .about ul { padding-left: 1.4rem; }
 .about a { color: var(--primary); }
+
+.new-badge {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-size: 0.7rem;
+  font-weight: 700;
+  vertical-align: 1px;
+}
+.whats-new { max-width: 42rem; }
+.whats-new a { color: var(--primary); }
+.release { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.release h2 { margin: 0 0 0.25rem; font-size: 1.2rem; }
+.release h2 time { margin-left: 8px; color: var(--muted); font-size: 0.9rem; font-weight: 400; }
+.release h3 { margin: 0.75rem 0 0.25rem; font-size: 1rem; }
+.release ul { margin: 0; padding-left: 1.4rem; }
+.release li { margin: 0.2rem 0; }

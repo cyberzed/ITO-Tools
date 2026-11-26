@@ -5,6 +5,7 @@ import App from "./App";
 import { REPO_URL } from "./repo";
 import { pageLink } from "./tools/pages";
 import { tools } from "./tools/registry";
+import { VERSION } from "./version";
 
 // jsdom has no matchMedia, which the theme toggle reads.
 beforeAll(() => {
@@ -16,7 +17,17 @@ beforeAll(() => {
   })) as unknown as typeof window.matchMedia;
 });
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  localStorage.clear();
+});
+
+const renderAt = (path: string) =>
+  render(
+    <MemoryRouter initialEntries={[path]}>
+      <App />
+    </MemoryRouter>,
+  );
 
 it("links to the source on GitHub from every page", () => {
   for (const path of ["/", "/weight-classes", "/athlete-cards/simulation"]) {
@@ -86,4 +97,27 @@ it("has the same pages in a tool's own menu as on the front page", () => {
     expect(Array.from(menu.querySelectorAll("a")).map((a) => a.textContent)).toEqual(tool.pages.map((p) => p.title));
     cleanup();
   }
+});
+
+it("shows the version in the corner, linking to What's new", () => {
+  renderAt("/");
+  expect(screen.getByRole("link", { name: `v${VERSION}` }).getAttribute("href")).toBe("/whats-new");
+});
+
+it("shows no New marker on a first visit", () => {
+  renderAt("/");
+  expect(screen.queryByText("New")).toBeNull();
+  expect(localStorage.getItem("seenVersion")).toBe(VERSION);
+});
+
+it("shows a New marker after an update until What's new is opened", () => {
+  localStorage.setItem("seenVersion", "0.0.1");
+  renderAt("/");
+  expect(screen.getByRole("link", { name: /What's new/ }).textContent).toContain("New");
+  cleanup();
+
+  renderAt("/whats-new");
+  expect(screen.getByRole("heading", { name: "What's new", level: 1 })).toBeTruthy();
+  expect(screen.queryByText("New")).toBeNull();
+  expect(localStorage.getItem("seenVersion")).toBe(VERSION);
 });
