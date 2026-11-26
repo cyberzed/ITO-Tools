@@ -42,3 +42,8 @@ it("orders the sections: what it is, the rules, not affiliated, about me, feedba
   const headings = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
   expect(headings).toEqual(["What this is", "The rules used", "Not affiliated", "About me", "Feedback", "Privacy"]);
 });
+
+it("says who made the site and that they are an IWF Category 2 ITO", () => {
+  render(<About />);
+  expect(screen.getByText(/Stefan Daugaard Poulsen, an IWF Category 2 ITO/)).toBeTruthy();
+});

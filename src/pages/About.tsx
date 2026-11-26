@@ -31,8 +31,8 @@ export default function About() {
 
       <h2>About me</h2>
       <p>
-        I am Stefan Daugaard Poulsen, and I made this site as a personal project. You can find
-        me on <a href={PROFILE_URL}>GitHub</a>.
+        I am Stefan Daugaard Poulsen, an IWF Category 2 ITO, and I made this site as a personal
+        project. You can find me on <a href={PROFILE_URL}>GitHub</a>.
       </p>
 
       <h2>Feedback</h2>
