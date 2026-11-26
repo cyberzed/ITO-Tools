@@ -56,8 +56,26 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
     out on the card with a signed note. The clean & jerk starting weight from weigh-in stays
     on the card.
 
-Not modelled yet: time limits and the final call, the break between the lifts, and several
-athletes sharing the bar (calling order).
+Not modelled yet: time limits and the final call, and the break between the lifts. The calling
+order for a whole group is its own tool, Lifting order.
+
+### Lifting order
+
+A separate tool from the athlete card Simulation, which follows one athlete.
+
+- **Overview**: the four factors of the calling order (TCRR 6.6.6) and the rules around it, with
+  group B's snatch from the rulebook's example (Regulation to 6.6.6).
+- **Practice**: a random group of 6, 8 or 10 men or women, for the snatch or the clean & jerk.
+  The board shows each athlete's attempts with their calling order number, and the weight
+  they ask for next. Pick the athlete to call:
+  - A right call takes the attempt: a good lift about seven times in ten, then the automatic
+    progression. Sometimes a coach raises an athlete's next weight, using one of the two
+    changes.
+  - A wrong call says which of the four factors puts the right athlete first, and waits for
+    another pick. **Show who is next** gives the answer.
+  - The score counts the calls that were right first time.
+
+  The starting weights cluster so that ties, and so the later factors, come up often.
 
 ### Other pages
 
@@ -100,6 +118,8 @@ src/
   tools/weight-classes/        Its pages (Overview, Training)
   tools/WeighIn.tsx            Weigh-in: sub menu
   tools/weigh-in/              Its pages (Overview, Practice)
+  tools/LiftingOrder.tsx       Lifting order: sub menu
+  tools/lifting-order/         Its pages (Overview, Practice)
   tools/AthleteCards.tsx       Athlete cards: sub menu
   tools/athlete-cards/         Its pages (InitialCard, Simulation) and the card builder
   components/AthleteCard.tsx   The athlete card
@@ -111,6 +131,8 @@ src/
   lib/classTraining.ts         Board generation and scoring for the class training
   lib/snatchSimulation.ts      Attempt logic for one lift (also used for the clean & jerk)
   lib/weighIn.ts               Category limits, the costume deduction and weigh-in cases
+  lib/liftingOrder.ts          Calling order, attempts and random groups
+  lib/liftingOrderExample.ts   The rulebook's calling order example, also used as a test
   lib/random.ts                Random helpers using Web Crypto
 reference/                     Rulebook PDF
 ```
@@ -134,6 +156,9 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
 - The rulebook does not say that a declaration or change cannot go under the automatic
   progression. The simulation assumes it. The first attempt of a lift can go down to the
   empty bar (26 kg for men, 21 kg for women, TCRR 6.6.4).
+- The lifting order practice only ever raises a weight when a coach makes a change, so the
+  barbell never has to come down. Lowering a weight before the clock starts is allowed by the
+  rules (TCRR 6.6.10) but is not practised yet.
 - The weigh-in practice treats a bodyweight at or below the limit of the category below as too
   light, because a category includes its upper limit. The rulebook's wording for the too light
   case (Regulation to 6.4, point 10) is less clear than for the too heavy case.

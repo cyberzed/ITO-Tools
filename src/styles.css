@@ -403,3 +403,50 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 @media (max-width: 480px) {
   .scale-display { align-items: flex-start; }
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.lifting-order { max-width: 44rem; }
+.bar-status { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin: 8px 0 12px; }
+.order-feedback { margin: 0 0 12px; padding: 10px 14px; border-radius: 8px; font-weight: 600; }
+.order-feedback.ok { background: var(--ok-bg); color: var(--ok); }
+.order-feedback.bad { background: var(--bad-bg); color: var(--fg); }
+.board-wrap { position: relative; overflow-x: auto; margin: 0 0 12px; }
+.order-board { width: 100%; min-width: 26rem; border-collapse: collapse; background: var(--surface); }
+.order-board caption { padding: 0 0 6px; color: var(--muted); font-weight: 600; text-align: left; }
+.order-board th, .order-board td {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.order-board thead th { background: var(--bg); color: var(--muted); font-size: 0.85rem; font-weight: 600; }
+.order-board tbody th { font-weight: 600; }
+.order-board .weight { font-weight: 700; }
+.order-board .order-no { margin-left: 6px; color: var(--muted); font-size: 0.8rem; }
+.order-board td.good .weight { color: var(--ok); }
+.order-board td.no-lift .weight { color: var(--bad); text-decoration: line-through; }
+.order-board td.declared { background: var(--warn-bg); }
+.order-board td.declared .weight { color: var(--warn); }
+.call-button {
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.call-button:hover { border-color: var(--primary); }
+.log-title { margin: 1.5rem 0 0.25rem; font-size: 1.1rem; }
+.order-log { margin: 0; padding-left: 1.4rem; color: var(--muted); }
+.order-log li:first-child { color: var(--fg); }
+.rules ol { padding-left: 1.4rem; }

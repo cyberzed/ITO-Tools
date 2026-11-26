@@ -29,5 +29,10 @@ export const athleteCardPages: ToolPage[] = [
   },
 ];
 
+export const liftingOrderPages: ToolPage[] = [
+  { path: "", title: "Overview", description: "The four factors of the calling order, with the rulebook's example." },
+  { path: "practice", title: "Practice", description: "Call a group of athletes in the right order, attempt by attempt." },
+];
+
 /** The link to a page of a tool. */
 export const pageLink = (toolId: string, page: ToolPage): string => `/${toolId}${page.path ? `/${page.path}` : ""}`;
