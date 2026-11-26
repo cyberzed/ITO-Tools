@@ -196,6 +196,13 @@ The site is served on `itotraining.app`. The domain and its DNS are at Cloudflar
 records for GitHub Pages are set to DNS only, and HTTPS is enforced in the repo's Pages
 settings.
 
+### Previews
+
+Cloudflare Pages builds every branch and pull request (`npm run build`, output `dist`,
+Node.js 22). Its bot comments on the pull request with a preview link and updates the comment
+on each push, so a change can be tried, on a phone too, before it is merged. The live site
+stays on GitHub Pages. Previews are public to anyone with the link.
+
 ## Licence
 
 See [LICENSE](LICENSE).
