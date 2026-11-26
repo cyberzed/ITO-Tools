@@ -1,10 +1,10 @@
 # ITO training tools
 
 Small browser tools for training weightlifting technical officials, whether national (NTO)
-or international (ITO).
-Live at **https://itotraining.app**.
+or international (ITO). Live at **https://itotraining.app**.
 
-It is a static site with no backend. Everything runs in the browser.
+It is a static site with no backend. Everything runs in the browser. It is an independent,
+personal project, made without affiliation to any federation.
 
 The project covers **senior** athletes only. Rules come from the IWF Technical and
 Competition Rules & Regulations 2026 (TCRR). A copy is in
@@ -49,6 +49,15 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
 Not modelled yet: time limits and the final call, the break between the lifts, and several
 athletes sharing the bar (calling order).
 
+### Other pages
+
+- **Front page**: an intro and a card for each tool that lists its pages. It is built from the
+  tool registry, so it follows the tools without any edits.
+- **About**: the intention of the site, the rules used, the no affiliation notice, who made it,
+  where to give feedback and a privacy note. It does not list the tools, so it cannot drift as
+  tools are added. A test checks that.
+- **Source on GitHub**: a small label in the bottom right corner of every page.
+
 ## Development
 
 CI uses Node.js 22.
@@ -65,7 +74,9 @@ npm run preview  # serve the built site
 
 ```
 src/
-  App.tsx                      App shell: top bar, theme toggle, routes
+  App.tsx                      App shell: top bar, front page, routes, source label
+  repo.ts                      The repository address
+  pages/About.tsx              The About page
   tools/registry.ts            List of tools: the menu, routes and front page come from here
   tools/pages.ts               The pages of each tool: its menu and the front page use them
   tools/WeightClasses.tsx      Weight classes: sub menu
@@ -74,6 +85,7 @@ src/
   tools/athlete-cards/         Its pages (InitialCard, Simulation) and the card builder
   components/AthleteCard.tsx   The athlete card
   components/SubNav.tsx        The menu under a tool's heading
+  components/ThemeToggle.tsx   Light and dark mode button
   lib/categories.ts            Senior bodyweight classes and category lookup
   lib/rules.ts                 The 20 kg Rule
   lib/sessionAthlete.ts        Random athlete, kept in session storage
