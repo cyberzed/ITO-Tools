@@ -135,6 +135,9 @@ Every change a visitor would notice gets a line in `CHANGELOG.md`, in the same c
   Raise the minor number for a new tool, page or feature, and the patch number for fixes and
   wording.
 
+Each version gets a git tag such as `v0.2.0`. The deploy workflow adds it to the commit that
+first takes that version live, so nobody tags by hand.
+
 Refactors, tests and changes to the build need no line. The tests fail if the newest version
 in `CHANGELOG.md` and `package.json` differ, or if the file does not follow the format.
 

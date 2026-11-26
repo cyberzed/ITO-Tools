@@ -38,3 +38,27 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Tag the deployed commit with the version from package.json, the first time that
+  # version goes live. Later deploys of the same version leave the tag where it is.
+  tag:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tag the version if it is new
+        run: |
+          version=$(node -p "require('./package.json').version")
+          tag="v$version"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null; then
+            echo "$tag already exists, nothing to do."
+            exit 0
+          fi
+          heading=$(grep -m1 "^## $version - " CHANGELOG.md | sed 's/^## //')
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$tag" -m "Version ${heading:-$version}"
+          git push origin "refs/tags/$tag"
+          echo "Tagged $GITHUB_SHA as $tag."
