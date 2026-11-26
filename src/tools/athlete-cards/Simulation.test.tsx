@@ -14,7 +14,7 @@ const lift = (result: string) => {
   click("Call attempt");
   click(result);
 };
-const results = () => Array.from(screen.getByRole("list", { name: "Results" }).children).map((e) => e.textContent);
+const results = () => Array.from(document.querySelectorAll(".sim-results li")).map((e) => e.textContent);
 
 it("starts at attempt 1 with the starting weight on the bar", () => {
   const a = getSessionAthlete();
@@ -235,4 +235,22 @@ it("does not hold a clean & jerk that already respects the 20 kg Rule", () => {
   playSnatch();
   click(/start clean/i);
   expect(screen.getByRole("button", { name: "Call attempt" }).hasAttribute("disabled")).toBe(false);
+});
+
+it("shows the snatch and the clean & jerk results in two separate rows", () => {
+  render(<Simulation />);
+  expect(screen.getAllByRole("list")).toHaveLength(1);
+  expect(screen.getByRole("list", { name: "Snatch results" })).toBeTruthy();
+  playSnatch();
+  click(/start clean/i);
+  lift("Good lift");
+  const snatchRow = screen.getByRole("list", { name: "Snatch results" });
+  const cjRow = screen.getByRole("list", { name: "Clean & Jerk results" });
+  expect(snatchRow).not.toBe(cjRow);
+  expect(Array.from(snatchRow.children).map((e) => e.textContent)).toEqual([
+    expect.stringMatching(/^Snatch 1:/),
+    expect.stringMatching(/^Snatch 2:/),
+    expect.stringMatching(/^Snatch 3:/),
+  ]);
+  expect(Array.from(cjRow.children).map((e) => e.textContent)).toEqual([expect.stringMatching(/^Clean & Jerk 1:.*Good lift$/)]);
 });

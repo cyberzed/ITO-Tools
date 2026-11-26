@@ -251,15 +251,18 @@ export default function Simulation() {
           </p>
         )}
 
-        <ol className="sim-results" aria-label="Results">
-          {rows.flatMap((r) =>
-            r.state.attempts.map((a, i) => (
-              <li key={`${r.lift}${i}`} className={a.result ?? ""}>
-                {liftName[r.lift]} {i + 1}: {finalWeight(a)} kg{a.result ? `, ${resultText[a.result]}` : ""}
-              </li>
-            )),
-          )}
-        </ol>
+        {/* One row for each lift, so the snatch and the clean & jerk never share a row. */}
+        <div className="sim-results-rows">
+          {rows.map((r) => (
+            <ol key={r.lift} className="sim-results" aria-label={`${liftName[r.lift]} results`}>
+              {r.state.attempts.map((a, i) => (
+                <li key={i} className={a.result ?? ""}>
+                  {liftName[r.lift]} {i + 1}: {finalWeight(a)} kg{a.result ? `, ${resultText[a.result]}` : ""}
+                </li>
+              ))}
+            </ol>
+          ))}
+        </div>
 
         <button className="small-button" onClick={restart}>
           Restart
