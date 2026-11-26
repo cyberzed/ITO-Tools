@@ -112,7 +112,15 @@ it("fills in Required C&J once the first attempt is taken", () => {
     Array.from(container.querySelectorAll(".ac-cell")).find((c) => c.querySelector(".ac-label")?.textContent === "Required C&J")
       ?.textContent;
   expect(required()).toBe("Required C&J");
-  lift("Good lift");
+  // The 20kg Rule box is filled from the entry total right away.
+  const ruleBox = Array.from(container.querySelectorAll(".ac-cell")).find(
+    (c) => c.querySelector(".ac-label")?.textContent === "20kg Rule",
+  );
+  expect(ruleBox?.textContent).toBe(`20kg Rule${a.entryTotal - 20}`);
+  // Changing and calling the first attempt is not enough: it has to be recorded.
+  click("Call attempt");
+  expect(required()).toBe("Required C&J");
+  click("Good lift");
   expect(required()).toBe(`Required C&J${Math.max(0, a.entryTotal - 20 - a.snatchStart)}`);
 });
 
