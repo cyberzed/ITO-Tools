@@ -1,0 +1,64 @@
+import { REPO_URL } from "../repo";
+
+const PROFILE_URL = "https://github.com/cyberzed";
+
+export default function About() {
+  return (
+    <section className="about">
+      <h1>About</h1>
+
+      <h2>What this is</h2>
+      <p>
+        ITO training tools are small browser tools for people who are learning to be, or want to
+        stay sharp as, weightlifting ITOs (International Technical Officials). The goal is to
+        practise the parts of the job that are easier to learn by doing than by reading:
+      </p>
+      <ul>
+        <li>Knowing the senior bodyweight classes and where an athlete belongs.</li>
+        <li>
+          Reading and filling in the athlete card: declarations, changes, the automatic
+          progression, the 20 kg Rule and the total.
+        </li>
+      </ul>
+      <p>
+        The tools are meant for training. They are no substitute for the official rulebook and
+        they are not a reference for a real competition. Check the current IWF Technical and
+        Competition Rules &amp; Regulations when it matters.
+      </p>
+
+      <h2>Not affiliated</h2>
+      <p>
+        This is an independent, personal project. It is made without any affiliation to the IWF,
+        to any national or continental federation, or to any other weightlifting organisation,
+        and none of them have reviewed or endorsed it. Names such as the IWF are used only to say
+        which rules the tools follow.
+      </p>
+
+      <h2>The rules used</h2>
+      <p>
+        The tools follow the IWF Technical and Competition Rules &amp; Regulations 2026 and cover
+        senior athletes only. Where the rulebook does not settle a detail, the simulation makes
+        a simple choice and says so in the project notes on GitHub. Time limits, the final call
+        and calling order with several athletes are not part of the tools yet.
+      </p>
+
+      <h2>About me</h2>
+      <p>
+        I am Stefan Daugaard Poulsen, and I made this site as a personal project. You can find
+        me on <a href={PROFILE_URL}>GitHub</a>.
+      </p>
+
+      <h2>Feedback</h2>
+      <p>
+        Found a mistake, or have an idea? Open an issue on{" "}
+        <a href={`${REPO_URL}/issues`}>GitHub</a>. The source code is open for anyone to read.
+      </p>
+
+      <h2>Privacy</h2>
+      <p>
+        The site has no accounts and no tracking, and it sends nothing about you anywhere. Your
+        browser stores your light or dark choice, and the random athlete for the current visit.
+      </p>
+    </section>
+  );
+}

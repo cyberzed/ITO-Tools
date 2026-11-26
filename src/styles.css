@@ -51,8 +51,8 @@ body {
   background: var(--surface);
 }
 .brand { font-weight: 700; color: var(--primary); text-decoration: none; }
+.topbar nav.site-nav { margin-left: auto; }
 .theme-toggle {
-  margin-left: auto;
   display: grid;
   place-items: center;
   width: 36px;
@@ -313,3 +313,10 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 .sim-results li.out { border-style: dashed; color: var(--muted); }
 .sim-results li.no { border-color: var(--bad); color: var(--bad); }
 .sim-warning { margin: 8px 0; padding: 8px 12px; border-left: 4px solid var(--warn); background: var(--warn-bg); color: var(--fg); }
+
+/* About page */
+.about { max-width: 42rem; }
+.about h2 { margin: 1.5rem 0 0.25rem; font-size: 1.1rem; }
+.about p, .about li { color: var(--fg); }
+.about ul { padding-left: 1.4rem; }
+.about a { color: var(--primary); }

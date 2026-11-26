@@ -1,7 +1,8 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeAll, expect, it } from "vitest";
-import App, { REPO_URL } from "./App";
+import App from "./App";
+import { REPO_URL } from "./repo";
 
 // jsdom has no matchMedia, which the theme toggle reads.
 beforeAll(() => {
@@ -32,4 +33,14 @@ it("links to the source on GitHub from every page", () => {
 
 it("points at the repository", () => {
   expect(REPO_URL).toBe("https://github.com/cyberzed/ITO-Tools");
+});
+
+it("has an About link in the top bar that opens the about page", () => {
+  render(
+    <MemoryRouter initialEntries={["/about"]}>
+      <App />
+    </MemoryRouter>,
+  );
+  expect(screen.getByRole("link", { name: "About" }).className).toContain("active");
+  expect(screen.getByRole("heading", { name: "About", level: 1 })).toBeTruthy();
 });

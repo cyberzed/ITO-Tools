@@ -1,9 +1,8 @@
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import ThemeToggle from "./components/ThemeToggle";
+import About from "./pages/About";
+import { REPO_URL } from "./repo";
 import { tools } from "./tools/registry";
-
-/** The source code, for anyone who wants to look around. */
-export const REPO_URL = "https://github.com/cyberzed/ITO-Tools";
 
 export default function App() {
   return (
@@ -19,11 +18,15 @@ export default function App() {
             </NavLink>
           ))}
         </nav>
+        <nav aria-label="Site" className="site-nav">
+          <NavLink to="/about">About</NavLink>
+        </nav>
         <ThemeToggle />
       </header>
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
           {tools.map((t) => (
             <Route key={t.id} path={`/${t.id}/*`} element={<t.component />} />
           ))}
