@@ -36,3 +36,9 @@ it("does not list the tools, so it cannot drift as tools are added", () => {
   for (const t of tools) expect(text).not.toContain(t.title.toLowerCase());
   expect(container.querySelectorAll("li")).toHaveLength(0);
 });
+
+it("orders the sections: what it is, the rules, not affiliated, about me, feedback, privacy", () => {
+  render(<About />);
+  const headings = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
+  expect(headings).toEqual(["What this is", "The rules used", "Not affiliated", "About me", "Feedback", "Privacy"]);
+});

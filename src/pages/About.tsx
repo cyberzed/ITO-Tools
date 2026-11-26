@@ -19,15 +19,15 @@ export default function About() {
         Competition Rules &amp; Regulations when it matters.
       </p>
 
-      <h2>Not affiliated</h2>
-      <p>This is an independent, personal project, made without affiliation to any federation.</p>
-
       <h2>The rules used</h2>
       <p>
         The tools follow the IWF Technical and Competition Rules &amp; Regulations 2026 and cover
         senior athletes only. Where the rulebook does not settle a detail, the tools make a
         simple choice, and the project notes on GitHub say which.
       </p>
+
+      <h2>Not affiliated</h2>
+      <p>This is an independent, personal project, made without affiliation to any federation.</p>
 
       <h2>About me</h2>
       <p>
