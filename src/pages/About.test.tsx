@@ -63,3 +63,14 @@ it("credits Mike Höffler as an inspiration and links to his site", () => {
   expect(link.getAttribute("target")).toBe("_blank");
   expect(link.getAttribute("rel")).toContain("noopener");
 });
+
+it("links every mention of the rulebook to the 2026 edition on the IWF site", () => {
+  render(<About />);
+  const links = screen.getAllByRole("link", { name: /Technical and Competition Rules/ });
+  expect(links).toHaveLength(2);
+  for (const link of links) {
+    expect(link.getAttribute("href")).toBe("https://iwf.sport/wp-content/uploads/downloads/2026/10/IWF-TCRR-2026.pdf");
+    expect(link.getAttribute("target")).toBe("_blank");
+    expect(link.getAttribute("rel")).toContain("noopener");
+  }
+});

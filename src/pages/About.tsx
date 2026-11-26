@@ -2,6 +2,14 @@ import { REPO_URL } from "../repo";
 
 const PROFILE_URL = "https://github.com/cyberzed";
 const INSPIRATION_URL = "https://hoeffler.org";
+/** The 2026 edition on the IWF site. */
+const TCRR_URL = "https://iwf.sport/wp-content/uploads/downloads/2026/10/IWF-TCRR-2026.pdf";
+
+const Tcrr = () => (
+  <a href={TCRR_URL} target="_blank" rel="noopener noreferrer">
+    IWF Technical and Competition Rules &amp; Regulations
+  </a>
+);
 
 export default function About() {
   return (
@@ -17,15 +25,15 @@ export default function About() {
       </p>
       <p>
         The tools are meant for training. They are no substitute for the official rulebook and
-        they are not a reference for a real competition. Check the current IWF Technical and
-        Competition Rules &amp; Regulations when it matters.
+        they are not a reference for a real competition. Check the current <Tcrr /> when it
+        matters.
       </p>
 
       <h2>The rules used</h2>
       <p>
-        The tools follow the IWF Technical and Competition Rules &amp; Regulations 2026 and cover
-        senior athletes only. Where the rulebook does not settle a detail, the tools make a
-        simple choice, and the project notes on GitHub say which.
+        The tools follow the <Tcrr /> 2026 and cover senior athletes only. Where the rulebook does
+        not settle a detail, the tools make a simple choice, and the project notes on GitHub say
+        which.
       </p>
 
       <h2>Not affiliated</h2>
