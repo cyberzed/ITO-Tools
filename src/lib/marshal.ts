@@ -1,5 +1,5 @@
 /**
- * The Chief Marshal's table: four athletes in a snatch, a clock that runs for the athlete who is
+ * The Chief Marshal's table: two or four athletes in a snatch, a clock that runs for the athlete who is
  * called, and coaches who hand in changes of weight. The Marshal accepts or declines each one.
  *
  * Source: IWF TCRR 2026, 7.9 and the Regulation to 7.9 (Chief Marshal), 6.6.1 to 6.6.3, 6.6.7,
@@ -24,7 +24,10 @@ import {
   type SimState,
 } from "./snatchSimulation";
 
-export const ATHLETES = 4;
+/** The group sizes to practise with. Two is the default, four gives a fuller table. */
+export const GROUP_SIZES = [2, 4] as const;
+export type GroupSize = (typeof GROUP_SIZES)[number];
+export const DEFAULT_SIZE: GroupSize = 2;
 /** An athlete has one minute, or two minutes for an attempt right after their own (6.6.7). */
 export const ONE_MINUTE = 60;
 export const TWO_MINUTES = 120;
@@ -219,13 +222,17 @@ function birthDate(rng: Rng): string {
   return `${pad(rng.int(1, 28))}.${pad(rng.int(1, 12))}.${rng.int(1990, 2008)}`;
 }
 
-/** A new group of four athletes in the snatch, with the first athlete called and the clock stopped at its start. */
-export function createSim(rng: Rng = defaultRng, gender: Gender = rng.pick(["M", "F"] as const)): Sim {
+/** A new group in the snatch, with the first athlete called and the clock stopped at its start. */
+export function createSim(
+  rng: Rng = defaultRng,
+  gender: Gender = rng.pick(["M", "F"] as const),
+  size: GroupSize = DEFAULT_SIZE,
+): Sim {
   const base = gender === "M" ? rng.int(100, 140) : rng.int(70, 100);
   // A few starting weights for the whole group, so athletes share one and the later factors of the calling order come up.
   const weights = [base + rng.int(-5, 5), base + rng.int(-5, 5)];
   const lots: number[] = [];
-  while (lots.length < ATHLETES) {
+  while (lots.length < size) {
     const lot = rng.int(1, MAX_LOT);
     if (!lots.includes(lot)) lots.push(lot);
   }
@@ -254,8 +261,8 @@ export function createSim(rng: Rng = defaultRng, gender: Gender = rng.pick(["M",
   });
 
   // Before the group starts, some coaches have already changed the first attempt once or twice.
-  const used = rng.int(0, ATHLETES - 1);
-  const other = (used + rng.int(1, ATHLETES - 1)) % ATHLETES;
+  const used = rng.int(0, size - 1);
+  const other = (used + rng.int(1, size - 1)) % size;
   const raised = athletes.map((a, i) => {
     const times = i === used ? 2 : i === other && rng.chance(60) ? 1 : 0;
     let lift = a.lift;
@@ -466,5 +473,5 @@ export function next(sim: Sim, rng: Rng = defaultRng): Sim {
   return sim.done ? cleared : startRound(cleared, rng);
 }
 
-/** The attempts of a group of four are three each. */
-export const TOTAL_ATTEMPTS = ATHLETES * ATTEMPTS;
+/** Every athlete takes three attempts. */
+export const totalAttempts = (sim: Sim): number => sim.athletes.length * ATTEMPTS;

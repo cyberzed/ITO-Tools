@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
-  ATHLETES,
+  DEFAULT_SIZE,
   FINAL_CALL_S,
+  GROUP_SIZES,
   ONE_MINUTE,
-  TOTAL_ATTEMPTS,
   TWO_MINUTES,
   advance,
   createSim,
@@ -15,6 +15,7 @@ import {
   openAttempt,
   outcomeOf,
   secondsLeft,
+  totalAttempts,
   type ChangeRequest,
   type Rng,
   type RequestFacts,
@@ -85,9 +86,16 @@ describe("judgeRequest", () => {
 });
 
 describe("a new group", () => {
-  it("has four athletes and calls the first by the calling order, with the clock at the start", () => {
-    const sim = createSim(seeded(1));
-    expect(sim.athletes).toHaveLength(ATHLETES);
+  it("has two athletes unless four are asked for", () => {
+    expect(DEFAULT_SIZE).toBe(2);
+    expect(GROUP_SIZES).toEqual([2, 4]);
+    expect(createSim(seeded(1)).athletes).toHaveLength(2);
+    expect(createSim(seeded(1), "M", 4).athletes).toHaveLength(4);
+    expect(createSim(seeded(1), "F", 2).athletes.every((a) => a.gender === "F")).toBe(true);
+  });
+
+  it("calls the first athlete by the calling order, with the clock at the start", () => {
+    const sim = createSim(seeded(1), "M", 4);
     expect(sim.round).not.toBeNull();
     expect(sim.round!.start).toBe(nextLifter(lifters(sim))!.start);
     expect(sim.round!.allocated).toBe(ONE_MINUTE);
@@ -97,11 +105,13 @@ describe("a new group", () => {
   });
 
   it("has used changes on some first attempts, never more than two", () => {
-    for (let seed = 1; seed <= 40; seed++) {
-      const sim = createSim(seeded(seed));
-      const used = sim.athletes.map((a) => a.lift.attempts[0].changes.length);
-      expect(Math.max(...used)).toBe(2);
-      for (const n of used) expect(n).toBeLessThanOrEqual(2);
+    for (const size of GROUP_SIZES) {
+      for (let seed = 1; seed <= 40; seed++) {
+        const sim = createSim(seeded(seed), "M", size);
+        const used = sim.athletes.map((a) => a.lift.attempts[0].changes.length);
+        expect(Math.max(...used)).toBe(2);
+        for (const n of used) expect(n).toBeLessThanOrEqual(2);
+      }
     }
   });
 
@@ -277,10 +287,10 @@ describe("the athlete raises the bar", () => {
 });
 
 describe("a whole snatch", () => {
-  it("runs to the end with every athlete's three attempts, whatever the Marshal does", () => {
+  it.each(GROUP_SIZES)("runs to the end with every athlete's three attempts in a group of %i, whatever the Marshal does", (size) => {
     for (let seed = 1; seed <= 40; seed++) {
       const rng = seeded(seed);
-      let sim = createSim(rng);
+      let sim = createSim(rng, "M", size);
       let requests = 0;
       let guard = 0;
       while (!sim.done && guard++ < 5000) {
@@ -297,7 +307,8 @@ describe("a whole snatch", () => {
       }
       requests += sim.report?.items.length ?? 0;
       expect(sim.done).toBe(true);
-      expect(sim.taken).toBe(TOTAL_ATTEMPTS);
+      expect(sim.taken).toBe(totalAttempts(sim));
+      expect(sim.taken).toBe(size * 3);
       for (const a of sim.athletes) {
         expect(attemptsTaken(a.lift)).toBe(3);
         expect(a.orders).toEqual(a.orders.slice().sort((x, y) => x - y));
@@ -310,7 +321,7 @@ describe("a whole snatch", () => {
   it("only hands in cards whose verdict follows the rule", () => {
     for (let seed = 1; seed <= 40; seed++) {
       const rng = seeded(seed);
-      let sim = createSim(rng);
+      let sim = createSim(rng, "F", seed % 2 ? 2 : 4);
       let guard = 0;
       while (!sim.done && guard++ < 5000) {
         if (sim.report) {

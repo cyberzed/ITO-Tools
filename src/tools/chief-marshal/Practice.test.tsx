@@ -19,7 +19,7 @@ function seeded(seed: number): Rng {
 
 /** A group where the called athlete lifts at 40 seconds, with one valid card for a waiting athlete. */
 function scripted(): { sim: Sim; waiting: number } {
-  const sim = marshal.createSim(seeded(21));
+  const sim = marshal.createSim(seeded(21), "M", 4);
   const called = sim.round!.start;
   const waiting = sim.athletes.find((a) => a.start !== called && openAttempt(a)!.changes < 2)!;
   const open = openAttempt(waiting)!;
@@ -34,6 +34,8 @@ function scripted(): { sim: Sim; waiting: number } {
   return { sim: { ...sim, round: { ...sim.round!, arrivals: [], liftAt: 40, requests: [request] } }, waiting: waiting.start };
 }
 
+const realCreate = marshal.createSim;
+
 beforeEach(() => {
   vi.useFakeTimers();
 });
@@ -46,12 +48,12 @@ afterEach(() => {
 const run = (seconds: number) => act(() => void vi.advanceTimersByTime(seconds * 1000));
 const clock = () => screen.getByLabelText("The timing clock").textContent ?? "";
 
-it("shows four athlete cards and a clock that waits for Start", () => {
+it("shows two athlete cards and a clock that waits for Start", () => {
   vi.spyOn(marshal, "createSim").mockReturnValue(marshal.createSim(seeded(5)));
   const { container } = render(<Practice />);
-  expect(container.querySelectorAll(".marshal-card")).toHaveLength(4);
+  expect(container.querySelectorAll(".marshal-card")).toHaveLength(2);
   expect(container.querySelectorAll(".marshal-card.on-clock")).toHaveLength(1);
-  expect(container.querySelectorAll(".ac-page")).toHaveLength(4); // the snatch page only
+  expect(container.querySelectorAll(".ac-page")).toHaveLength(2); // the snatch page only
   expect(clock()).toContain("1:00");
   expect(screen.getByText(/Press Start/)).toBeTruthy();
   run(10);
@@ -105,6 +107,27 @@ it("marks a card that was left unanswered as missed", () => {
   run(45);
   expect(screen.getByText("Missed.")).toBeTruthy();
   expect(screen.getByText("Correct: 0 of 1")).toBeTruthy();
+});
+
+it("expands the group to four lifters, side by side, and back to two", () => {
+  const spy = vi.spyOn(marshal, "createSim").mockImplementation((_rng, _gender, size) => realCreate(seeded(8), "M", size));
+  const { container } = render(<Practice />);
+  expect(container.querySelectorAll(".marshal-card")).toHaveLength(2);
+  fireEvent.change(screen.getByLabelText(/Lifters/), { target: { value: "4" } });
+  expect(spy).toHaveBeenLastCalledWith(expect.anything(), undefined, 4);
+  expect(container.querySelectorAll(".marshal-card")).toHaveLength(4);
+  expect((container.querySelector(".marshal-cards") as HTMLElement).style.getPropertyValue("--cols")).toBe("4");
+  fireEvent.change(screen.getByLabelText(/Lifters/), { target: { value: "2" } });
+  expect(container.querySelectorAll(".marshal-card")).toHaveLength(2);
+});
+
+it("stops the clock when the group size changes", () => {
+  vi.spyOn(marshal, "createSim").mockImplementation((_rng, _gender, size) => realCreate(seeded(8), "M", size));
+  render(<Practice />);
+  fireEvent.click(screen.getByRole("button", { name: "Start" }));
+  fireEvent.change(screen.getByLabelText(/Lifters/), { target: { value: "4" } });
+  expect(screen.getByRole("button", { name: "Start" })).toBeTruthy();
+  expect(clock()).toContain("1:00");
 });
 
 it("starts a new group", () => {

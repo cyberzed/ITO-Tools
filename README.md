@@ -83,9 +83,10 @@ A separate tool from the athlete card Simulation, which follows one athlete.
 - **Overview**: the Chief Marshal's job (TCRR 7.9) and what to check on every card: whole kg, two
   changes for each declaration, no reduction once the clock has started, and an increase before
   the final call at 30 seconds before the end of the time.
-- **Practice**: the Marshals' table for a snatch with four athletes.
-  - Four athlete cards (the snatch page) are on the screen, and the athletes are called in the
-    calling order. A clock runs for the athlete who is called: one minute, or two minutes for
+- **Practice**: the Marshals' table for a snatch with two athletes, or four if you choose
+  **Lifters: 4** (which starts a new group).
+  - The athlete cards (the snatch page) sit side by side, wider than the page if needed and with
+    a sideways scroll on a narrow screen. The athletes are called in the calling order. A clock runs for the athlete who is called: one minute, or two minutes for
     an athlete who lifts twice in a row. The speed can be 1x, 2x or 4x.
   - Coaches hand in cards at random moments, for the athlete on the clock and for the ones
     waiting: a raise, a reduction or an odd weight. Some athletes have used their changes

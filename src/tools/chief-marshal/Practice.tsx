@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import AthleteCard from "../../components/AthleteCard";
 import {
+  DEFAULT_SIZE,
   FINAL_CALL_S,
-  TOTAL_ATTEMPTS,
+  GROUP_SIZES,
   advance,
   createSim,
   decide,
@@ -10,8 +11,10 @@ import {
   formatClock,
   next,
   secondsLeft,
+  totalAttempts,
   type ChangeRequest,
   type Decision,
+  type GroupSize,
   type Report,
   type Sim,
 } from "../../lib/marshal";
@@ -85,7 +88,8 @@ function ReportPanel({ report, done, onNext }: { report: Report; done: boolean; 
 }
 
 export default function Practice() {
-  const [sim, setSim] = useState<Sim>(() => createSim());
+  const [size, setSize] = useState<GroupSize>(DEFAULT_SIZE);
+  const [sim, setSim] = useState<Sim>(() => createSim(defaultRng, undefined, DEFAULT_SIZE));
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(1);
 
@@ -102,15 +106,16 @@ export default function Practice() {
   const nameOf = (start: number) => sim.athletes.find((a) => a.start === start)!.name;
   const finished = sim.done && !sim.report && !sim.round;
 
-  function restart() {
-    setSim(createSim());
+  function restart(newSize: GroupSize = size) {
+    setSize(newSize);
+    setSim(createSim(defaultRng, undefined, newSize));
     setRunning(false);
   }
 
   return (
     <div className="marshal">
       <p className="muted">
-        You are the Chief Marshal. Coaches hand in cards while the clock runs. Accept or decline each
+        You are the Chief Marshal. Start with two lifters, or pick four for a fuller table. Coaches hand in cards while the clock runs. Accept or decline each
         one. When the athlete raises the bar, your decisions are checked.
       </p>
 
@@ -128,7 +133,17 @@ export default function Practice() {
             ))}
           </select>
         </label>
-        <button className="small-button" onClick={restart}>
+        <label className="marshal-speed">
+          Lifters{" "}
+          <select value={size} onChange={(e) => restart(Number(e.target.value) as GroupSize)}>
+            {GROUP_SIZES.map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button className="small-button" onClick={() => restart()}>
           New group
         </button>
         <span className="muted" aria-live="polite">
@@ -144,7 +159,7 @@ export default function Practice() {
               #{called.start} {called.name}
             </strong>
             <div>
-              Attempt {round.attempt} of 3 ({sim.taken + 1} of {TOTAL_ATTEMPTS}), {round.allocated} seconds
+              Attempt {round.attempt} of 3 ({sim.taken + 1} of {totalAttempts(sim)}), {round.allocated} seconds
               {round.allocated > 60 ? ", two attempts in a row" : ""}
             </div>
             {!running && <div className="muted">Press Start. The clock is stopped.</div>}
@@ -189,19 +204,21 @@ export default function Practice() {
           <p className="training-result">
             The snatch is over. You answered {sim.score.right} of {sim.score.total} cards right.
           </p>
-          <button className="small-button primary" onClick={restart}>
+          <button className="small-button primary" onClick={() => restart()}>
             New group
           </button>
         </div>
       )}
 
       <h2 className="marshal-h">Athlete cards</h2>
-      <div className="marshal-cards">
+      <div className="marshal-cards-wrap">
+      <div className="marshal-cards" style={{ "--cols": sim.athletes.length } as CSSProperties}>
         {sim.athletes.map((a) => (
           <div key={a.start} className={`marshal-card ${round?.start === a.start ? "on-clock" : ""}`}>
             <AthleteCard data={cardOfAthlete(a)} snatchOnly />
           </div>
         ))}
+      </div>
       </div>
     </div>
   );
