@@ -5,7 +5,6 @@ import ToolMenu from "./components/ToolMenu";
 import About from "./pages/About";
 import WhatsNew from "./pages/WhatsNew";
 import { REPO_URL } from "./repo";
-import { pageLink } from "./tools/pages";
 import { tools } from "./tools/registry";
 import { VERSION, hasUnseenChanges, markChangesSeen } from "./version";
 
@@ -87,31 +86,40 @@ function Home() {
     <section className="home">
       <h1>ITO training tools</h1>
       <p className="lead">
-        Small browser tools for training weightlifting technical officials, whether you are an NTO or
-        an ITO. Pick a tool to practise the parts of the job that are easier to learn by doing than
-        by reading.
+        Practise the work of a weightlifting technical official by doing it, not only by reading
+        about it.
       </p>
-      <div className="cards">
-        {tools.map((t) => (
-          <article key={t.id} className="card">
-            <h2>
-              <NavLink to={`/${t.id}`}>{t.title}</NavLink>
-            </h2>
-            <p>{t.description}</p>
-            <ul>
-              {t.pages.map((page) => (
-                <li key={page.path}>
-                  <NavLink to={pageLink(t.id, page)}>{page.title}</NavLink>
-                  <span>{page.description}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
+
+      <div className="intent">
+        <h2>What it is for</h2>
+        <p>
+          The rulebook tells you what is allowed. It does not hand you a card with seconds left on
+          the clock, or a scale that shows a number right at the limit. These tools put you in
+          those situations, whether you are an NTO or an ITO, so the rules are in your hands when
+          the real moment comes.
+        </p>
+
+        <h2>How it works</h2>
+        <ul>
+          <li>
+            Each exercise is a small situation from a competition: a reading on the scale, a call
+            to make, a card to accept or decline.
+          </li>
+          <li>
+            You answer, and you are told why, with the rule behind it. The rules are the IWF
+            Technical and Competition Rules &amp; Regulations 2026, for senior athletes.
+          </li>
+          <li>
+            Everything runs in your browser. There is nothing to sign up for, and a score lasts
+            only for your visit.
+          </li>
+        </ul>
+        <p className="muted">
+          It is for training, and no substitute for the rulebook.{" "}
+          <NavLink to="/about">Read more about the project.</NavLink>
+        </p>
+        <p>Pick a tool in the menu above, and go straight to the page you want from its arrow.</p>
       </div>
-      <p className="muted home-note">
-        Nothing to sign up for: everything runs in your browser. <NavLink to="/about">Read more about the project.</NavLink>
-      </p>
     </section>
   );
 }

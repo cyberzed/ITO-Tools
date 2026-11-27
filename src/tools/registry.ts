@@ -13,7 +13,7 @@ export interface Tool {
   component: ComponentType;
 }
 
-/** Add a new tool here and it shows up in the menu, the router and the front page automatically. */
+/** Add a new tool here and it shows up in the menu and the router automatically. */
 export const tools: Tool[] = [
   {
     id: "weigh-in",

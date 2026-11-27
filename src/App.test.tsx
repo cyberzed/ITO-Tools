@@ -3,7 +3,6 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeAll, expect, it } from "vitest";
 import App from "./App";
 import { REPO_URL } from "./repo";
-import { pageLink } from "./tools/pages";
 import { tools } from "./tools/registry";
 import { VERSION } from "./version";
 
@@ -58,21 +57,19 @@ it("has an About link in the top bar that opens the about page", () => {
   expect(screen.getByRole("heading", { name: "About", level: 1 })).toBeTruthy();
 });
 
-it("lists every page of every tool on the front page, straight from the registry", () => {
+it("has a front page about what the site is for, and leaves the tools to the menu", () => {
   render(
     <MemoryRouter initialEntries={["/"]}>
       <App />
     </MemoryRouter>,
   );
-  for (const tool of tools) {
-    const card = screen.getByRole("heading", { name: tool.title, level: 2 }).closest("article")!;
-    expect(within(card).getByText(tool.description)).toBeTruthy();
-    for (const page of tool.pages) {
-      const link = within(card).getByRole("link", { name: page.title });
-      expect(link.getAttribute("href")).toBe(pageLink(tool.id, page));
-      expect(within(card).getByText(page.description)).toBeTruthy();
-    }
-  }
+  const headings = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
+  expect(headings).toEqual(["What it is for", "How it works"]);
+  // The tools and their pages are in the top bar, so the front page does not repeat them.
+  expect(document.querySelector(".card")).toBeNull();
+  expect(screen.getByText(/Pick a tool in the menu above/)).toBeTruthy();
+  expect(screen.getByText(/no substitute for the rulebook/)).toBeTruthy();
+  expect(screen.getByText(/nothing to sign up for/)).toBeTruthy();
 });
 
 it("gives the front page an intro and a link to the about page", () => {
@@ -86,7 +83,7 @@ it("gives the front page an intro and a link to the about page", () => {
   expect(about).toContain("/about");
 });
 
-it("has the same pages in a tool's own menu as on the front page", () => {
+it("builds a tool's own menu from the pages of the tool", () => {
   for (const tool of tools) {
     render(
       <MemoryRouter initialEntries={[`/${tool.id}`]}>
