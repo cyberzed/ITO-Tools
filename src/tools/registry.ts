@@ -1,7 +1,15 @@
 import type { ComponentType } from "react";
 import AthleteCards from "./AthleteCards";
+import ChiefMarshal from "./ChiefMarshal";
 import LiftingOrder from "./LiftingOrder";
-import { athleteCardPages, liftingOrderPages, weighInPages, weightClassPages, type ToolPage } from "./pages";
+import {
+  athleteCardPages,
+  chiefMarshalPages,
+  liftingOrderPages,
+  weighInPages,
+  weightClassPages,
+  type ToolPage,
+} from "./pages";
 import WeighIn from "./WeighIn";
 import WeightClasses from "./WeightClasses";
 
@@ -44,5 +52,12 @@ export const tools: Tool[] = [
     description: "Call the athletes of a group in the right order.",
     pages: liftingOrderPages,
     component: LiftingOrder,
+  },
+  {
+    id: "chief-marshal",
+    title: "Chief Marshal",
+    description: "Accept or decline the changes coaches hand in, against the clock.",
+    pages: chiefMarshalPages,
+    component: ChiefMarshal,
   },
 ];

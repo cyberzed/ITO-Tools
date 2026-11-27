@@ -56,8 +56,9 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
     out on the card with a signed note. The clean & jerk starting weight from weigh-in stays
     on the card.
 
-Not modelled yet: time limits and the final call, and the break between the lifts. The calling
-order for a whole group is its own tool, Lifting order.
+Not modelled in the Simulation: time limits and the final call, and the break between the
+lifts. The Chief Marshal practice runs the clock and the final call for a group. The calling
+order for a whole group is Lifting order.
 
 ### Lifting order
 
@@ -76,6 +77,27 @@ A separate tool from the athlete card Simulation, which follows one athlete.
   - The score counts the calls that were right first time.
 
   The starting weights cluster so that ties, and so the later factors, come up often.
+
+### Chief Marshal
+
+- **Overview**: the Chief Marshal's job (TCRR 7.9) and what to check on every card: whole kg, two
+  changes for each declaration, no reduction once the clock has started, and an increase before
+  the final call at 30 seconds before the end of the time.
+- **Practice**: the Marshals' table for a snatch with two athletes, or three or four if you
+  choose **Lifters** (which starts a new group).
+  - The athlete cards (the snatch page) sit side by side, wider than the page if needed and with
+    a sideways scroll on a narrow screen. The athletes are called in the calling order. A clock runs for the athlete who is called: one minute, or two minutes for
+    an athlete who lifts twice in a row. The speed can be 1x, 2x or 4x.
+  - Coaches hand in cards at random moments, for the athlete on the clock and for the ones
+    waiting: a raise, a reduction or an odd weight. Some athletes have used their changes
+    already. Press **Accept** or **Decline** for each card.
+  - You get no feedback while the clock runs. When the athlete raises the bar (or the time runs
+    out), the clock stops and each card is checked against the rules, with the rule reference.
+    A card you accepted rightly is written on the athlete's card, and the attempt gets a result.
+    A card you left unanswered counts as missed.
+  - The time that counts for a card is the clock reading when it was handed in, shown on the
+    card, not the moment you answer.
+  - The score counts the cards answered right, for the visit only.
 
 ### Other pages
 
@@ -120,6 +142,8 @@ src/
   tools/weigh-in/              Its pages (Overview, Practice)
   tools/LiftingOrder.tsx       Lifting order: sub menu
   tools/lifting-order/         Its pages (Overview, Practice)
+  tools/ChiefMarshal.tsx       Chief Marshal: sub menu
+  tools/chief-marshal/         Its pages (Overview, Practice) and the card for a Marshal athlete
   tools/AthleteCards.tsx       Athlete cards: sub menu
   tools/athlete-cards/         Its pages (InitialCard, Simulation) and the card builder
   components/AthleteCard.tsx   The athlete card
@@ -133,6 +157,7 @@ src/
   lib/weighIn.ts               Category limits, the costume deduction and weigh-in cases
   lib/liftingOrder.ts          Calling order, attempts and random groups
   lib/liftingOrderExample.ts   The rulebook's calling order example, also used as a test
+  lib/marshal.ts               The Marshals' table: clock, cards handed in, and the check of the decisions
   lib/random.ts                Random helpers using Web Crypto
 reference/                     Rulebook PDF
 ```
@@ -161,7 +186,12 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
   empty bar (26 kg for men, 21 kg for women, TCRR 6.6.4).
 - The lifting order practice only ever raises a weight when a coach makes a change, so the
   barbell never has to come down. Lowering a weight before the clock starts (TCRR 6.6.10) is
-  rare in practice and is mostly about timing, so it belongs in a future timing exercise.
+  rare in practice and is mostly about timing, so it is part of the Chief Marshal practice.
+- The Chief Marshal practice uses the order of the paragraphs in TCRR 6.6.10 to 6.6.15 for the
+  rule numbers, because the PDF prints those numbers in a block above the text. It never hands in
+  a reduction below the automatic progression or the empty bar, because the rulebook does not
+  say what happens below it. The clock keeps running while an accepted increase is loaded,
+  although the rulebook stops it while a heavier weight is set up (6.6.15).
 - The weigh-in practice treats a bodyweight at or below the limit of the category below as too
   light, because a category includes its upper limit. The rulebook's wording for the too light
   case (Regulation to 6.4, point 10) is less clear than for the too heavy case.

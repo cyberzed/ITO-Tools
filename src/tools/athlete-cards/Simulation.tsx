@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AthleteCard, { type AthleteCardData, type Attempt } from "../../components/AthleteCard";
+import AthleteCard, { type AthleteCardData } from "../../components/AthleteCard";
 import {
   MAX_CHANGES,
   attemptsTaken,
@@ -23,41 +23,11 @@ import {
   type Step,
 } from "../../lib/snatchSimulation";
 import { getSessionAthlete } from "../../lib/sessionAthlete";
-import { cardFor } from "./card";
+import { cardAttempts, cardFor } from "./card";
 
 type Lift = "snatch" | "cj";
 const liftName: Record<Lift, string> = { snatch: "Snatch", cj: "Clean & Jerk" };
 const resultText: Record<Result, string> = { good: "Good lift", no: "No lift" };
-
-/** The three attempts of a lift as the card shows them. */
-function cardAttempts(state: SimState, signature: string, startingWeight: number): [Attempt, Attempt, Attempt] {
-  const out: Attempt[] = [0, 1, 2].map((i) => {
-    const a = state.attempts[i];
-    // Attempts the athlete gave up are crossed out and carry a signed note.
-    const given =
-      state.closed && i >= attemptsTaken(state)
-        ? ({ withdrawn: state.closed, withdrawnSignature: signature } as const)
-        : {};
-    // Not declared yet, but the automatic progression is already printed once the attempt before has a result.
-    if (!a) {
-      // The starting weight was declared and signed at weigh-in, so it is on the card even if the lift never starts.
-      const weighIn = i === 0 ? { declaration: startingWeight, declarationSignature: signature } : {};
-      return { autoProgression: automaticProgression(state, i), ...weighIn, ...given };
-    }
-    return {
-      ...given,
-      autoProgression: automaticProgression(state, i),
-      declaration: a.declaration,
-      declarationSignature: signature,
-      change1: a.changes[0] !== undefined ? { weight: a.changes[0], signature } : undefined,
-      change2: a.changes[1] !== undefined ? { weight: a.changes[1], signature } : undefined,
-      // A good lift circles the final weight and a no lift strikes it. Unused change boxes are struck too.
-      final: a.result ? (a.changes.length as 0 | 1 | 2) : undefined,
-      result: a.result,
-    };
-  });
-  return out as [Attempt, Attempt, Attempt];
-}
 
 const closedText: Record<Closed, string> = { abstain: "Abstained", withdraw: "Withdrawn" };
 
