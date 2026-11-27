@@ -12,6 +12,9 @@ Write each line for the people who use the site, not for developers.
 
 ## 0.5.1 - 2026-11-27
 
+### Added
+- Each tool in the top bar has an arrow with a list of its pages, so you can go straight to a page. The list also opens when the mouse rests on the tool.
+
 ### Changed
 - The weight classes and the class training now sit in the Weigh-in menu, next to the weigh-in rules and practice.
 - The athlete cards, the lifting order and the Marshals' table now sit in one Chief Marshal menu. The top bar has two tools: Weigh-in and Chief Marshal. Old links still work.

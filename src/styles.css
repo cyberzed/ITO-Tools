@@ -76,6 +76,45 @@ body {
 }
 .topbar nav a:hover { background: var(--border); }
 .topbar nav a.active { background: var(--primary); color: var(--primary-fg); }
+.topbar { position: relative; }
+/* A tool in the top bar: the link, an arrow, and a list of its pages. */
+.tool-menu { position: relative; display: flex; align-items: stretch; }
+.tool-menu > a { border-radius: 6px 0 0 6px; }
+.menu-toggle {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 0 6px 6px 0;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+}
+.menu-toggle:hover { background: var(--border); }
+.tool-menu:has(> a.active) .menu-toggle { background: var(--primary); color: var(--primary-fg); }
+.menu-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  min-width: 16rem;
+  max-width: min(24rem, calc(100vw - 32px));
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+.topbar nav .menu-list a { display: block; padding: 8px 10px; }
+.menu-list a span { display: block; font-size: 0.8rem; font-weight: 400; opacity: 0.7; }
+@media (max-width: 640px) {
+  .tool-menu { position: static; }
+  .menu-list { right: 16px; left: 16px; width: auto; min-width: 0; max-width: none; }
+}
 main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 /* A small label that floats in the bottom right corner of the window. */
 .site-footer { position: fixed; right: 12px; bottom: 12px; z-index: 10; display: flex; gap: 6px; }

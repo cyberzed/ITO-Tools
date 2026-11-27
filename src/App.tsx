@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ThemeToggle from "./components/ThemeToggle";
+import ToolMenu from "./components/ToolMenu";
 import About from "./pages/About";
 import WhatsNew from "./pages/WhatsNew";
 import { REPO_URL } from "./repo";
@@ -39,9 +40,7 @@ export default function App() {
         </NavLink>
         <nav aria-label="Tools">
           {tools.map((t) => (
-            <NavLink key={t.id} to={`/${t.id}`}>
-              {t.title}
-            </NavLink>
+            <ToolMenu key={t.id} tool={t} />
           ))}
         </nav>
         <nav aria-label="Site" className="site-nav">

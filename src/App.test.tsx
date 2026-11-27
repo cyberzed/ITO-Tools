@@ -1,4 +1,4 @@
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeAll, expect, it } from "vitest";
 import App from "./App";
@@ -159,4 +159,84 @@ it("has two tools in the top bar: Weigh-in and Chief Marshal", () => {
   renderAt("/");
   const bar = within(screen.getByRole("navigation", { name: "Tools" }));
   expect(bar.getAllByRole("link").map((a) => a.textContent)).toEqual(["Weigh-in", "Chief Marshal"]);
+});
+
+const toggle = (tool: string) => screen.getByRole("button", { name: `${tool} pages` });
+const listLinks = () => {
+  const list = document.querySelector(".menu-list");
+  return list ? Array.from(list.querySelectorAll("a")) : [];
+};
+
+it("has a drop down for each tool, closed to begin with", () => {
+  renderAt("/");
+  for (const tool of ["Weigh-in", "Chief Marshal"]) {
+    expect(toggle(tool).getAttribute("aria-expanded")).toBe("false");
+  }
+  expect(document.querySelector(".menu-list")).toBeNull();
+});
+
+it("opens a list of the pages of the tool from its arrow", () => {
+  renderAt("/");
+  fireEvent.click(toggle("Chief Marshal"));
+  expect(toggle("Chief Marshal").getAttribute("aria-expanded")).toBe("true");
+  expect(listLinks().map((a) => a.firstChild?.textContent)).toEqual([
+    "Overview",
+    "Initial card",
+    "Card simulation",
+    "Calling order",
+    "Calling order practice",
+    "Marshals' table",
+  ]);
+  fireEvent.click(toggle("Chief Marshal"));
+  expect(document.querySelector(".menu-list")).toBeNull();
+});
+
+it("shows the weigh-in pages, including the weight classes, in the Weigh-in list", () => {
+  renderAt("/");
+  fireEvent.click(toggle("Weigh-in"));
+  expect(listLinks().map((a) => a.firstChild?.textContent)).toEqual([
+    "Overview",
+    "Practice",
+    "Weight classes",
+    "Class training",
+  ]);
+});
+
+it("goes straight to a page from the list, and closes the list", () => {
+  renderAt("/");
+  fireEvent.click(toggle("Weigh-in"));
+  fireEvent.click(listLinks().find((a) => a.firstChild?.textContent === "Class training")!);
+  expect(document.querySelector(".menu-list")).toBeNull();
+  expect(toggle("Weigh-in").getAttribute("aria-expanded")).toBe("false");
+  expect(screen.getByRole("navigation", { name: "Weigh-in pages" })).toBeTruthy();
+  expect(within(screen.getByRole("navigation", { name: "Weigh-in pages" })).getByRole("link", { name: "Class training" }).className).toContain("active");
+});
+
+it("marks the page you are on in the list", () => {
+  renderAt("/chief-marshal/calling-order");
+  fireEvent.click(toggle("Chief Marshal"));
+  const active = listLinks().filter((a) => a.className.includes("active"));
+  expect(active.map((a) => a.firstChild?.textContent)).toEqual(["Calling order"]);
+});
+
+it("closes the list with Escape, with a press outside, and when focus leaves it", () => {
+  renderAt("/");
+  fireEvent.click(toggle("Weigh-in"));
+  fireEvent.keyDown(document, { key: "Escape" });
+  expect(document.querySelector(".menu-list")).toBeNull();
+
+  fireEvent.click(toggle("Weigh-in"));
+  fireEvent.pointerDown(document.body);
+  expect(document.querySelector(".menu-list")).toBeNull();
+
+  fireEvent.click(toggle("Weigh-in"));
+  fireEvent.focusOut(toggle("Weigh-in"), { relatedTarget: document.body });
+  expect(document.querySelector(".menu-list")).toBeNull();
+});
+
+it("keeps the list open while focus moves inside it", () => {
+  renderAt("/");
+  fireEvent.click(toggle("Weigh-in"));
+  fireEvent.focusOut(toggle("Weigh-in"), { relatedTarget: listLinks()[0] });
+  expect(document.querySelector(".menu-list")).not.toBeNull();
 });

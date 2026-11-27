@@ -104,6 +104,10 @@ the new pages.
 
 ### Other pages
 
+- **Top bar**: a link for each tool, with an arrow next to it that opens a list of the tool's
+  pages (it also opens when a mouse rests on the tool). Escape, a click outside or moving the
+  focus away closes it. It is built from the same page list as the front page and the tool's
+  own menu (`ToolMenu` component).
 - **Front page**: an intro and a card for each tool that lists its pages. It is built from the
   tool registry, so it follows the tools without any edits.
 - **About**: the intention of the site, the rules used, the no affiliation notice, who made it,
@@ -146,6 +150,7 @@ src/
                                CallingOrderPractice, MarshalsTable) and the card builder
   components/AthleteCard.tsx   The athlete card
   components/SubNav.tsx        The menu under a tool's heading
+  components/ToolMenu.tsx      A tool in the top bar, with its drop down list of pages
   components/ThemeToggle.tsx   Light and dark mode button
   lib/categories.ts            Senior bodyweight classes and category lookup
   lib/rules.ts                 The 20 kg Rule
