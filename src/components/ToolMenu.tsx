@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { pageLink } from "../tools/pages";
 import type { Tool } from "../tools/registry";
 
@@ -42,7 +42,8 @@ export default function ToolMenu({ tool }: { tool: Tool }) {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false);
       }}
     >
-      <NavLink to={`/${tool.id}`}>{tool.title}</NavLink>
+      {/* A plain link, not a NavLink: the tool in the top bar is not marked while you are on its pages. */}
+      <Link to={`/${tool.id}`}>{tool.title}</Link>
       <button
         type="button"
         className="menu-toggle"

@@ -107,7 +107,8 @@ the new pages.
 - **Top bar**: a link for each tool, with an arrow next to it that opens a list of the tool's
   pages (it also opens when a mouse rests on the tool). Escape, a click outside or moving the
   focus away closes it. It is built from the same page list as the tool's own menu (`ToolMenu`
-  component).
+  component). The tool is not marked as selected while you are on one of its pages. The
+  current page is marked in the tool's own menu and in the drop down.
 - **Front page**: what the site is for and how it works. It does not list the tools or their
   pages, because the top bar and its drop down lists do that.
 - **About**: the intention of the site, the rules used, the no affiliation notice, who made it,

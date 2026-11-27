@@ -237,3 +237,13 @@ it("keeps the list open while focus moves inside it", () => {
   fireEvent.focusOut(toggle("Weigh-in"), { relatedTarget: listLinks()[0] });
   expect(document.querySelector(".menu-list")).not.toBeNull();
 });
+
+it("does not mark the tool in the top bar while you are on its pages", () => {
+  for (const path of ["/weigh-in", "/weigh-in/classes", "/chief-marshal/calling-order"]) {
+    renderAt(path);
+    const bar = within(screen.getByRole("navigation", { name: "Tools" }));
+    for (const link of bar.getAllByRole("link")) expect(link.className, path).not.toContain("active");
+    for (const link of bar.getAllByRole("link")) expect(link.getAttribute("aria-current"), path).toBeNull();
+    cleanup();
+  }
+});
