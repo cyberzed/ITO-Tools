@@ -1,20 +1,25 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import AthleteCard from "../../components/AthleteCard";
 import {
+  DEFAULT_MODE,
   DEFAULT_SIZE,
   FINAL_CALL_S,
   GROUP_SIZES,
+  MODES,
   advance,
   createSim,
   decide,
   defaultRng,
   formatClock,
+  modeName,
   next,
+  outcomeOf,
   secondsLeft,
   totalAttempts,
   type ChangeRequest,
   type Decision,
   type GroupSize,
+  type Mode,
   type Report,
   type Sim,
 } from "../../lib/marshal";
@@ -26,8 +31,20 @@ const SPEEDS = [1, 2, 4];
 const resultText = { good: "Good lift", no: "No lift", timeout: "No lift: the time ran out" } as const;
 const outcomeText = { right: "Right", wrong: "Wrong", missed: "Missed" } as const;
 
-function RequestRow({ r, name, onDecide }: { r: ChangeRequest; name: string; onDecide: (d: Decision) => void }) {
+function RequestRow({
+  r,
+  name,
+  mode,
+  onDecide,
+}: {
+  r: ChangeRequest;
+  name: string;
+  mode: Mode;
+  onDecide: (d: Decision) => void;
+}) {
   const direction = r.to > r.from ? "up" : "down";
+  // In learning mode the answer is checked at once. In the exam it waits until the athlete raises the bar.
+  const check = mode === "learning" && r.decision ? outcomeOf(r) : undefined;
   return (
     <li className="marshal-request">
       <div>
@@ -53,6 +70,11 @@ function RequestRow({ r, name, onDecide }: { r: ChangeRequest; name: string; onD
             Decline
           </button>
         </div>
+      )}
+      {check && (
+        <p className={`marshal-verdict ${check.outcome}`} role="status">
+          <strong>{outcomeText[check.outcome]}.</strong> {check.text}
+        </p>
       )}
     </li>
   );
@@ -89,6 +111,7 @@ function ReportPanel({ report, done, onNext }: { report: Report; done: boolean; 
 
 export default function MarshalsTable() {
   const [size, setSize] = useState<GroupSize>(DEFAULT_SIZE);
+  const [mode, setMode] = useState<Mode>(DEFAULT_MODE);
   const [sim, setSim] = useState<Sim>(() => createSim(defaultRng, undefined, DEFAULT_SIZE));
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(1);
@@ -106,8 +129,9 @@ export default function MarshalsTable() {
   const nameOf = (start: number) => sim.athletes.find((a) => a.start === start)!.name;
   const finished = sim.done && !sim.report && !sim.round;
 
-  function restart(newSize: GroupSize = size) {
+  function restart(newSize: GroupSize = size, newMode: Mode = mode) {
     setSize(newSize);
+    setMode(newMode);
     setSim(createSim(defaultRng, undefined, newSize));
     setRunning(false);
   }
@@ -115,8 +139,10 @@ export default function MarshalsTable() {
   return (
     <div className="marshal">
       <p className="muted">
-        You are the Chief Marshal. Start with two lifters, or pick three or four for a fuller table. Coaches hand in cards while the clock runs. Accept or decline each
-        one. When the athlete raises the bar, your decisions are checked.
+        You are the Chief Marshal. Start with two lifters, or pick three or four for a fuller table.
+        Coaches hand in cards while the clock runs. Accept or decline each one. In Exam mode your
+        decisions are checked when the athlete raises the bar. In Learning mode each answer is
+        checked at once, with the reason.
       </p>
 
       <div className="sim-row">
@@ -129,6 +155,16 @@ export default function MarshalsTable() {
             {SPEEDS.map((s) => (
               <option key={s} value={s}>
                 {s}x
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="marshal-speed">
+          Mode{" "}
+          <select value={mode} onChange={(e) => restart(size, e.target.value as Mode)}>
+            {MODES.map((m) => (
+              <option key={m} value={m}>
+                {modeName[m]}
               </option>
             ))}
           </select>
@@ -183,6 +219,7 @@ export default function MarshalsTable() {
                   key={r.id}
                   r={r}
                   name={nameOf(r.start)}
+                  mode={mode}
                   onDecide={(d) => setSim((s) => decide(s, r.id, d))}
                 />
               ))}
