@@ -30,7 +30,7 @@ const renderAt = (path: string) =>
   );
 
 it("links to the source on GitHub from every page", () => {
-  for (const path of ["/", "/weigh-in/classes", "/athlete-cards/simulation"]) {
+  for (const path of ["/", "/weigh-in/classes", "/chief-marshal/card-simulation"]) {
     render(
       <MemoryRouter initialEntries={[path]}>
         <App />
@@ -137,4 +137,26 @@ it("has Weigh-in in the top bar, with the weight classes in its menu instead of 
   const bar = within(screen.getByRole("navigation", { name: "Tools" }));
   expect(bar.getByRole("link", { name: "Weigh-in" })).toBeTruthy();
   expect(bar.queryByRole("link", { name: "Weight classes" })).toBeNull();
+});
+
+it("sends every old link to its new page", () => {
+  const moved: [string, string][] = [
+    ["/athlete-cards", "Initial card"],
+    ["/athlete-cards/simulation", "Card simulation"],
+    ["/lifting-order", "Calling order"],
+    ["/lifting-order/practice", "Calling order practice"],
+    ["/chief-marshal/practice", "Marshals' table"],
+  ];
+  for (const [path, tab] of moved) {
+    renderAt(path);
+    const menu = screen.getByRole("navigation", { name: "Chief Marshal pages" });
+    expect(within(menu).getByRole("link", { name: tab }).className, path).toContain("active");
+    cleanup();
+  }
+});
+
+it("has two tools in the top bar: Weigh-in and Chief Marshal", () => {
+  renderAt("/");
+  const bar = within(screen.getByRole("navigation", { name: "Tools" }));
+  expect(bar.getAllByRole("link").map((a) => a.textContent)).toEqual(["Weigh-in", "Chief Marshal"]);
 });

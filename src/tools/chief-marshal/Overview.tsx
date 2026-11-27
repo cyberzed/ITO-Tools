@@ -51,7 +51,14 @@ export default function Overview() {
         the clock when the card arrives.
       </p>
 
-      <h2>The practice</h2>
+      <h2>In this menu</h2>
+      <ul>
+        <li>The <strong>athlete card</strong>: the initial card at weigh-in, and a simulation of the snatch and the clean &amp; jerk, attempt by attempt.</li>
+        <li>The <strong>calling order</strong>: the four factors that decide who lifts next, and a practice in calling a group.</li>
+        <li>The <strong>Marshals' table</strong>: the live practice described below.</li>
+      </ul>
+
+      <h2>The Marshals' table</h2>
       <p>
         You are the Chief Marshal. Two athletes lift a snatch, one after the other in the calling
         order, and the clock runs for the athlete who is called. You can add one or two more, for

@@ -87,7 +87,7 @@ function ReportPanel({ report, done, onNext }: { report: Report; done: boolean; 
   );
 }
 
-export default function Practice() {
+export default function MarshalsTable() {
   const [size, setSize] = useState<GroupSize>(DEFAULT_SIZE);
   const [sim, setSim] = useState<Sim>(() => createSim(defaultRng, undefined, DEFAULT_SIZE));
   const [running, setRunning] = useState(false);

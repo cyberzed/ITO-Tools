@@ -219,7 +219,7 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 .ac-printed { color: #000; }
 
 .toolbar { display: flex; justify-content: flex-end; margin-bottom: 8px; }
-.subnav { display: flex; gap: 4px; margin: 12px 0 16px; border-bottom: 1px solid var(--border); }
+.subnav { display: flex; flex-wrap: wrap; gap: 0 4px; margin: 12px 0 16px; border-bottom: 1px solid var(--border); }
 .subnav a {
   margin-bottom: -1px;
   padding: 8px 14px;

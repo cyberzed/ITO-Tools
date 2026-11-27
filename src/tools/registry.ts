@@ -1,14 +1,6 @@
 import type { ComponentType } from "react";
-import AthleteCards from "./AthleteCards";
 import ChiefMarshal from "./ChiefMarshal";
-import LiftingOrder from "./LiftingOrder";
-import {
-  athleteCardPages,
-  chiefMarshalPages,
-  liftingOrderPages,
-  weighInPages,
-  type ToolPage,
-} from "./pages";
+import { chiefMarshalPages, weighInPages, type ToolPage } from "./pages";
 import WeighIn from "./WeighIn";
 
 export interface Tool {
@@ -31,23 +23,9 @@ export const tools: Tool[] = [
     component: WeighIn,
   },
   {
-    id: "athlete-cards",
-    title: "Athlete cards",
-    description: "Learn how to fill in and read athlete cards.",
-    pages: athleteCardPages,
-    component: AthleteCards,
-  },
-  {
-    id: "lifting-order",
-    title: "Lifting order",
-    description: "Call the athletes of a group in the right order.",
-    pages: liftingOrderPages,
-    component: LiftingOrder,
-  },
-  {
     id: "chief-marshal",
     title: "Chief Marshal",
-    description: "Accept or decline the changes coaches hand in, against the clock.",
+    description: "The athlete cards, the calling order and the Marshals' table: the Chief Marshal's work.",
     pages: chiefMarshalPages,
     component: ChiefMarshal,
   },

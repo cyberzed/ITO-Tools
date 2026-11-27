@@ -48,7 +48,7 @@ function badges(lift: Lift, state: SimState): { text: string; className: string 
   return out;
 }
 
-export default function Simulation() {
+export default function CardSimulation() {
   const [athlete] = useState(() => getSessionAthlete());
   const [snatch, setSnatch] = useState(() => start(athlete.snatchStart));
   const [cj, setCj] = useState<SimState | undefined>();

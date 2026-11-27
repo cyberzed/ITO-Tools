@@ -21,26 +21,28 @@ export const weighInPages: ToolPage[] = [
   },
 ];
 
-export const athleteCardPages: ToolPage[] = [
-  { path: "", title: "Initial card", description: "The athlete card at weigh-in, for a random athlete." },
-  {
-    path: "simulation",
-    title: "Simulation",
-    description: "Take an athlete through the snatch and the clean & jerk, step by step.",
-  },
-];
-
-export const liftingOrderPages: ToolPage[] = [
-  { path: "", title: "Overview", description: "The four factors of the calling order, with the rulebook's example." },
-  { path: "practice", title: "Practice", description: "Call a group of athletes in the right order, attempt by attempt." },
-];
-
 export const chiefMarshalPages: ToolPage[] = [
   { path: "", title: "Overview", description: "What the Chief Marshal checks on every card, and the rules behind it." },
+  { path: "initial-card", title: "Initial card", description: "The athlete card at weigh-in, for a random athlete." },
   {
-    path: "practice",
-    title: "Practice",
-    description: "Run the Marshals' table for four athletes, with a clock and cards handed in.",
+    path: "card-simulation",
+    title: "Card simulation",
+    description: "Take an athlete through the snatch and the clean & jerk, step by step.",
+  },
+  {
+    path: "calling-order",
+    title: "Calling order",
+    description: "The four factors of the calling order, with the rulebook's example.",
+  },
+  {
+    path: "calling-order-practice",
+    title: "Calling order practice",
+    description: "Call a group of athletes in the right order, attempt by attempt.",
+  },
+  {
+    path: "marshals-table",
+    title: "Marshals' table",
+    description: "Run the table for two to four athletes, with a clock and cards handed in.",
   },
 ];
 

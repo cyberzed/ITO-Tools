@@ -13,7 +13,8 @@ Write each line for the people who use the site, not for developers.
 ## 0.5.1 - 2026-11-27
 
 ### Changed
-- The weight classes and the class training now sit in the Weigh-in menu, next to the weigh-in rules and practice. The top bar has one tool less. Old links to the weight classes still work.
+- The weight classes and the class training now sit in the Weigh-in menu, next to the weigh-in rules and practice.
+- The athlete cards, the lifting order and the Marshals' table now sit in one Chief Marshal menu. The top bar has two tools: Weigh-in and Chief Marshal. Old links still work.
 
 ## 0.5.0 - 2026-11-27
 

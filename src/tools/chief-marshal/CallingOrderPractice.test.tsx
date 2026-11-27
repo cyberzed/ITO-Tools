@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import * as order from "../../lib/liftingOrder";
-import Practice from "./Practice";
+import Practice from "./CallingOrderPractice";
 
 const group = (): order.Lifter[] => [
   { start: 1, lot: 3, name: "Anna", next: 80, attempts: [], changes: 0 },

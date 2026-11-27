@@ -8,6 +8,17 @@ import { pageLink } from "./tools/pages";
 import { tools } from "./tools/registry";
 import { VERSION, hasUnseenChanges, markChangesSeen } from "./version";
 
+/** Old addresses and where their pages are now. */
+const movedPages: [from: string, to: string][] = [
+  ["/weight-classes", "/weigh-in/classes"],
+  ["/weight-classes/training", "/weigh-in/class-training"],
+  ["/athlete-cards", "/chief-marshal/initial-card"],
+  ["/athlete-cards/simulation", "/chief-marshal/card-simulation"],
+  ["/lifting-order", "/chief-marshal/calling-order"],
+  ["/lifting-order/practice", "/chief-marshal/calling-order-practice"],
+  ["/chief-marshal/practice", "/chief-marshal/marshals-table"],
+];
+
 export default function App() {
   const { pathname } = useLocation();
   const [unseen, setUnseen] = useState(hasUnseenChanges);
@@ -47,9 +58,10 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/whats-new" element={<WhatsNew />} />
-          {/* The weight classes moved under Weigh-in. Keep the old links working. */}
-          <Route path="/weight-classes" element={<Navigate to="/weigh-in/classes" replace />} />
-          <Route path="/weight-classes/training" element={<Navigate to="/weigh-in/class-training" replace />} />
+          {/* Tools that moved into a bigger tool. Keep the old links working. */}
+          {movedPages.map(([from, to]) => (
+            <Route key={from} path={from} element={<Navigate to={to} replace />} />
+          ))}
           {tools.map((t) => (
             <Route key={t.id} path={`/${t.id}/*`} element={<t.component />} />
           ))}
