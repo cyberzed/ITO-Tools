@@ -152,10 +152,10 @@ it("sends every old link to its new page", () => {
   }
 });
 
-it("has two tools in the top bar: Weigh-in and Chief Marshal", () => {
+it("has three tools in the top bar: Weigh-in, Chief Marshal and Technical Controller", () => {
   renderAt("/");
   const bar = within(screen.getByRole("navigation", { name: "Tools" }));
-  expect(bar.getAllByRole("link").map((a) => a.textContent)).toEqual(["Weigh-in", "Chief Marshal"]);
+  expect(bar.getAllByRole("link").map((a) => a.textContent)).toEqual(["Weigh-in", "Chief Marshal", "Technical Controller"]);
 });
 
 const toggle = (tool: string) => screen.getByRole("button", { name: `${tool} pages` });
@@ -166,7 +166,7 @@ const listLinks = () => {
 
 it("has a drop down for each tool, closed to begin with", () => {
   renderAt("/");
-  for (const tool of ["Weigh-in", "Chief Marshal"]) {
+  for (const tool of ["Weigh-in", "Chief Marshal", "Technical Controller"]) {
     expect(toggle(tool).getAttribute("aria-expanded")).toBe("false");
   }
   expect(document.querySelector(".menu-list")).toBeNull();
@@ -246,4 +246,18 @@ it("does not mark the tool in the top bar while you are on its pages", () => {
     for (const link of bar.getAllByRole("link")) expect(link.getAttribute("aria-current"), path).toBeNull();
     cleanup();
   }
+});
+
+it("lists the Technical Controller pages in its drop down", () => {
+  renderAt("/");
+  fireEvent.click(toggle("Technical Controller"));
+  expect(listLinks().map((a) => a.firstChild?.textContent)).toEqual(["Rules", "Outfit check"]);
+});
+
+it("opens the outfit check straight from the top bar drop down", () => {
+  renderAt("/");
+  fireEvent.click(toggle("Technical Controller"));
+  fireEvent.click(listLinks().find((a) => a.firstChild?.textContent === "Outfit check")!);
+  expect(screen.getByRole("img")).toBeTruthy();
+  expect(screen.getByRole("radio", { name: "Does not pass" })).toBeTruthy();
 });

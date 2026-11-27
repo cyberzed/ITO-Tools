@@ -46,5 +46,14 @@ export const chiefMarshalPages: ToolPage[] = [
   },
 ];
 
+export const technicalControllerPages: ToolPage[] = [
+  { path: "", title: "Rules", description: "What the Technical Controller does, and the outfit rules in short." },
+  {
+    path: "outfit-check",
+    title: "Outfit check",
+    description: "Look at an athlete's outfit and decide whether it passes, and why not.",
+  },
+];
+
 /** The link to a page of a tool. */
 export const pageLink = (toolId: string, page: ToolPage): string => `/${toolId}${page.path ? `/${page.path}` : ""}`;
