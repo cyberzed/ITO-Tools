@@ -7,13 +7,13 @@ export interface ToolPage {
 }
 
 export const weighInPages: ToolPage[] = [
-  { path: "", title: "Overview", description: "The weigh-in rules in short, with the 250 g for the costume." },
+  { path: "", title: "Rules", description: "The weigh-in rules in short, with the 250 g for the costume." },
+  { path: "classes", title: "Weight classes", description: "The senior bodyweight classes and their ranges." },
   {
     path: "practice",
     title: "Practice",
     description: "Read the scale and decide whether the athlete makes weight.",
   },
-  { path: "classes", title: "Weight classes", description: "The senior bodyweight classes and their ranges." },
   {
     path: "class-training",
     title: "Class training",

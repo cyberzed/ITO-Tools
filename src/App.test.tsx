@@ -195,9 +195,9 @@ it("shows the weigh-in pages, including the weight classes, in the Weigh-in list
   renderAt("/");
   fireEvent.click(toggle("Weigh-in"));
   expect(listLinks().map((a) => a.firstChild?.textContent)).toEqual([
-    "Overview",
-    "Practice",
+    "Rules",
     "Weight classes",
+    "Practice",
     "Class training",
   ]);
 });

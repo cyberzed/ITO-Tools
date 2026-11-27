@@ -17,14 +17,14 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
 The weight classes and the weigh-in share one tool and one menu, because the weigh-in is where
 the classes are used.
 
-- **Overview**: the weigh-in rules in short, with references to the Regulation to TCRR 6.4.
+- **Rules**: the weigh-in rules in short, with references to the Regulation to TCRR 6.4.
+- **Weight classes**: the senior men's and women's bodyweight classes with their ranges.
 - **Practice**: an athlete of a random gender and category steps on the scale. Work out the
   bodyweight after the 250 g costume deduction, and decide whether the athlete makes weight,
   is too heavy or is too light. The answer comes with the working.
   - The readings sit within 1.5 kg of a limit. Some are over the limit on the scale but make
     weight after the deduction, and some are exactly on a limit.
   - The score counts rounds with both answers right, for the visit only.
-- **Weight classes**: the senior men's and women's bodyweight classes with their ranges.
 - **Class training**: pick the valid classes for a gender from a grid of tiles with decoys.
   - The grid is 5 x 5 to 10 x 10 (7 x 7 by default).
   - **Check answers** scores the round. **Reveal answers** highlights the correct classes.
@@ -145,7 +145,7 @@ src/
   tools/registry.ts            List of tools: the menu, routes and front page come from here
   tools/pages.ts               The pages of each tool: its menu and the front page use them
   tools/WeighIn.tsx            Weigh-in: sub menu
-  tools/weigh-in/              Its pages (Overview, Practice, Classes, ClassTraining)
+  tools/weigh-in/              Its pages (Rules, Classes, Practice, ClassTraining)
   tools/ChiefMarshal.tsx       Chief Marshal: sub menu
   tools/chief-marshal/         Its pages (Overview, InitialCard, CardSimulation, CallingOrder,
                                CallingOrderPractice, MarshalsTable) and the card builder

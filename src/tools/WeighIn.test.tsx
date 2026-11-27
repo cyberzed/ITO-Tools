@@ -18,7 +18,7 @@ it("shows the rules by default, with the 250 g and the time limit", () => {
   at("/weigh-in");
   expect(screen.getByRole("heading", { name: "The 250 g for the costume" })).toBeTruthy();
   expect(screen.getByText(/starts three hours before the group starts and lasts one hour/)).toBeTruthy();
-  expect(screen.getByRole("link", { name: "Overview" }).className).toContain("active");
+  expect(screen.getByRole("link", { name: "Rules" }).className).toContain("active");
 });
 
 it("shows the practice from the sub menu", () => {
@@ -31,9 +31,9 @@ it("has the weigh-in pages and the weight classes pages in one menu", () => {
   at("/weigh-in");
   const menu = screen.getByRole("navigation", { name: "Weigh-in pages" });
   expect(Array.from(menu.querySelectorAll("a")).map((a) => a.textContent)).toEqual([
-    "Overview",
-    "Practice",
+    "Rules",
     "Weight classes",
+    "Practice",
     "Class training",
   ]);
 });
@@ -42,7 +42,7 @@ it("shows the weight classes from the sub menu", () => {
   at("/weigh-in/classes");
   expect(screen.getByRole("heading", { name: "Men" })).toBeTruthy();
   expect(screen.getByRole("link", { name: "Weight classes" }).className).toContain("active");
-  expect(screen.getByRole("link", { name: "Overview" }).className).not.toContain("active");
+  expect(screen.getByRole("link", { name: "Rules" }).className).not.toContain("active");
 });
 
 it("shows the class training from the sub menu", () => {
