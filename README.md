@@ -25,7 +25,7 @@ the classes are used.
   - The readings sit within 1.5 kg of a limit. Some are over the limit on the scale but make
     weight after the deduction, and some are exactly on a limit.
   - The score counts rounds with both answers right, for the visit only.
-- **Class training**: pick the valid classes for a gender from a grid of tiles with decoys.
+- **Class quiz**: pick the valid classes for a gender from a grid of tiles with decoys.
   - The grid is 5 x 5 to 10 x 10 (7 x 7 by default).
   - **Check answers** scores the round. **Reveal answers** highlights the correct classes.
 
@@ -145,7 +145,7 @@ src/
   tools/registry.ts            List of tools: the menu and the routes come from here
   tools/pages.ts               The pages of each tool: its menu and the top bar drop down use them
   tools/WeighIn.tsx            Weigh-in: sub menu
-  tools/weigh-in/              Its pages (Rules, Classes, Practice, ClassTraining)
+  tools/weigh-in/              Its pages (Rules, Classes, Practice, ClassQuiz)
   tools/ChiefMarshal.tsx       Chief Marshal: sub menu
   tools/chief-marshal/         Its pages (Overview, InitialCard, CardSimulation, CallingOrder,
                                CallingOrderPractice, MarshalsTable) and the card builder
@@ -156,7 +156,7 @@ src/
   lib/categories.ts            Senior bodyweight classes and category lookup
   lib/rules.ts                 The 20 kg Rule
   lib/sessionAthlete.ts        Random athlete, kept in session storage
-  lib/classTraining.ts         Board generation and scoring for the class training
+  lib/classTraining.ts         Board generation and scoring for the class quiz
   lib/snatchSimulation.ts      Attempt logic for one lift (also used for the clean & jerk)
   lib/weighIn.ts               Category limits, the costume deduction and weigh-in cases
   lib/liftingOrder.ts          Calling order, attempts and random groups
@@ -176,7 +176,7 @@ The menu entry, its drop down list and the route (`/#/<id>`) follow from that en
 
 ## Notes
 
-- The site uses hash routes such as `/#/weigh-in/class-training`, so any static host works
+- The site uses hash routes such as `/#/weigh-in/class-quiz`, so any static host works
   without rewrite rules.
 - The theme follows the operating system by default. The toggle in the top bar saves a
   different choice in the browser.

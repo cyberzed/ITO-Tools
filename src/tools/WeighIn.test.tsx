@@ -34,7 +34,7 @@ it("has the weigh-in pages and the weight classes pages in one menu", () => {
     "Rules",
     "Weight classes",
     "Practice",
-    "Class training",
+    "Class quiz",
   ]);
 });
 
@@ -45,9 +45,9 @@ it("shows the weight classes from the sub menu", () => {
   expect(screen.getByRole("link", { name: "Rules" }).className).not.toContain("active");
 });
 
-it("shows the class training from the sub menu", () => {
-  const { container } = at("/weigh-in/class-training");
+it("shows the class quiz from the sub menu", () => {
+  const { container } = at("/weigh-in/class-quiz");
   expect(container.querySelectorAll(".tile")).toHaveLength(49);
-  expect(screen.getByRole("link", { name: "Class training" }).className).toContain("active");
+  expect(screen.getByRole("link", { name: "Class quiz" }).className).toContain("active");
   expect(screen.getByRole("link", { name: "Weight classes" }).className).not.toContain("active");
 });
