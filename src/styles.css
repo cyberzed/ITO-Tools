@@ -92,7 +92,6 @@ body {
   cursor: pointer;
 }
 .menu-toggle:hover { background: var(--border); }
-.tool-menu:has(> a.active) .menu-toggle { background: var(--primary); color: var(--primary-fg); }
 .menu-list {
   position: absolute;
   top: 100%;
