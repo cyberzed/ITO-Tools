@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import SubNav from "../components/SubNav";
 import { weighInPages } from "./pages";
-import ClassTraining from "./weigh-in/ClassTraining";
+import ClassQuiz from "./weigh-in/ClassQuiz";
 import Classes from "./weigh-in/Classes";
 import Practice from "./weigh-in/Practice";
 import Rules from "./weigh-in/Rules";
@@ -15,7 +15,7 @@ export default function WeighIn() {
         <Route index element={<Rules />} />
         <Route path="classes" element={<Classes />} />
         <Route path="practice" element={<Practice />} />
-        <Route path="class-training" element={<ClassTraining />} />
+        <Route path="class-quiz" element={<ClassQuiz />} />
       </Routes>
     </section>
   );

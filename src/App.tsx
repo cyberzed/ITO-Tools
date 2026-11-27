@@ -12,7 +12,7 @@ import { VERSION, hasUnseenChanges, markChangesSeen } from "./version";
 /** Old addresses and where their pages are now. */
 const movedPages: [from: string, to: string][] = [
   ["/weight-classes", "/weigh-in/classes"],
-  ["/weight-classes/training", "/weigh-in/class-training"],
+  ["/weight-classes/training", "/weigh-in/class-quiz"],
   ["/athlete-cards", "/chief-marshal/initial-card"],
   ["/athlete-cards/simulation", "/chief-marshal/card-simulation"],
   ["/lifting-order", "/chief-marshal/calling-order"],

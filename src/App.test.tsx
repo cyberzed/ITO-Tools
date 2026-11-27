@@ -129,7 +129,7 @@ it("sends the old weight classes links to the Weigh-in tool", () => {
   first.unmount();
   const second = renderAt("/weight-classes/training");
   expect(second.container.querySelectorAll(".tile")).toHaveLength(49);
-  expect(screen.getByRole("link", { name: "Class training" }).className).toContain("active");
+  expect(screen.getByRole("link", { name: "Class quiz" }).className).toContain("active");
 });
 
 it("has Weigh-in in the top bar, with the weight classes in its menu instead of a tool of their own", () => {
@@ -198,18 +198,18 @@ it("shows the weigh-in pages, including the weight classes, in the Weigh-in list
     "Rules",
     "Weight classes",
     "Practice",
-    "Class training",
+    "Class quiz",
   ]);
 });
 
 it("goes straight to a page from the list, and closes the list", () => {
   renderAt("/");
   fireEvent.click(toggle("Weigh-in"));
-  fireEvent.click(listLinks().find((a) => a.firstChild?.textContent === "Class training")!);
+  fireEvent.click(listLinks().find((a) => a.firstChild?.textContent === "Class quiz")!);
   expect(document.querySelector(".menu-list")).toBeNull();
   expect(toggle("Weigh-in").getAttribute("aria-expanded")).toBe("false");
   expect(screen.getByRole("navigation", { name: "Weigh-in pages" })).toBeTruthy();
-  expect(within(screen.getByRole("navigation", { name: "Weigh-in pages" })).getByRole("link", { name: "Class training" }).className).toContain("active");
+  expect(within(screen.getByRole("navigation", { name: "Weigh-in pages" })).getByRole("link", { name: "Class quiz" }).className).toContain("active");
 });
 
 it("marks the page you are on in the list", () => {

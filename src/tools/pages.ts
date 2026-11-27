@@ -15,8 +15,8 @@ export const weighInPages: ToolPage[] = [
     description: "Read the scale and decide whether the athlete makes weight.",
   },
   {
-    path: "class-training",
-    title: "Class training",
+    path: "class-quiz",
+    title: "Class quiz",
     description: "Pick the valid classes for a gender from a grid of tiles.",
   },
 ];
