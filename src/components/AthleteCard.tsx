@@ -184,7 +184,8 @@ function LiftSection({ title, lift, dark }: { title: string; lift: Lift; dark: b
   );
 }
 
-export default function AthleteCard({ data }: { data: AthleteCardData }) {
+/** `snatchOnly` shows just the snatch page, for places where several cards sit side by side. */
+export default function AthleteCard({ data, snatchOnly = false }: { data: AthleteCardData; snatchOnly?: boolean }) {
   const d = data;
   return (
     <div className="ac">
@@ -220,35 +221,39 @@ export default function AthleteCard({ data }: { data: AthleteCardData }) {
       </div>
 
       {/* Right page: Clean & Jerk */}
-      <div className="ac-page">
-        <div className="ac-head">
-          <Cell label="Start #" className="ac-start">
-            <span className="ac-start-number">{d.startNumber}</span>
-          </Cell>
-          <Cell className="ac-name">{d.name}</Cell>
+      {!snatchOnly && (
+        <>
+        <div className="ac-page">
+          <div className="ac-head">
+            <Cell label="Start #" className="ac-start">
+              <span className="ac-start-number">{d.startNumber}</span>
+            </Cell>
+            <Cell className="ac-name">{d.name}</Cell>
+          </div>
+          <div className="ac-grid">
+            <Cell label="Lot" center>
+              <Ink printed>{d.lot}</Ink>
+            </Cell>
+            <Cell label="Age Group" center>
+              <Ink printed>Senior</Ink>
+            </Cell>
+            <Cell label="Category" center>
+              <Ink printed>{d.category}</Ink>
+            </Cell>
+            <Cell label="20kg Rule" center>
+              <Ink printed>{d.entryTotal !== undefined ? twentyKgRuleLimit(d.entryTotal) : undefined}</Ink>
+            </Cell>
+            <Cell label="Required C&J" center>
+              <Ink printed>{d.requiredCJ}</Ink>
+            </Cell>
+            <Cell label="Total" center>
+              <Ink printed>{d.total}</Ink>
+            </Cell>
+          </div>
+          <LiftSection title="Clean&Jerk" lift={d.cleanAndJerk} dark={false} />
         </div>
-        <div className="ac-grid">
-          <Cell label="Lot" center>
-            <Ink printed>{d.lot}</Ink>
-          </Cell>
-          <Cell label="Age Group" center>
-            <Ink printed>Senior</Ink>
-          </Cell>
-          <Cell label="Category" center>
-            <Ink printed>{d.category}</Ink>
-          </Cell>
-          <Cell label="20kg Rule" center>
-            <Ink printed>{d.entryTotal !== undefined ? twentyKgRuleLimit(d.entryTotal) : undefined}</Ink>
-          </Cell>
-          <Cell label="Required C&J" center>
-            <Ink printed>{d.requiredCJ}</Ink>
-          </Cell>
-          <Cell label="Total" center>
-            <Ink printed>{d.total}</Ink>
-          </Cell>
-        </div>
-        <LiftSection title="Clean&Jerk" lift={d.cleanAndJerk} dark={false} />
-      </div>
+        </>
+      )}
     </div>
   );
 }

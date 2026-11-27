@@ -396,6 +396,42 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 .weigh-in-form fieldset { display: grid; gap: 6px; margin: 0; padding: 0; border: 0; }
 .weigh-in-form legend { margin-bottom: 4px; padding: 0; font-weight: 600; }
 .weigh-in-form fieldset label.answer { color: var(--ok); font-weight: 700; }
+.marshal { max-width: 72rem; }
+.marshal-h { margin: 24px 0 8px; font-size: 1.1rem; }
+.marshal-speed { display: inline-flex; align-items: center; gap: 6px; }
+.marshal-speed select {
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+}
+.marshal-clock.final-call { border-color: var(--bad); }
+.marshal-clock.final-call .scale-display strong { background: var(--bad); color: #fff; }
+.marshal-requests { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.marshal-request {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.marshal-change { font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.marshal-decided { font-weight: 700; color: var(--muted); }
+.marshal-items { margin: 0 0 12px; padding-left: 1.2rem; }
+.marshal-item { margin: 4px 0; }
+.marshal-item.right strong { color: var(--ok); }
+.marshal-item.wrong strong, .marshal-item.missed strong { color: var(--bad); }
+.marshal-report { margin: 16px 0; }
+.marshal-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 24px; }
+.marshal-card { min-width: 0; padding: 4px; border-radius: 6px; }
+.marshal-card.on-clock { outline: 3px solid var(--primary); outline-offset: 3px; }
+.marshal-card .ac { margin-top: 0; }
 .weigh-in-result { margin-top: 16px; padding: 12px 16px; border-radius: 8px; }
 .weigh-in-result.ok { background: var(--ok-bg); }
 .weigh-in-result.bad { background: var(--bad-bg); }

@@ -34,5 +34,14 @@ export const liftingOrderPages: ToolPage[] = [
   { path: "practice", title: "Practice", description: "Call a group of athletes in the right order, attempt by attempt." },
 ];
 
+export const chiefMarshalPages: ToolPage[] = [
+  { path: "", title: "Overview", description: "What the Chief Marshal checks on every card, and the rules behind it." },
+  {
+    path: "practice",
+    title: "Practice",
+    description: "Run the Marshals' table for four athletes, with a clock and cards handed in.",
+  },
+];
+
 /** The link to a page of a tool. */
 export const pageLink = (toolId: string, page: ToolPage): string => `/${toolId}${page.path ? `/${page.path}` : ""}`;
