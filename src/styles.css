@@ -151,8 +151,12 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 .card li a { color: var(--primary); font-weight: 600; text-decoration: none; }
 .card li a:hover { text-decoration: underline; }
 .card li span { color: var(--muted); font-size: 0.875rem; }
-.home-note { margin-top: 24px; }
-.home-note a { color: var(--primary); }
+.intent { max-width: 42rem; margin-top: 24px; }
+.intent h2, .home h2.start { margin: 24px 0 8px; font-size: 1.2rem; }
+.intent p, .intent li { color: var(--fg); }
+.intent li { margin: 6px 0; }
+.intent .muted a { color: var(--primary); }
+.home h2.start { margin-top: 40px; }
 
 /* Athlete card: always paper-white, in both themes */
 .ac {

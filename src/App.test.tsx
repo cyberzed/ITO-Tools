@@ -75,6 +75,19 @@ it("lists every page of every tool on the front page, straight from the registry
   }
 });
 
+it("leads the front page with what the site is for, before the tools", () => {
+  render(
+    <MemoryRouter initialEntries={["/"]}>
+      <App />
+    </MemoryRouter>,
+  );
+  const headings = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
+  expect(headings.slice(0, 3)).toEqual(["What it is for", "How it works", "Where to start"]);
+  expect(headings.slice(3)).toEqual(tools.map((t) => t.title));
+  expect(screen.getByText(/no substitute for the rulebook/)).toBeTruthy();
+  expect(screen.getByText(/nothing to sign up for/)).toBeTruthy();
+});
+
 it("gives the front page an intro and a link to the about page", () => {
   render(
     <MemoryRouter initialEntries={["/"]}>

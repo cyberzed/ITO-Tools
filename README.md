@@ -108,8 +108,8 @@ the new pages.
   pages (it also opens when a mouse rests on the tool). Escape, a click outside or moving the
   focus away closes it. It is built from the same page list as the front page and the tool's
   own menu (`ToolMenu` component).
-- **Front page**: an intro and a card for each tool that lists its pages. It is built from the
-  tool registry, so it follows the tools without any edits.
+- **Front page**: what the site is for and how it works, then a card for each tool that lists its
+  pages. The cards are built from the tool registry, so they follow the tools without any edits.
 - **About**: the intention of the site, the rules used, the no affiliation notice, who made it,
   where to give feedback and a privacy note. It does not list the tools, so it cannot drift as
   tools are added. A test checks that.

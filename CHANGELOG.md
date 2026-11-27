@@ -10,6 +10,11 @@ Versions follow `MAJOR.MINOR.PATCH`:
 Each version has a date and one or more of these sections: Added, Changed, Fixed, Removed.
 Write each line for the people who use the site, not for developers.
 
+## 0.5.2 - 2026-11-27
+
+### Changed
+- The front page now starts with what the site is for and how it works. The tools and their pages come below it.
+
 ## 0.5.1 - 2026-11-27
 
 ### Added
