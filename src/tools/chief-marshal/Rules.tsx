@@ -1,5 +1,5 @@
 /** The Chief Marshal's job in short. Source: IWF TCRR 2026, 7.9, the Regulation to 7.9 and 6.6. */
-export default function Overview() {
+export default function Rules() {
   return (
     <div className="rules">
       <p className="muted">

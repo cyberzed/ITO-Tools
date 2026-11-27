@@ -180,7 +180,7 @@ it("opens a list of the pages of the tool from its arrow", () => {
   fireEvent.click(toggle("Chief Marshal"));
   expect(toggle("Chief Marshal").getAttribute("aria-expanded")).toBe("true");
   expect(listLinks().map((a) => a.firstChild?.textContent)).toEqual([
-    "Overview",
+    "Rules",
     "Initial card",
     "Card simulation",
     "Calling order",

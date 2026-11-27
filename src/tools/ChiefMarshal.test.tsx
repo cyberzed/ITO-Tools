@@ -21,7 +21,7 @@ it("has one menu with the athlete cards, the calling order and the Marshals' tab
   at("/chief-marshal");
   const menu = screen.getByRole("navigation", { name: "Chief Marshal pages" });
   expect(Array.from(menu.querySelectorAll("a")).map((a) => a.textContent)).toEqual([
-    "Overview",
+    "Rules",
     "Initial card",
     "Card simulation",
     "Calling order",
@@ -33,7 +33,7 @@ it("has one menu with the athlete cards, the calling order and the Marshals' tab
 it("shows the Chief Marshal's job by default", () => {
   at("/chief-marshal");
   expect(screen.getByRole("heading", { name: "The job" })).toBeTruthy();
-  expect(active()).toEqual(["Overview"]);
+  expect(active()).toEqual(["Rules"]);
 });
 
 it("shows the initial card from the menu", () => {

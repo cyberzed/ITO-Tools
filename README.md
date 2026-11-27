@@ -37,7 +37,7 @@ visitor to the new pages.
 The Chief Marshal's work is one tool with one menu: the athlete cards, the calling order and the
 Marshals' table. Each page can be used on its own.
 
-- **Overview**: the Chief Marshal's job (TCRR 7.9) and what to check on every card: whole kg, two
+- **Rules**: the Chief Marshal's job (TCRR 7.9) and what to check on every card: whole kg, two
   changes for each declaration, no reduction once the clock has started, and an increase before
   the final call at 30 seconds before the end of the time.
 - **Marshals' table**: the practice at the Marshals' table for a snatch with two athletes, or three or four if you
@@ -147,7 +147,7 @@ src/
   tools/WeighIn.tsx            Weigh-in: sub menu
   tools/weigh-in/              Its pages (Rules, Classes, Practice, ClassQuiz)
   tools/ChiefMarshal.tsx       Chief Marshal: sub menu
-  tools/chief-marshal/         Its pages (Overview, InitialCard, CardSimulation, CallingOrder,
+  tools/chief-marshal/         Its pages (Rules, InitialCard, CardSimulation, CallingOrder,
                                CallingOrderPractice, MarshalsTable) and the card builder
   components/AthleteCard.tsx   The athlete card
   components/SubNav.tsx        The menu under a tool's heading
