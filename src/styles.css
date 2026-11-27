@@ -445,6 +445,9 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
   border-radius: 8px;
   background: var(--surface);
 }
+.marshal-verdict { flex-basis: 100%; margin: 0; padding: 8px 12px; border-radius: 6px; }
+.marshal-verdict.right { background: var(--ok-bg); }
+.marshal-verdict.wrong, .marshal-verdict.missed { background: var(--bad-bg); }
 .marshal-change { font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .marshal-decided { font-weight: 700; color: var(--muted); }
 .marshal-items { margin: 0 0 12px; padding-left: 1.2rem; }

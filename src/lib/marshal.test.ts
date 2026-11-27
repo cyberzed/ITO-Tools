@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
+  DEFAULT_MODE,
   DEFAULT_SIZE,
   FINAL_CALL_S,
   GROUP_SIZES,
+  MODES,
   ONE_MINUTE,
   TWO_MINUTES,
   advance,
@@ -344,4 +346,20 @@ it("formats the clock", () => {
   expect(formatClock(0)).toBe("0:00");
   expect(formatClock(65)).toBe("1:05");
   expect(formatClock(120)).toBe("2:00");
+});
+
+it("has an exam mode, which is the default, and a learning mode", () => {
+  expect(MODES).toEqual(["exam", "learning"]);
+  expect(DEFAULT_MODE).toBe("exam");
+});
+
+it("rates a decided card the same whatever the mode, because the mode is only about when it is shown", () => {
+  const sim = createSim(seeded(3), "M", 2);
+  const called = sim.round!.start;
+  const open = openAttempt(sim.athletes.find((a) => a.start === called)!)!;
+  const facts = { from: open.weight, to: open.weight + 1, changesUsed: 2, onClock: true, secondsLeft: 50 };
+  const request = { id: 1, start: called, attempt: open.index + 1, ...facts, verdict: judgeRequest(facts) };
+  expect(outcomeOf({ ...request, decision: "decline" }).outcome).toBe("right");
+  expect(outcomeOf({ ...request, decision: "decline" }).text).toContain("TCRR 6.6.12");
+  expect(outcomeOf({ ...request, decision: "accept" }).outcome).toBe("wrong");
 });
