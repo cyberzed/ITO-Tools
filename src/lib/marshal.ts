@@ -1,5 +1,5 @@
 /**
- * The Chief Marshal's table: two or four athletes in a snatch, a clock that runs for the athlete who is
+ * The Chief Marshal's table: two to four athletes in a snatch, a clock that runs for the athlete who is
  * called, and coaches who hand in changes of weight. The Marshal accepts or declines each one.
  *
  * Source: IWF TCRR 2026, 7.9 and the Regulation to 7.9 (Chief Marshal), 6.6.1 to 6.6.3, 6.6.7,
@@ -24,8 +24,8 @@ import {
   type SimState,
 } from "./snatchSimulation";
 
-/** The group sizes to practise with. Two is the default, four gives a fuller table. */
-export const GROUP_SIZES = [2, 4] as const;
+/** The group sizes to practise with. Two is the default, and three or four give a fuller table. */
+export const GROUP_SIZES = [2, 3, 4] as const;
 export type GroupSize = (typeof GROUP_SIZES)[number];
 export const DEFAULT_SIZE: GroupSize = 2;
 /** An athlete has one minute, or two minutes for an attempt right after their own (6.6.7). */

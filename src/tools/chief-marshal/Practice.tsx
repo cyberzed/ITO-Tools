@@ -115,7 +115,7 @@ export default function Practice() {
   return (
     <div className="marshal">
       <p className="muted">
-        You are the Chief Marshal. Start with two lifters, or pick four for a fuller table. Coaches hand in cards while the clock runs. Accept or decline each
+        You are the Chief Marshal. Start with two lifters, or pick three or four for a fuller table. Coaches hand in cards while the clock runs. Accept or decline each
         one. When the athlete raises the bar, your decisions are checked.
       </p>
 

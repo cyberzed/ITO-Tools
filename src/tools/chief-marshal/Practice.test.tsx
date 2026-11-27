@@ -109,7 +109,7 @@ it("marks a card that was left unanswered as missed", () => {
   expect(screen.getByText("Correct: 0 of 1")).toBeTruthy();
 });
 
-it("expands the group to four lifters, side by side, and back to two", () => {
+it("expands the group to three or four lifters, side by side, and back to two", () => {
   const spy = vi.spyOn(marshal, "createSim").mockImplementation((_rng, _gender, size) => realCreate(seeded(8), "M", size));
   const { container } = render(<Practice />);
   expect(container.querySelectorAll(".marshal-card")).toHaveLength(2);
@@ -117,6 +117,9 @@ it("expands the group to four lifters, side by side, and back to two", () => {
   expect(spy).toHaveBeenLastCalledWith(expect.anything(), undefined, 4);
   expect(container.querySelectorAll(".marshal-card")).toHaveLength(4);
   expect((container.querySelector(".marshal-cards") as HTMLElement).style.getPropertyValue("--cols")).toBe("4");
+  fireEvent.change(screen.getByLabelText(/Lifters/), { target: { value: "3" } });
+  expect(container.querySelectorAll(".marshal-card")).toHaveLength(3);
+  expect((container.querySelector(".marshal-cards") as HTMLElement).style.getPropertyValue("--cols")).toBe("3");
   fireEvent.change(screen.getByLabelText(/Lifters/), { target: { value: "2" } });
   expect(container.querySelectorAll(".marshal-card")).toHaveLength(2);
 });

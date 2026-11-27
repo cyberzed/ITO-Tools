@@ -14,7 +14,7 @@ Write each line for the people who use the site, not for developers.
 
 ### Added
 - Chief Marshal: an overview of what the Chief Marshal checks on every card and the rules behind it.
-- Chief Marshal: a practice at the Marshals' table. Two athletes, or four if you choose, lift a snatch with a running clock, with the athlete cards side by side, and coaches hand in changes of weight. You accept or decline each one, and your decisions are checked when the athlete raises the bar.
+- Chief Marshal: a practice at the Marshals' table. Two athletes, or three or four if you choose, lift a snatch with a running clock, with the athlete cards side by side, and coaches hand in changes of weight. You accept or decline each one, and your decisions are checked when the athlete raises the bar.
 
 ## 0.4.0 - 2026-11-26
 

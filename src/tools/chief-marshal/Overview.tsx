@@ -54,8 +54,8 @@ export default function Overview() {
       <h2>The practice</h2>
       <p>
         You are the Chief Marshal. Two athletes lift a snatch, one after the other in the calling
-        order, and the clock runs for the athlete who is called. You can add two more, for a group
-        of four, with the athlete cards side by side. Coaches hand in cards at random
+        order, and the clock runs for the athlete who is called. You can add one or two more, for
+        a group of three or four, with the athlete cards side by side. Coaches hand in cards at random
         moments, for the athlete on the clock and for the ones waiting. <strong>Accept</strong> or{" "}
         <strong>decline</strong> each card.
       </p>

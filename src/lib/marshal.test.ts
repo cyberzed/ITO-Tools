@@ -88,7 +88,8 @@ describe("judgeRequest", () => {
 describe("a new group", () => {
   it("has two athletes unless four are asked for", () => {
     expect(DEFAULT_SIZE).toBe(2);
-    expect(GROUP_SIZES).toEqual([2, 4]);
+    expect(GROUP_SIZES).toEqual([2, 3, 4]);
+    expect(createSim(seeded(1), "M", 3).athletes).toHaveLength(3);
     expect(createSim(seeded(1)).athletes).toHaveLength(2);
     expect(createSim(seeded(1), "M", 4).athletes).toHaveLength(4);
     expect(createSim(seeded(1), "F", 2).athletes.every((a) => a.gender === "F")).toBe(true);
@@ -321,7 +322,7 @@ describe("a whole snatch", () => {
   it("only hands in cards whose verdict follows the rule", () => {
     for (let seed = 1; seed <= 40; seed++) {
       const rng = seeded(seed);
-      let sim = createSim(rng, "F", seed % 2 ? 2 : 4);
+      let sim = createSim(rng, "F", GROUP_SIZES[seed % 3]);
       let guard = 0;
       while (!sim.done && guard++ < 5000) {
         if (sim.report) {
