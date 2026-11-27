@@ -2,7 +2,7 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import * as marshal from "../../lib/marshal";
 import { openAttempt, type Rng, type Sim } from "../../lib/marshal";
-import Practice from "./Practice";
+import Practice from "./MarshalsTable";
 
 function seeded(seed: number): Rng {
   let s = seed;

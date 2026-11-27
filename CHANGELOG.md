@@ -10,6 +10,16 @@ Versions follow `MAJOR.MINOR.PATCH`:
 Each version has a date and one or more of these sections: Added, Changed, Fixed, Removed.
 Write each line for the people who use the site, not for developers.
 
+## 0.5.1 - 2026-11-27
+
+### Added
+- Each tool in the top bar has an arrow with a list of its pages, so you can go straight to a page. The list also opens when the mouse rests on the tool.
+
+### Changed
+- The tool in the top bar is no longer highlighted while you are on one of its pages. The page you are on is marked in the tool's own menu and in the drop down.
+- The weight classes and the class quiz now sit in the Weigh-in menu. The menu reads Rules, Weight classes, Practice and Class quiz.
+- The athlete cards, the lifting order and the Marshals' table now sit in one Chief Marshal menu. The top bar has two tools: Weigh-in and Chief Marshal. Old links still work.
+
 ## 0.5.0 - 2026-11-27
 
 ### Added

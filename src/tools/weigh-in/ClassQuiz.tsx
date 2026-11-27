@@ -4,7 +4,7 @@ import { DEFAULT_GRID, MAX_GRID, MIN_GRID, generateRound, isValidClass, scoreRou
 
 const genderName: Record<Gender, string> = { M: "men", F: "women" };
 
-export default function Training() {
+export default function ClassQuiz() {
   const [gender, setGender] = useState<Gender>("M");
   const [size, setSize] = useState(DEFAULT_GRID);
   const [board, setBoard] = useState(() => generateRound("M", DEFAULT_GRID));

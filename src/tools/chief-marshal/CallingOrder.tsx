@@ -3,7 +3,7 @@ import { exampleGroups } from "../../lib/liftingOrderExample";
 const groupB = exampleGroups[0];
 
 /** The calling order in short, with the rulebook's own example. Source: IWF TCRR 2026, 6.6. */
-export default function Overview() {
+export default function CallingOrder() {
   return (
     <div className="rules">
       <p className="muted">How the athletes in a group are called, from TCRR 6.6.</p>

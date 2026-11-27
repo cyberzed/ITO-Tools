@@ -12,31 +12,56 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
 
 ## Tools
 
-### Weight classes
-
-- **Overview**: the senior men's and women's bodyweight classes with their ranges.
-- **Training**: pick the valid classes for a gender from a grid of tiles with decoys.
-  - The grid is 5 x 5 to 10 x 10 (7 x 7 by default).
-  - **Check answers** scores the round. **Reveal answers** highlights the correct classes.
-
 ### Weigh-in
 
-- **Overview**: the weigh-in rules in short, with references to the Regulation to TCRR 6.4.
+The weight classes and the weigh-in share one tool and one menu, because the weigh-in is where
+the classes are used.
+
+- **Rules**: the weigh-in rules in short, with references to the Regulation to TCRR 6.4.
+- **Weight classes**: the senior men's and women's bodyweight classes with their ranges.
 - **Practice**: an athlete of a random gender and category steps on the scale. Work out the
   bodyweight after the 250 g costume deduction, and decide whether the athlete makes weight,
   is too heavy or is too light. The answer comes with the working.
   - The readings sit within 1.5 kg of a limit. Some are over the limit on the scale but make
     weight after the deduction, and some are exactly on a limit.
   - The score counts rounds with both answers right, for the visit only.
+- **Class quiz**: pick the valid classes for a gender from a grid of tiles with decoys.
+  - The grid is 5 x 5 to 10 x 10 (7 x 7 by default).
+  - **Check answers** scores the round. **Reveal answers** highlights the correct classes.
 
-### Athlete cards
+The old addresses `/#/weight-classes` and `/#/weight-classes/training` still work. They send the
+visitor to the new pages.
+
+### Chief Marshal
+
+The Chief Marshal's work is one tool with one menu: the athlete cards, the calling order and the
+Marshals' table. Each page can be used on its own.
+
+- **Rules**: the Chief Marshal's job (TCRR 7.9) and what to check on every card: whole kg, two
+  changes for each declaration, no reduction once the clock has started, and an increase before
+  the final call at 30 seconds before the end of the time.
+- **Marshals' table**: the practice at the Marshals' table for a snatch with two athletes, or three or four if you
+  choose **Lifters** (which starts a new group).
+  - The athlete cards (the snatch page) sit side by side, wider than the page if needed and with
+    a sideways scroll on a narrow screen. The athletes are called in the calling order. A clock runs for the athlete who is called: one minute, or two minutes for
+    an athlete who lifts twice in a row. The speed can be 1x, 2x or 4x.
+  - Coaches hand in cards at random moments, for the athlete on the clock and for the ones
+    waiting: a raise, a reduction or an odd weight. Some athletes have used their changes
+    already. Press **Accept** or **Decline** for each card.
+  - You get no feedback while the clock runs. When the athlete raises the bar (or the time runs
+    out), the clock stops and each card is checked against the rules, with the rule reference.
+    A card you accepted rightly is written on the athlete's card, and the attempt gets a result.
+    A card you left unanswered counts as missed.
+  - The time that counts for a card is the clock reading when it was handed in, shown on the
+    card, not the moment you answer.
+  - The score counts the cards answered right, for the visit only.
 
 - **Initial card**: the athlete card at weigh-in, for a random athlete.
   - The name, gender, birth date, lot, bodyweight, category, starting weights, entry total
     and signature are generated and kept for the browser session.
   - **Reset** creates a new athlete.
   - The generated starting weights never break the 20 kg Rule (TCRR 6.6.5).
-- **Simulation**: take the athlete through the snatch and then the clean & jerk, step by step.
+- **Card simulation**: take the athlete through the snatch and then the clean & jerk, step by step.
   For each attempt:
   1. Declare the weight. The first attempt starts at the weight given at weigh-in.
   2. Change it if needed. There are two changes for each attempt.
@@ -56,17 +81,12 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
     out on the card with a signed note. The clean & jerk starting weight from weigh-in stays
     on the card.
 
-Not modelled in the Simulation: time limits and the final call, and the break between the
-lifts. The Chief Marshal practice runs the clock and the final call for a group. The calling
-order for a whole group is Lifting order.
+Not modelled in the Card simulation: time limits and the final call, and the break between the
+lifts. The Marshals' table runs the clock and the final call for a group.
 
-### Lifting order
-
-A separate tool from the athlete card Simulation, which follows one athlete.
-
-- **Overview**: the four factors of the calling order (TCRR 6.6.6) and the rules around it, with
+- **Calling order**: the four factors of the calling order (TCRR 6.6.6) and the rules around it, with
   group B's snatch from the rulebook's example (Regulation to 6.6.6).
-- **Practice**: a random group of 6, 8 or 10 men or women, for the snatch or the clean & jerk.
+- **Calling order practice**: a random group of 6, 8 or 10 men or women, for the snatch or the clean & jerk.
   The board shows each athlete's attempts with their calling order number, and the weight
   they ask for next. Pick the athlete to call:
   - A right call takes the attempt: a good lift about seven times in ten, then the automatic
@@ -78,29 +98,17 @@ A separate tool from the athlete card Simulation, which follows one athlete.
 
   The starting weights cluster so that ties, and so the later factors, come up often.
 
-### Chief Marshal
-
-- **Overview**: the Chief Marshal's job (TCRR 7.9) and what to check on every card: whole kg, two
-  changes for each declaration, no reduction once the clock has started, and an increase before
-  the final call at 30 seconds before the end of the time.
-- **Practice**: the Marshals' table for a snatch with two athletes, or three or four if you
-  choose **Lifters** (which starts a new group).
-  - The athlete cards (the snatch page) sit side by side, wider than the page if needed and with
-    a sideways scroll on a narrow screen. The athletes are called in the calling order. A clock runs for the athlete who is called: one minute, or two minutes for
-    an athlete who lifts twice in a row. The speed can be 1x, 2x or 4x.
-  - Coaches hand in cards at random moments, for the athlete on the clock and for the ones
-    waiting: a raise, a reduction or an odd weight. Some athletes have used their changes
-    already. Press **Accept** or **Decline** for each card.
-  - You get no feedback while the clock runs. When the athlete raises the bar (or the time runs
-    out), the clock stops and each card is checked against the rules, with the rule reference.
-    A card you accepted rightly is written on the athlete's card, and the attempt gets a result.
-    A card you left unanswered counts as missed.
-  - The time that counts for a card is the clock reading when it was handed in, shown on the
-    card, not the moment you answer.
-  - The score counts the cards answered right, for the visit only.
+The old addresses `/#/athlete-cards`, `/#/athlete-cards/simulation`, `/#/lifting-order`,
+`/#/lifting-order/practice` and `/#/chief-marshal/practice` still work. They send the visitor to
+the new pages.
 
 ### Other pages
 
+- **Top bar**: a link for each tool, with an arrow next to it that opens a list of the tool's
+  pages (it also opens when a mouse rests on the tool). Escape, a click outside or moving the
+  focus away closes it. It is built from the same page list as the front page and the tool's
+  own menu (`ToolMenu` component). The tool is not marked as selected while you are on one of
+  its pages. The current page is marked in the tool's own menu and in the drop down.
 - **Front page**: an intro and a card for each tool that lists its pages. It is built from the
   tool registry, so it follows the tools without any edits.
 - **About**: the intention of the site, the rules used, the no affiliation notice, who made it,
@@ -136,23 +144,19 @@ src/
   lib/changelog.ts             Reads CHANGELOG.md
   tools/registry.ts            List of tools: the menu, routes and front page come from here
   tools/pages.ts               The pages of each tool: its menu and the front page use them
-  tools/WeightClasses.tsx      Weight classes: sub menu
-  tools/weight-classes/        Its pages (Overview, Training)
   tools/WeighIn.tsx            Weigh-in: sub menu
-  tools/weigh-in/              Its pages (Overview, Practice)
-  tools/LiftingOrder.tsx       Lifting order: sub menu
-  tools/lifting-order/         Its pages (Overview, Practice)
+  tools/weigh-in/              Its pages (Rules, Classes, Practice, ClassQuiz)
   tools/ChiefMarshal.tsx       Chief Marshal: sub menu
-  tools/chief-marshal/         Its pages (Overview, Practice) and the card for a Marshal athlete
-  tools/AthleteCards.tsx       Athlete cards: sub menu
-  tools/athlete-cards/         Its pages (InitialCard, Simulation) and the card builder
+  tools/chief-marshal/         Its pages (Rules, InitialCard, CardSimulation, CallingOrder,
+                               CallingOrderPractice, MarshalsTable) and the card builder
   components/AthleteCard.tsx   The athlete card
   components/SubNav.tsx        The menu under a tool's heading
+  components/ToolMenu.tsx      A tool in the top bar, with its drop down list of pages
   components/ThemeToggle.tsx   Light and dark mode button
   lib/categories.ts            Senior bodyweight classes and category lookup
   lib/rules.ts                 The 20 kg Rule
   lib/sessionAthlete.ts        Random athlete, kept in session storage
-  lib/classTraining.ts         Board generation and scoring for the class training
+  lib/classTraining.ts         Board generation and scoring for the class quiz
   lib/snatchSimulation.ts      Attempt logic for one lift (also used for the clean & jerk)
   lib/weighIn.ts               Category limits, the costume deduction and weigh-in cases
   lib/liftingOrder.ts          Calling order, attempts and random groups
@@ -173,7 +177,7 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
 
 ## Notes
 
-- The site uses hash routes such as `/#/weight-classes/training`, so any static host works
+- The site uses hash routes such as `/#/weigh-in/class-quiz`, so any static host works
   without rewrite rules.
 - The theme follows the operating system by default. The toggle in the top bar saves a
   different choice in the browser.
@@ -184,10 +188,10 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
 - The rulebook does not say that a declaration or change cannot go under the automatic
   progression. The simulation assumes it. The first attempt of a lift can go down to the
   empty bar (26 kg for men, 21 kg for women, TCRR 6.6.4).
-- The lifting order practice only ever raises a weight when a coach makes a change, so the
+- The calling order practice only ever raises a weight when a coach makes a change, so the
   barbell never has to come down. Lowering a weight before the clock starts (TCRR 6.6.10) is
-  rare in practice and is mostly about timing, so it is part of the Chief Marshal practice.
-- The Chief Marshal practice uses the order of the paragraphs in TCRR 6.6.10 to 6.6.15 for the
+  rare in practice and is mostly about timing, so it is part of the Marshals' table.
+- The Marshals' table uses the order of the paragraphs in TCRR 6.6.10 to 6.6.15 for the
   rule numbers, because the PDF prints those numbers in a block above the text. It never hands in
   a reduction below the automatic progression or the empty bar, because the rulebook does not
   say what happens below it. The clock keeps running while an accepted increase is loaded,

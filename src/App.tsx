@@ -1,12 +1,24 @@
 import { useEffect, useState } from "react";
 import { NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ThemeToggle from "./components/ThemeToggle";
+import ToolMenu from "./components/ToolMenu";
 import About from "./pages/About";
 import WhatsNew from "./pages/WhatsNew";
 import { REPO_URL } from "./repo";
 import { pageLink } from "./tools/pages";
 import { tools } from "./tools/registry";
 import { VERSION, hasUnseenChanges, markChangesSeen } from "./version";
+
+/** Old addresses and where their pages are now. */
+const movedPages: [from: string, to: string][] = [
+  ["/weight-classes", "/weigh-in/classes"],
+  ["/weight-classes/training", "/weigh-in/class-quiz"],
+  ["/athlete-cards", "/chief-marshal/initial-card"],
+  ["/athlete-cards/simulation", "/chief-marshal/card-simulation"],
+  ["/lifting-order", "/chief-marshal/calling-order"],
+  ["/lifting-order/practice", "/chief-marshal/calling-order-practice"],
+  ["/chief-marshal/practice", "/chief-marshal/marshals-table"],
+];
 
 export default function App() {
   const { pathname } = useLocation();
@@ -28,9 +40,7 @@ export default function App() {
         </NavLink>
         <nav aria-label="Tools">
           {tools.map((t) => (
-            <NavLink key={t.id} to={`/${t.id}`}>
-              {t.title}
-            </NavLink>
+            <ToolMenu key={t.id} tool={t} />
           ))}
         </nav>
         <nav aria-label="Site" className="site-nav">
@@ -47,6 +57,10 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/whats-new" element={<WhatsNew />} />
+          {/* Tools that moved into a bigger tool. Keep the old links working. */}
+          {movedPages.map(([from, to]) => (
+            <Route key={from} path={from} element={<Navigate to={to} replace />} />
+          ))}
           {tools.map((t) => (
             <Route key={t.id} path={`/${t.id}/*`} element={<t.component />} />
           ))}

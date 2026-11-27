@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it } from "vitest";
 import { getSessionAthlete } from "../../lib/sessionAthlete";
-import Simulation from "./Simulation";
+import Simulation from "./CardSimulation";
 
 beforeEach(() => sessionStorage.clear());
 afterEach(cleanup);

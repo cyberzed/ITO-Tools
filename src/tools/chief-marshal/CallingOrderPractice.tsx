@@ -20,7 +20,7 @@ interface Feedback {
   text: string;
 }
 
-export default function Practice() {
+export default function CallingOrderPractice() {
   const [gender, setGender] = useState<Gender>("M");
   const [size, setSize] = useState(6);
   const [lift, setLift] = useState<Lift>("snatch");
