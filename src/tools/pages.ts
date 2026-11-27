@@ -1,4 +1,4 @@
-/** A page inside a tool. It shows in the tool's own menu and on the front page. */
+/** A page inside a tool. It shows in the tool's own menu and in the drop down in the top bar. */
 export interface ToolPage {
   /** Path under the tool, without a leading slash. Empty for the first page, which is the default. */
   path: string;

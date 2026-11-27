@@ -5,7 +5,6 @@ import ToolMenu from "./components/ToolMenu";
 import About from "./pages/About";
 import WhatsNew from "./pages/WhatsNew";
 import { REPO_URL } from "./repo";
-import { pageLink } from "./tools/pages";
 import { tools } from "./tools/registry";
 import { VERSION, hasUnseenChanges, markChangesSeen } from "./version";
 
@@ -119,26 +118,7 @@ function Home() {
           It is for training, and no substitute for the rulebook.{" "}
           <NavLink to="/about">Read more about the project.</NavLink>
         </p>
-      </div>
-
-      <h2 className="start">Where to start</h2>
-      <div className="cards">
-        {tools.map((t) => (
-          <article key={t.id} className="card">
-            <h2>
-              <NavLink to={`/${t.id}`}>{t.title}</NavLink>
-            </h2>
-            <p>{t.description}</p>
-            <ul>
-              {t.pages.map((page) => (
-                <li key={page.path}>
-                  <NavLink to={pageLink(t.id, page)}>{page.title}</NavLink>
-                  <span>{page.description}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
+        <p>Pick a tool in the menu above, and go straight to the page you want from its arrow.</p>
       </div>
     </section>
   );

@@ -106,10 +106,10 @@ the new pages.
 
 - **Top bar**: a link for each tool, with an arrow next to it that opens a list of the tool's
   pages (it also opens when a mouse rests on the tool). Escape, a click outside or moving the
-  focus away closes it. It is built from the same page list as the front page and the tool's
-  own menu (`ToolMenu` component).
-- **Front page**: what the site is for and how it works, then a card for each tool that lists its
-  pages. The cards are built from the tool registry, so they follow the tools without any edits.
+  focus away closes it. It is built from the same page list as the tool's own menu (`ToolMenu`
+  component).
+- **Front page**: what the site is for and how it works. It does not list the tools or their
+  pages, because the top bar and its drop down lists do that.
 - **About**: the intention of the site, the rules used, the no affiliation notice, who made it,
   where to give feedback and a privacy note. It does not list the tools, so it cannot drift as
   tools are added. A test checks that.
@@ -141,8 +141,8 @@ src/
   pages/WhatsNew.tsx           The What's new page
   version.ts                   The version and the New marker, from CHANGELOG.md
   lib/changelog.ts             Reads CHANGELOG.md
-  tools/registry.ts            List of tools: the menu, routes and front page come from here
-  tools/pages.ts               The pages of each tool: its menu and the front page use them
+  tools/registry.ts            List of tools: the menu and the routes come from here
+  tools/pages.ts               The pages of each tool: its menu and the top bar drop down use them
   tools/WeighIn.tsx            Weigh-in: sub menu
   tools/weigh-in/              Its pages (Overview, Practice, Classes, ClassTraining)
   tools/ChiefMarshal.tsx       Chief Marshal: sub menu
@@ -171,8 +171,7 @@ reference/                     Rulebook PDF
 2. List its pages in `src/tools/pages.ts` (a title, a short description and a path for each).
 3. Add one entry to the list in `src/tools/registry.ts`.
 
-The menu entry, the front page card with its pages and the route (`/#/<id>`) follow from that
-entry. The tool's own menu comes from the same page list through the `SubNav` component.
+The menu entry, its drop down list and the route (`/#/<id>`) follow from that entry. The tool's own menu comes from the same page list through the `SubNav` component.
 
 ## Notes
 

@@ -134,29 +134,11 @@ main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
 .site-footer a:hover { border-color: var(--primary); color: var(--primary); }
 .muted { color: var(--muted); }
 .lead { max-width: 42rem; margin: 0 0 8px; color: var(--muted); font-size: 1.05rem; }
-.cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-top: 24px; }
-.card {
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-}
-.card h2 { margin: 0 0 4px; font-size: 1.1rem; }
-.card h2 a { color: var(--fg); text-decoration: none; }
-.card h2 a:hover { color: var(--primary); text-decoration: underline; }
-.card > p { margin: 0; color: var(--muted); }
-.card ul { margin: 12px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
-.card li { display: flex; flex-direction: column; gap: 2px; padding: 8px 0; border-bottom: 1px solid var(--border); }
-.card li:last-child { border-bottom: 0; padding-bottom: 0; }
-.card li a { color: var(--primary); font-weight: 600; text-decoration: none; }
-.card li a:hover { text-decoration: underline; }
-.card li span { color: var(--muted); font-size: 0.875rem; }
 .intent { max-width: 42rem; margin-top: 24px; }
-.intent h2, .home h2.start { margin: 24px 0 8px; font-size: 1.2rem; }
+.intent h2 { margin: 24px 0 8px; font-size: 1.2rem; }
 .intent p, .intent li { color: var(--fg); }
 .intent li { margin: 6px 0; }
 .intent .muted a { color: var(--primary); }
-.home h2.start { margin-top: 40px; }
 
 /* Athlete card: always paper-white, in both themes */
 .ac {

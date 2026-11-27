@@ -13,7 +13,7 @@ Write each line for the people who use the site, not for developers.
 ## 0.5.2 - 2026-11-27
 
 ### Changed
-- The front page now starts with what the site is for and how it works. The tools and their pages come below it.
+- The front page is now about what the site is for and how it works. It no longer lists the tools and their pages, because the top bar and its drop down lists do that.
 
 ## 0.5.1 - 2026-11-27
 
