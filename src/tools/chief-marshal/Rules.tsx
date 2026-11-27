@@ -67,15 +67,9 @@ export default function Rules() {
         <strong>decline</strong> each card.
       </p>
       <p>
-        There are two modes. In <strong>Exam</strong> mode, which is the default, you hear nothing
-        while you decide. When the athlete raises the bar, the clock stops and the practice checks
-        every card of that attempt against the rules. In <strong>Learning</strong> mode each answer
-        is also checked at once, with the reason and the rule, so you can learn as you go.
-      </p>
-      <p>
-        In both modes a change you accepted rightly goes on the athlete's card, a card you leave
-        unanswered counts as missed, and the score is counted the same way. Changing the mode
-        starts a new group.
+        You hear nothing while you decide. When the athlete raises the bar, the clock stops and the
+        practice checks every card of that attempt against the rules. A change you accepted rightly
+        goes on the athlete's card. A card you leave unanswered counts as missed.
       </p>
 
       <h2>Not in the practice</h2>
