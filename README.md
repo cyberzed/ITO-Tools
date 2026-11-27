@@ -48,13 +48,10 @@ Marshals' table. Each page can be used on its own.
   - Coaches hand in cards at random moments, for the athlete on the clock and for the ones
     waiting: a raise, a reduction or an odd weight. Some athletes have used their changes
     already. Press **Accept** or **Decline** for each card.
-  - **Mode** is **Exam** by default: you get no feedback while the clock runs. When the athlete
-    raises the bar (or the time runs out), the clock stops and each card is checked against the
-    rules, with the rule reference. In **Learning** mode each answer is also checked at once on
-    its card, with the reason and the rule, and it cannot be changed. Changing the mode starts a
-    new group.
-  - In both modes a card you accepted rightly is written on the athlete's card, and the attempt
-    gets a result. A card you left unanswered counts as missed.
+  - You get no feedback while the clock runs. When the athlete raises the bar (or the time runs
+    out), the clock stops and each card is checked against the rules, with the rule reference.
+    A card you accepted rightly is written on the athlete's card, and the attempt gets a result.
+    A card you left unanswered counts as missed.
   - The time that counts for a card is the clock reading when it was handed in, shown on the
     card, not the moment you answer.
   - The score counts the cards answered right, for the visit only.
