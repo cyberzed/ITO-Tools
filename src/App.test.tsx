@@ -30,7 +30,7 @@ const renderAt = (path: string) =>
   );
 
 it("links to the source on GitHub from every page", () => {
-  for (const path of ["/", "/weight-classes", "/athlete-cards/simulation"]) {
+  for (const path of ["/", "/weigh-in/classes", "/athlete-cards/simulation"]) {
     render(
       <MemoryRouter initialEntries={[path]}>
         <App />
@@ -120,4 +120,21 @@ it("shows a New marker after an update until What's new is opened", () => {
   expect(screen.getByRole("heading", { name: "What's new", level: 1 })).toBeTruthy();
   expect(screen.queryByText("New")).toBeNull();
   expect(localStorage.getItem("seenVersion")).toBe(VERSION);
+});
+
+it("sends the old weight classes links to the Weigh-in tool", () => {
+  const first = renderAt("/weight-classes");
+  expect(screen.getByRole("heading", { name: "Men" })).toBeTruthy();
+  expect(screen.getByRole("link", { name: "Weight classes" }).className).toContain("active");
+  first.unmount();
+  const second = renderAt("/weight-classes/training");
+  expect(second.container.querySelectorAll(".tile")).toHaveLength(49);
+  expect(screen.getByRole("link", { name: "Class training" }).className).toContain("active");
+});
+
+it("has Weigh-in in the top bar, with the weight classes in its menu instead of a tool of their own", () => {
+  renderAt("/");
+  const bar = within(screen.getByRole("navigation", { name: "Tools" }));
+  expect(bar.getByRole("link", { name: "Weigh-in" })).toBeTruthy();
+  expect(bar.queryByRole("link", { name: "Weight classes" })).toBeNull();
 });

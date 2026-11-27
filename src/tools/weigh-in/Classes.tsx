@@ -36,7 +36,7 @@ function ClassTable({ gender, title }: { gender: Gender; title: string }) {
   );
 }
 
-export default function Overview() {
+export default function Classes() {
   return (
     <div>
       <p className="muted">

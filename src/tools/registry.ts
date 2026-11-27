@@ -7,11 +7,9 @@ import {
   chiefMarshalPages,
   liftingOrderPages,
   weighInPages,
-  weightClassPages,
   type ToolPage,
 } from "./pages";
 import WeighIn from "./WeighIn";
-import WeightClasses from "./WeightClasses";
 
 export interface Tool {
   /** URL slug, used as the route: /#/<id> */
@@ -26,16 +24,9 @@ export interface Tool {
 /** Add a new tool here and it shows up in the menu, the router and the front page automatically. */
 export const tools: Tool[] = [
   {
-    id: "weight-classes",
-    title: "Weight classes",
-    description: "The senior men's and women's bodyweight classes.",
-    pages: weightClassPages,
-    component: WeightClasses,
-  },
-  {
     id: "weigh-in",
     title: "Weigh-in",
-    description: "Check that an athlete makes weight for their category.",
+    description: "The weight classes, and checking that an athlete makes weight for theirs.",
     pages: weighInPages,
     component: WeighIn,
   },

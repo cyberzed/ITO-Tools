@@ -1,11 +1,11 @@
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
-import Overview from "./Overview";
+import Classes from "./Classes";
 
 afterEach(cleanup);
 
 const rows = (title: string) => {
-  render(<Overview />);
+  render(<Classes />);
   const heading = screen.getByRole("heading", { name: title });
   const table = heading.parentElement!.querySelector("table")!;
   return within(table)

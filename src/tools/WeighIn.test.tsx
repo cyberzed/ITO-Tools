@@ -26,3 +26,28 @@ it("shows the practice from the sub menu", () => {
   expect(screen.getByText("The scale shows")).toBeTruthy();
   expect(screen.getByRole("link", { name: "Practice" }).className).toContain("active");
 });
+
+it("has the weigh-in pages and the weight classes pages in one menu", () => {
+  at("/weigh-in");
+  const menu = screen.getByRole("navigation", { name: "Weigh-in pages" });
+  expect(Array.from(menu.querySelectorAll("a")).map((a) => a.textContent)).toEqual([
+    "Overview",
+    "Practice",
+    "Weight classes",
+    "Class training",
+  ]);
+});
+
+it("shows the weight classes from the sub menu", () => {
+  at("/weigh-in/classes");
+  expect(screen.getByRole("heading", { name: "Men" })).toBeTruthy();
+  expect(screen.getByRole("link", { name: "Weight classes" }).className).toContain("active");
+  expect(screen.getByRole("link", { name: "Overview" }).className).not.toContain("active");
+});
+
+it("shows the class training from the sub menu", () => {
+  const { container } = at("/weigh-in/class-training");
+  expect(container.querySelectorAll(".tile")).toHaveLength(49);
+  expect(screen.getByRole("link", { name: "Class training" }).className).toContain("active");
+  expect(screen.getByRole("link", { name: "Weight classes" }).className).not.toContain("active");
+});

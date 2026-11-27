@@ -6,17 +6,18 @@ export interface ToolPage {
   description: string;
 }
 
-export const weightClassPages: ToolPage[] = [
-  { path: "", title: "Overview", description: "The senior bodyweight classes and their ranges." },
-  { path: "training", title: "Training", description: "Pick the valid classes for a gender from a grid of tiles." },
-];
-
 export const weighInPages: ToolPage[] = [
   { path: "", title: "Overview", description: "The weigh-in rules in short, with the 250 g for the costume." },
   {
     path: "practice",
     title: "Practice",
     description: "Read the scale and decide whether the athlete makes weight.",
+  },
+  { path: "classes", title: "Weight classes", description: "The senior bodyweight classes and their ranges." },
+  {
+    path: "class-training",
+    title: "Class training",
+    description: "Pick the valid classes for a gender from a grid of tiles.",
   },
 ];
 

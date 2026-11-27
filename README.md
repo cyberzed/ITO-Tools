@@ -12,14 +12,10 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
 
 ## Tools
 
-### Weight classes
-
-- **Overview**: the senior men's and women's bodyweight classes with their ranges.
-- **Training**: pick the valid classes for a gender from a grid of tiles with decoys.
-  - The grid is 5 x 5 to 10 x 10 (7 x 7 by default).
-  - **Check answers** scores the round. **Reveal answers** highlights the correct classes.
-
 ### Weigh-in
+
+The weight classes and the weigh-in share one tool and one menu, because the weigh-in is where
+the classes are used.
 
 - **Overview**: the weigh-in rules in short, with references to the Regulation to TCRR 6.4.
 - **Practice**: an athlete of a random gender and category steps on the scale. Work out the
@@ -28,6 +24,13 @@ Competition Rules & Regulations 2026 (TCRR). A copy is in
   - The readings sit within 1.5 kg of a limit. Some are over the limit on the scale but make
     weight after the deduction, and some are exactly on a limit.
   - The score counts rounds with both answers right, for the visit only.
+- **Weight classes**: the senior men's and women's bodyweight classes with their ranges.
+- **Class training**: pick the valid classes for a gender from a grid of tiles with decoys.
+  - The grid is 5 x 5 to 10 x 10 (7 x 7 by default).
+  - **Check answers** scores the round. **Reveal answers** highlights the correct classes.
+
+The old addresses `/#/weight-classes` and `/#/weight-classes/training` still work. They send the
+visitor to the new pages.
 
 ### Athlete cards
 
@@ -136,10 +139,8 @@ src/
   lib/changelog.ts             Reads CHANGELOG.md
   tools/registry.ts            List of tools: the menu, routes and front page come from here
   tools/pages.ts               The pages of each tool: its menu and the front page use them
-  tools/WeightClasses.tsx      Weight classes: sub menu
-  tools/weight-classes/        Its pages (Overview, Training)
   tools/WeighIn.tsx            Weigh-in: sub menu
-  tools/weigh-in/              Its pages (Overview, Practice)
+  tools/weigh-in/              Its pages (Overview, Practice, Classes, ClassTraining)
   tools/LiftingOrder.tsx       Lifting order: sub menu
   tools/lifting-order/         Its pages (Overview, Practice)
   tools/ChiefMarshal.tsx       Chief Marshal: sub menu
@@ -173,7 +174,7 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
 
 ## Notes
 
-- The site uses hash routes such as `/#/weight-classes/training`, so any static host works
+- The site uses hash routes such as `/#/weigh-in/class-training`, so any static host works
   without rewrite rules.
 - The theme follows the operating system by default. The toggle in the top bar saves a
   different choice in the browser.

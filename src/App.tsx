@@ -47,6 +47,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/whats-new" element={<WhatsNew />} />
+          {/* The weight classes moved under Weigh-in. Keep the old links working. */}
+          <Route path="/weight-classes" element={<Navigate to="/weigh-in/classes" replace />} />
+          <Route path="/weight-classes/training" element={<Navigate to="/weigh-in/class-training" replace />} />
           {tools.map((t) => (
             <Route key={t.id} path={`/${t.id}/*`} element={<t.component />} />
           ))}
