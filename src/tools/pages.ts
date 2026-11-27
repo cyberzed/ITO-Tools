@@ -22,7 +22,7 @@ export const weighInPages: ToolPage[] = [
 ];
 
 export const chiefMarshalPages: ToolPage[] = [
-  { path: "", title: "Overview", description: "What the Chief Marshal checks on every card, and the rules behind it." },
+  { path: "", title: "Rules", description: "What the Chief Marshal checks on every card, and the rules behind it." },
   { path: "initial-card", title: "Initial card", description: "The athlete card at weigh-in, for a random athlete." },
   {
     path: "card-simulation",
