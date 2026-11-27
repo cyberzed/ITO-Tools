@@ -28,6 +28,16 @@ import {
 export const GROUP_SIZES = [2, 3, 4] as const;
 export type GroupSize = (typeof GROUP_SIZES)[number];
 export const DEFAULT_SIZE: GroupSize = 2;
+
+/**
+ * How the answers are checked. In the exam every card is checked when the athlete raises the
+ * bar. In learning mode the screen also shows the check of a card as soon as it is answered.
+ * The simulation itself is the same in both, so the score does not depend on the mode.
+ */
+export const MODES = ["exam", "learning"] as const;
+export type Mode = (typeof MODES)[number];
+export const DEFAULT_MODE: Mode = "exam";
+export const modeName: Record<Mode, string> = { exam: "Exam", learning: "Learning" };
 /** An athlete has one minute, or two minutes for an attempt right after their own (6.6.7). */
 export const ONE_MINUTE = 60;
 export const TWO_MINUTES = 120;

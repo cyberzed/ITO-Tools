@@ -10,6 +10,11 @@ Versions follow `MAJOR.MINOR.PATCH`:
 Each version has a date and one or more of these sections: Added, Changed, Fixed, Removed.
 Write each line for the people who use the site, not for developers.
 
+## 0.5.3 - 2026-11-27
+
+### Added
+- Chief Marshal, Marshals' table: a Learning mode that checks each answer at once, with the reason and the rule. Exam mode is still the default and checks your answers when the athlete raises the bar.
+
 ## 0.5.2 - 2026-11-27
 
 ### Changed

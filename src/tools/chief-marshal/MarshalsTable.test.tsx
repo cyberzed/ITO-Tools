@@ -142,3 +142,91 @@ it("starts a new group", () => {
   fireEvent.click(screen.getByRole("button", { name: "New group" }));
   expect(container.querySelector(".marshal-card")!.textContent).not.toBe(before);
 });
+
+const mode = () => screen.getByLabelText(/Mode/) as HTMLSelectElement;
+
+it("is in Exam mode to begin with, and gives no verdict until the athlete raises the bar", () => {
+  vi.spyOn(marshal, "createSim").mockReturnValue(scripted().sim);
+  render(<Practice />);
+  expect(mode().value).toBe("exam");
+  expect(Array.from(mode().options).map((o) => o.textContent)).toEqual(["Exam", "Learning"]);
+  fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+  expect(screen.getByText("Accepted")).toBeTruthy();
+  expect(screen.queryByText(/which is right/)).toBeNull();
+  expect(screen.queryByText(/TCRR 6\.6/)).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Start" }));
+  run(45);
+  expect(screen.getByText(/Accepted, which is right/)).toBeTruthy();
+});
+
+it("checks a right answer at once in Learning mode, with the reason and the rule", () => {
+  vi.spyOn(marshal, "createSim").mockReturnValue(scripted().sim);
+  render(<Practice />);
+  fireEvent.change(mode(), { target: { value: "learning" } });
+  fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+  expect(screen.getByText("Right.")).toBeTruthy();
+  expect(screen.getByText(/Accepted, which is right/)).toBeTruthy();
+  expect(screen.getByText(/the clock has not started for this athlete/i)).toBeTruthy();
+  expect(screen.getByText(/TCRR 6\.6\.1, 6\.6\.10/)).toBeTruthy();
+  // The clock has not run: this is before the athlete raises the bar.
+  expect(clock()).toContain("1:00");
+});
+
+it("checks a wrong answer at once in Learning mode", () => {
+  vi.spyOn(marshal, "createSim").mockReturnValue(scripted().sim);
+  render(<Practice />);
+  fireEvent.change(mode(), { target: { value: "learning" } });
+  fireEvent.click(screen.getByRole("button", { name: "Decline" }));
+  expect(screen.getByText("Wrong.")).toBeTruthy();
+  expect(screen.getByText(/You declined it, but it should have been accepted/)).toBeTruthy();
+  expect(screen.getByText(/TCRR 6\.6\.1, 6\.6\.10/)).toBeTruthy();
+});
+
+it("cannot change an answer after it is checked", () => {
+  vi.spyOn(marshal, "createSim").mockReturnValue(scripted().sim);
+  render(<Practice />);
+  fireEvent.change(mode(), { target: { value: "learning" } });
+  fireEvent.click(screen.getByRole("button", { name: "Decline" }));
+  expect(screen.queryByRole("button", { name: "Accept" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Decline" })).toBeNull();
+  expect(screen.getByText("Declined")).toBeTruthy();
+});
+
+it("counts the score the same in both modes, when the athlete raises the bar", () => {
+  vi.spyOn(marshal, "createSim").mockReturnValue(scripted().sim);
+  render(<Practice />);
+  fireEvent.change(mode(), { target: { value: "learning" } });
+  fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+  // The answer is checked, but the score waits for the lift, as in the exam.
+  expect(screen.getByText("Correct: 0 of 0")).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Start" }));
+  run(45);
+  expect(screen.getByText("Correct: 1 of 1")).toBeTruthy();
+  expect(screen.getByText(/raises the bar with/)).toBeTruthy();
+});
+
+it("starts a new group and stops the clock when the mode changes", () => {
+  const spy = vi.spyOn(marshal, "createSim").mockImplementation((_rng, _gender, size) => realCreate(seeded(8), "M", size));
+  render(<Practice />);
+  fireEvent.click(screen.getByRole("button", { name: "Start" }));
+  run(5);
+  expect(clock()).not.toContain("1:00");
+  fireEvent.change(mode(), { target: { value: "learning" } });
+  expect(spy).toHaveBeenLastCalledWith(expect.anything(), undefined, 2);
+  expect(mode().value).toBe("learning");
+  expect(screen.getByRole("button", { name: "Start" })).toBeTruthy();
+  expect(clock()).toContain("1:00");
+  run(10);
+  expect(clock()).toContain("1:00");
+});
+
+it("keeps the mode when the group size or a new group is chosen", () => {
+  vi.spyOn(marshal, "createSim").mockImplementation((_rng, _gender, size) => realCreate(seeded(8), "M", size));
+  const { container } = render(<Practice />);
+  fireEvent.change(mode(), { target: { value: "learning" } });
+  fireEvent.change(screen.getByLabelText(/Lifters/), { target: { value: "4" } });
+  expect(mode().value).toBe("learning");
+  fireEvent.click(screen.getByRole("button", { name: "New group" }));
+  expect(mode().value).toBe("learning");
+  expect(container.querySelectorAll(".marshal-card")).toHaveLength(4);
+});
