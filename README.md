@@ -152,6 +152,9 @@ entry. The tool's own menu comes from the same page list through the `SubNav` co
   without rewrite rules.
 - The theme follows the operating system by default. The toggle in the top bar saves a
   different choice in the browser.
+- `public/.well-known/security.txt` says where to report a security problem (RFC 9116). Its
+  `Expires` date is one year ahead at most, so renew it before it passes. Vite copies the file
+  to `dist/` as it is.
 - Random values use `crypto.getRandomValues`, not `Math.random()`, because CodeQL flags it.
 - The rulebook does not say that a declaration or change cannot go under the automatic
   progression. The simulation assumes it. The first attempt of a lift can go down to the
