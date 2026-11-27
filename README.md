@@ -105,6 +105,28 @@ The old addresses `/#/athlete-cards`, `/#/athlete-cards/simulation`, `/#/lifting
 `/#/lifting-order/practice` and `/#/chief-marshal/practice` still work. They send the visitor to
 the new pages.
 
+### Technical Controller
+
+- **Rules**: what the Technical Controller does (TCRR 7.8) and the outfit rules of TCRR 4 in short:
+  the costume, the belt, what may be worn under the costume, bandages, plasters and tape, and
+  gloves. It says what the Outfit check covers and what it does not.
+- **Outfit check**: look at a picture of an athlete's outfit and decide whether it passes.
+  - The sample is an SVG drawn from parameters: either a front view of an athlete (costume,
+    belt, unitard, T-shirt and shorts under the costume, knee supports, bandages and tape on
+    the arms, shoes), or a close-up of the back of a hand (a fingerless glove, tape and sticking
+    plasters on the fingers).
+  - Choose **Passes** or **Does not pass**. For a sample that does not pass, tick every fault
+    you see from a checklist. A sample has no fault, one fault or, now and then, two.
+  - The answer marks each fault in the picture with a red outline, gives the rule behind it,
+    and lists what looked suspicious but is allowed (a long unitard under a sleeveless costume,
+    a belt of 11 or 12 cm, tape that stops outside the elbow area, a glove up to the first
+    knuckle with a gap to the tape, and so on). A round is right when the decision and the set of
+    faults both match. The score is for the visit only.
+  - **Show measurements** draws the elbow area (5 cm above and below the elbow), the belt width
+    and the knuckle lines. After you check, they are drawn anyway.
+  - The faults of a sample are computed from its parameters, one function per rule
+    (`src/lib/outfit.ts`), so the picture and the answer cannot disagree.
+
 ### Other pages
 
 - **Top bar**: a link for each tool, with an arrow next to it that opens a list of the tool's
@@ -152,7 +174,11 @@ src/
   tools/ChiefMarshal.tsx       Chief Marshal: sub menu
   tools/chief-marshal/         Its pages (Rules, InitialCard, CardSimulation, CallingOrder,
                                CallingOrderPractice, MarshalsTable) and the card builder
+  tools/TechnicalController.tsx  Technical Controller: sub menu
+  tools/technical-controller/  Its pages (Rules, OutfitCheck)
   components/AthleteCard.tsx   The athlete card
+  components/OutfitFigure.tsx  The front view of an athlete, as an SVG drawn from a sample
+  components/HandFigure.tsx    The back of a hand, as an SVG drawn from a sample
   components/SubNav.tsx        The menu under a tool's heading
   components/ToolMenu.tsx      A tool in the top bar, with its drop down list of pages
   components/ThemeToggle.tsx   Light and dark mode button
@@ -165,6 +191,7 @@ src/
   lib/liftingOrder.ts          Calling order, attempts and random groups
   lib/liftingOrderExample.ts   The rulebook's calling order example, also used as a test
   lib/marshal.ts               The Marshals' table: clock, cards handed in, and the check of the decisions
+  lib/outfit.ts                The outfit rules, the samples and their faults
   lib/random.ts                Random helpers using Web Crypto
 reference/                     Rulebook PDF
 ```
@@ -198,6 +225,20 @@ The menu entry, its drop down list and the route (`/#/<id>`) follow from that en
   a reduction below the automatic progression or the empty bar, because the rulebook does not
   say what happens below it. The clock keeps running while an accepted increase is loaded,
   although the rulebook stops it while a heavier weight is set up (6.6.15).
+- The outfit check uses the numbers of TCRR 4.5 in the order of the paragraphs, because the PDF
+  prints them in a block above the text: 4.5.1.2 knee supports, 4.5.1.5 a bandage on the trunk,
+  4.5.1.6 no bandage near the elbow, 4.5.2.2 plasters on the fingers, 4.5.3.1 tape on the
+  fingers, 4.5.3.4 and 4.5.3.5 no tape near the elbow. Sections 4.2, 4.3, 4.4, 4.6 and 4.7 are
+  numbered in the PDF itself.
+- The outfit check only uses what a picture can show. It leaves out a bandage under the costume,
+  a belt worn under the costume (the costume hides both), tape attached to the barbell and
+  lubricant on the thighs (2.4.7). The rulebook lists jewellery, hair adornments and head gear
+  as allowed outfit (4.1.2) without a rule, so they are not in it. A costume that covers the
+  elbow, and a wrap that overlaps the elbow area, are judged from where the sleeve or wrap ends
+  on the arm. The elbow is 28 cm from the shoulder in the drawing, and the knee 40 cm from the
+  crotch.
+- The unitard may cover the elbows and the knees (4.7.1), and a pattern on it is a fault. A
+  pattern is only judged where the unitard shows, which is where it reaches past the costume.
 - The weigh-in practice treats a bodyweight at or below the limit of the category below as too
   light, because a category includes its upper limit. The rulebook's wording for the too light
   case (Regulation to 6.4, point 10) is less clear than for the too heavy case.

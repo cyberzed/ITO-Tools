@@ -10,6 +10,12 @@ Versions follow `MAJOR.MINOR.PATCH`:
 Each version has a date and one or more of these sections: Added, Changed, Fixed, Removed.
 Write each line for the people who use the site, not for developers.
 
+## 0.6.0 - 2026-11-27
+
+### Added
+- Technical Controller: a new tool in the top bar, with a Rules page on what the Technical Controller does and the outfit rules in short.
+- Technical Controller, Outfit check: look at a picture of an athlete's outfit, or a close-up of a hand, and decide whether it passes. Tick the faults you see, and get the rule behind each one, with the faults marked in the picture and the look-alikes that are allowed.
+
 ## 0.5.5 - 2026-11-27
 
 ### Added

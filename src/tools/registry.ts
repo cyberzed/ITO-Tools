@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import ChiefMarshal from "./ChiefMarshal";
-import { chiefMarshalPages, weighInPages, type ToolPage } from "./pages";
+import { chiefMarshalPages, technicalControllerPages, weighInPages, type ToolPage } from "./pages";
+import TechnicalController from "./TechnicalController";
 import WeighIn from "./WeighIn";
 
 export interface Tool {
@@ -28,5 +29,12 @@ export const tools: Tool[] = [
     description: "The athlete cards, the calling order and the Marshals' table: the Chief Marshal's work.",
     pages: chiefMarshalPages,
     component: ChiefMarshal,
+  },
+  {
+    id: "technical-controller",
+    title: "Technical Controller",
+    description: "The Technical Controller's duties, and checking an athlete's outfit.",
+    pages: technicalControllerPages,
+    component: TechnicalController,
   },
 ];
