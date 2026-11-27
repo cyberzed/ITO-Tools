@@ -1,0 +1,4 @@
+Contact: mailto:cyberzed@sleddog.dk
+Expires: 2027-11-26T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://itotraining.app/.well-known/security.txt
