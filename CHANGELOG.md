@@ -22,7 +22,7 @@ Write each line for the people who use the site, not for developers.
 
 ### Changed
 - The tool in the top bar is no longer highlighted while you are on one of its pages. The page you are on is marked in the tool's own menu and in the drop down.
-- The weight classes and the class training now sit in the Weigh-in menu, next to the weigh-in rules and practice.
+- The weight classes and the class training now sit in the Weigh-in menu. The menu reads Rules, Weight classes, Practice and Class training.
 - The athlete cards, the lifting order and the Marshals' table now sit in one Chief Marshal menu. The top bar has two tools: Weigh-in and Chief Marshal. Old links still work.
 
 ## 0.5.0 - 2026-11-27

@@ -1,5 +1,5 @@
 /** The weigh-in rules in short. Source: IWF TCRR 2026, 6.4 and the Regulation to 6.4. */
-export default function Overview() {
+export default function Rules() {
   return (
     <div className="rules">
       <p className="muted">
